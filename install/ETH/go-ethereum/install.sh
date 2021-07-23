@@ -62,7 +62,7 @@ EXEC "ln -fs $installPath/geth /usr/bin/geth"
 EXEC "geth version" && geth version
 
 # create start.sh
-pubIp=`curl -4 ip.sb`    // get vm public ip
+pubIp=`curl -4 ip.sb`    # get vm public ip
 if [ "$chainType" = "mainnet" ]
 then
 options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsport --datadir $installPath/data --http.vhosts=*"
