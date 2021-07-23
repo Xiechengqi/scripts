@@ -74,7 +74,7 @@ $installPath/geth $options &> $installPath/logs/geth.log
 EOF
 chmod +x $installPath/start.sh
 
-# register serivce
+# register service
 cat > /lib/systemd/system/$serviceName.service << EOF
 [Unit]
 Description=Official Go implementation of the Ethereum protocol
