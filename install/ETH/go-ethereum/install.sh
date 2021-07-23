@@ -92,7 +92,7 @@ WantedBy=multi-user.target
 EOF
 
 # change softlink
-EXEC "ln -fs $installPath $(dirname $installPath/$serivceName)"
+EXEC "ln -fs $installPath $(dirname $installPath)/$serivceName"
 
 # start
 EXEC "systemctl daemon-reload && systemctl enable --now $serviceName"
