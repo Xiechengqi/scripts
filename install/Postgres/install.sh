@@ -59,7 +59,8 @@ EXEC "mkdir -p $installPath/{data,logs} && cd $installPath"
 EXEC "curl -SsL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 
 # register path
-EXEC "sed -i '/postgres\/bin/d' /etc/profile"
+EXEC "sed -i '/postgres.*\/bin/d' /etc/profile"
+EXEC "sed -i '/postgres.*\/lib/d' /etc/profile"
 EXEC "echo 'export PATH=\$PATH:$installPath/bin' >> /etc/profile"
 EXEC "echo 'export LD_LIBRARY_PATH=$installPath/lib' >> /etc/profile"
 EXEC "ln -fs $installPath/bin/* /usr/bin/"
@@ -108,7 +109,7 @@ YELLOW "install path: $installPath"
 YELLOW "data path: $installPath/data"
 YELLOW "log path: $installPath/logs"
 YELLOW "conncetion cmd: su $user && psql -p $port"
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "managemanet cmd: systemctl [status|stop|start|restart|reload] $serviceName"
 }
 
 main
