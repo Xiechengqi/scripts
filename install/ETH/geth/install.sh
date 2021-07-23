@@ -4,7 +4,7 @@
 # xiechengqi
 # 2021/07/22
 # binary install Geth
-# need to open firewall port: 30303/tcp 30303/udp 8545/tcp
+# for mainnet, need to open firewall port: 30303/tcp 30303/udp 8545/tcp
 # https://geth.ethereum.org/
 # https://github.com/ethereum/go-ethereum
 #
@@ -47,7 +47,7 @@ wsport="8544"
 serviceName="eth"
 
 # check geth
-EXEC "! systemctl is-active $serviceName"
+systemctl is-active $serviceName &> /dev/null && INFO "$serviceName is running ..." && return 0
 
 # check install path
 EXEC "rm -rf $installPath"
@@ -58,24 +58,23 @@ EXEC "curl -SsL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 
 # register bin
 EXEC "ln -fs $installPath/geth /usr/bin/geth"
-EXEC "geth version"
+EXEC "geth version" && geth version
 
 # create start.sh
 pubIp=`curl -4 ip.sb`
-cat > $installPath/start.sh << EOF
-
-if [ "$chainType" = "mainnet" ]; then
+if [ "$chainType" = "mainnet" ]
+then
 options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsport --datadir $installPath/data --http.vhosts=*"
-elif [ "$chainType" = "testnet" ]; then
+else
 options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsport --datadir $installPath/data --http.vhosts=* --rinkeby"
 fi
-
+cat > $installPath/start.sh << EOF
 $installPath/geth $options &> $installPath/logs/geth.log
 EOF
 chmod +x $installPath/start.sh
 
 # register serivce
-cat > /lib/systemd/system/eth.service << EOF
+cat > /lib/systemd/system/$serviceName.service << EOF
 [Unit]
 Description=Official Go implementation of the Ethereum protocol
 Documentation=https://github.com/ethereum/go-ethereum
@@ -91,9 +90,17 @@ RestartSec=2
 WantedBy=multi-user.target
 EOF
 
+# change softlink
+EXEC "ln -fs $installPath $(dirname $installPath/$serivceName)"
+
 # start
 EXEC "systemctl daemon-reload && systemctl enable --now $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
+
+# info
+INFO "version: $version"
+INFO "installPath: $installPath"
+INFO "cmd: systemctl stop|start|restart|reload $serivceName"
 }
 
 main $@
