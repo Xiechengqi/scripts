@@ -10,7 +10,7 @@ source /etc/profile
 
 INFO() {
 printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "%s" "$1"
+printf -- "\033[33m%s\033[0m" "$1"
 printf "\n"
 }
 
