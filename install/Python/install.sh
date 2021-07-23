@@ -2,8 +2,8 @@
 
 #
 # xiechengqi
-# 2021/07/16
-# pyenv install python3.6
+# 2021/07/23
+# pyenv install python
 # usage: curl -SsL http://xxx/install.sh | bash -s 3.6
 #
 
