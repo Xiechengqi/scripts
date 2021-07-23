@@ -48,9 +48,6 @@ EXEC "ln -fs $HOME/.pyenv/bin/* /usr/local/bin/"
 
 source /etc/profile
 EXEC "pyenv -v" && pyenv -v
-
-# info
-YELLOW "version: $version"
 }
 
 main
