@@ -100,8 +100,11 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 
 # info
 INFO "version: $version"
-INFO "installPath: $installPath"
-INFO "cmd: systemctl stop|start|restart|reload $serviceName"
+INFO "install path: $installPath"
+INFO "log path: $installPath/logs"
+INFO "db path: $installPath/data"
+INFO "connection cmd: geth attach http://localhost:8545"
+INFO "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
