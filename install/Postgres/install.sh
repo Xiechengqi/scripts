@@ -10,6 +10,12 @@ source /etc/profile
 
 INFO() {
 printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
+printf -- "%s" "$1"
+printf "\n"
+}
+
+YELLOW() {
+printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
 printf -- "\033[33m%s\033[0m" "$1"
 printf "\n"
 }
@@ -97,12 +103,12 @@ EXEC "systemctl daemon-reload && systemctl enable --now $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-INFO "version: $version"
-INFO "install path: $installPath"
-INFO "data path: $installPath/data"
-INFO "log path: $installPath/logs"
-INFO "conncetion cmd: su $user && psql -p $port"
-INFO "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "version: $version"
+YELLOW "install path: $installPath"
+YELLOW "data path: $installPath/data"
+YELLOW "log path: $installPath/logs"
+YELLOW "conncetion cmd: su $user && psql -p $port"
+YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main
