@@ -1,1 +1,1 @@
-# Hashkey Hub opreation scripts
+# Hashkey Hub operation scripts
