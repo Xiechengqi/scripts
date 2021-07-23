@@ -101,7 +101,7 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 # info
 INFO "version: $version"
 INFO "installPath: $installPath"
-INFO "cmd: systemctl stop|start|restart|reload $serivceName"
+INFO "cmd: systemctl stop|start|restart|reload $serviceName"
 }
 
 main $@
