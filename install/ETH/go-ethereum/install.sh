@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+{
 
 #
 # xiechengqi
@@ -104,3 +105,4 @@ INFO "cmd: systemctl stop|start|restart|reload $serivceName"
 }
 
 main $@
+}
