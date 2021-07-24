@@ -3,4 +3,4 @@
 
 | Install | Command |
 | --- | :---: |
-| [Postgres](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | bash` |
+| [Postgres](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh /| bash` |
