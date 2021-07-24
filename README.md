@@ -2,7 +2,7 @@
 
 
 | Install | Command |
-| --- | :---: |
+| :---: | :---: |
 | [Postgres](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh \| bash` |
 | [Mongodb](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh \| bash` |
 | [Pyenv](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh \| bash` |
