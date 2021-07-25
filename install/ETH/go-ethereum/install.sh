@@ -18,6 +18,12 @@ printf -- "%s" "$1"
 printf "\n"
 }
 
+YELLOW() {
+printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
+printf -- "\033[33m%s\033[0m" "$1"
+printf "\n"
+}
+
 ERROR() {
 printf -- "\033[41;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
 printf -- "%s" "$1"
@@ -48,7 +54,7 @@ wsport="8544"
 serviceName="eth"
 
 # check geth
-systemctl is-active $serviceName &> /dev/null && INFO "$serviceName is running ..." && return 0
+systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 # check install path
 EXEC "rm -rf $installPath"
@@ -99,12 +105,12 @@ EXEC "systemctl daemon-reload && systemctl enable --now $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-INFO "version: $version"
-INFO "install path: $installPath"
-INFO "log path: $installPath/logs"
-INFO "db path: $installPath/data"
-INFO "connection cmd: geth attach http://localhost:8545"
-INFO "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "version: $version"
+YELLOW "install path: $installPath"
+YELLOW "log path: $installPath/logs"
+YELLOW "db path: $installPath/data"
+YELLOW "connection cmd: geth attach http://localhost:8545"
+YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
