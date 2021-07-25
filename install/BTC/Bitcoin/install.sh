@@ -50,7 +50,7 @@ systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running
 
 # check install path
 EXEC "rm -rf $installPath"
-EXEC "mkdir -p $installPath/{data,logs}"
+EXEC "mkdir -p $installPath/{conf,data,logs}"
 
 # download tarball
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
@@ -64,7 +64,7 @@ EXEC "bitcoin-cli -version" && bitcoin-cli -version
 
 # config
 [ "$1" = "mainnet" ] && ifTestnet="0" || ifTestnet="1"    # get testnet or mainnet
-cat > $installPath/${serviceName}.conf << EOF
+cat > $installPath/conf/${serviceName}.conf << EOF
 datadir=$installPath/data
 testnet=${ifTestnet}
 server=1
@@ -90,7 +90,7 @@ EOF
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 
-$installPath/bin/bitcoind $options --rpcport=$rpcPort --rpcbind=0.0.0.0 -conf=$installPath/${serviceName}.conf &> $installPath/logs/${serviceName}.log
+$installPath/bin/bitcoind $options --rpcport=$rpcPort --rpcbind=0.0.0.0 -conf=$installPath/conf/${serviceName}.conf &> $installPath/logs/${serviceName}.log
 EOF
 
 # register service
