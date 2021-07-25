@@ -38,7 +38,7 @@ fi
 
 function main() {
 # check pyenv
-pyenv -v &> /dev/null && INFO "pyenv has been installed ..." && return 0
+pyenv -v &> /dev/null && YELLOW "pyenv has been installed ..." && return 0
 
 # install
 EXEC "curl https://pyenv.run | bash"
@@ -47,7 +47,7 @@ EXEC "curl https://pyenv.run | bash"
 EXEC "ln -fs $HOME/.pyenv/bin/* /usr/local/bin/"
 
 source /etc/profile
-EXEC "pyenv -v" && pyenv -v
+YELLOW "pyenv -v" && pyenv -v
 }
 
 main
