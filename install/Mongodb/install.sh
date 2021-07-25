@@ -45,7 +45,7 @@ downloadUrl="https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${version}.tg
 port="27017"
 
 # check service
-systemctl is-active $serviceName &> /dev/null && INFO "$serviceName is running ..." && return 0
+systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 # check install path
 EXEC "rm -rf $installPath"
@@ -113,7 +113,7 @@ EOF
 EXEC "ln -fs $installPath $(dirname $installPath)/${serviceName}"
 
 # start
-EXEC "systemctl daemon-reload && systemctl enable --now $serviceName"
+EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName" && systemctl status $serviceName
 
 # info
