@@ -48,6 +48,9 @@ p2pPort="18333"   # bitcoin 配置
 rpcPassword="local321"   # bitcoin 配置
 rpcUser="bitcore"    # bitcoin 配置
 
+# check service
+systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
+
 # install script url
 bitcoinUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcoin/install.sh"
 mongodbUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh"
@@ -156,7 +159,7 @@ EOF
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
 # start
-EXEC "systemctl daemon-reload && systemctl enable --now $serviceName"
+EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
