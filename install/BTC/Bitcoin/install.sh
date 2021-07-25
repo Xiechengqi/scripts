@@ -45,6 +45,9 @@ rpcPassword="local321"
 rpcPort="18332"
 p2pPort="18333"
 
+# check service
+systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
+
 # check install path
 EXEC "rm -rf $installPath"
 EXEC "mkdir -p $installPath/{data,logs}"
@@ -129,4 +132,4 @@ YELLOW "connection cmd: "
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
-main
+main $@
