@@ -115,7 +115,7 @@ EOF
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
 # start
-EXEC "systemctl daemon-reload && systemctl enable --now $serviceName"
+EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
