@@ -10,6 +10,6 @@
 | | [Node](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh \| bash` |
 | ETH | [go-ethereum](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/go-ethereum/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/go-ethereum/install.sh \| bash` | ETH 客户端，搭建全节点 |
 | | [ETH-transactions-storage](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/ETH-transactions-storage/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/ETH-transactions-storage/install.sh \| bash` | ETH 索引 |
-| BTC | [Bitcoin](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcoin/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcoin/install.sh \| bash` | BTC 客户端，搭建全节点 |
+| BTC | [Bitcoin](https://github.com/Xiechengqi/scripts/edit/master/install/BTC/Bitcoin/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcoin/install.sh \| bash -s testnet` | BTC 客户端，搭建全节点 |
 | | [Bitcore](https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcore/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcore/install.sh \| bash` | BTC 索引 |
 | []() |  |
