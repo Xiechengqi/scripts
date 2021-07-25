@@ -15,6 +15,12 @@ printf -- "%s" "$1"
 printf "\n"
 }
 
+YELLOW() {
+printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
+printf -- "\033[33m%s\033[0m" "$1"
+printf "\n"
+}
+
 ERROR() {
 printf -- "\033[41;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
 printf -- "%s" "$1"
@@ -39,7 +45,7 @@ pipCmd="pip"`echo ${1} | awk -F '.' '{print $1}'`
 installPyenvScriptUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh"
 
 # check
-$pythonCmd --version &> /dev/null && INFO "$pythonCmd has been install ..." && return 0
+$pythonCmd --version &> /dev/null && YELLOW "$pythonCmd has been install ..." && return 0
 
 # check pyenv
 if pyenv -v &> /dev/null
@@ -59,8 +65,10 @@ EXEC "pyenv install $version"
 EXEC "ln -fs /root/.pyenv/versions/$version/bin/$pythonCmd /usr/local/bin/$pythonCmd"
 EXEC "ln -fs /root/.pyenv/versions/$version/bin/$pipCmd /usr/local/bin/$pipCmd"
 EXEC "ln -fs /usr/local/bin/$pipCmd /usr/bin/$pipCmd"
-EXEC "$pythonCmd --version" && $pythonCmd --version
-EXEC "$pipCmd --version" && $pipCmd --version
+
+# info
+YELLOW "$pythonCmd --version" && $pythonCmd --version
+YELLOW "$pipCmd --version" && $pipCmd --version
 }
 
 main $@
