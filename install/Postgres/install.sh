@@ -46,7 +46,7 @@ user="postgres"
 port="5432"
 
 # check service
-systemctl is-active $serviceName &> /dev/null && INFO "$serviceName is running ..." && return 0
+systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 # check user
 ! cat /etc/passwd | grep $user &> /dev/null && EXEC "useradd -m $user"
@@ -100,7 +100,7 @@ EOF
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
 # start
-EXEC "systemctl daemon-reload && systemctl enable --now $serviceName"
+EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
