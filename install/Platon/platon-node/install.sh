@@ -6,6 +6,7 @@
 # install platon
 #
 
+
 source /etc/profile
 
 INFO() {
