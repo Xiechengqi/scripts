@@ -48,8 +48,8 @@ rpcPort="6789"
 EXEC "rm -rf $installPath && mkdir -p $installPath/{bin,conf,logs,data}"
 
 # download
-EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platon -o $installPath/bin"
-EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platonkey -o $installPath/bin"
+EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platon -o $installPath/bin/platon"
+EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platonkey -o $installPath/bin/platonkey"
 EXEC "chmod +x $installPath/bin/*"
 
 # register bin
