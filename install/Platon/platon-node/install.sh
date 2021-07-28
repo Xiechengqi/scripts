@@ -5,6 +5,7 @@
 # 2021/07/28
 # install platon-node
 #
+# xiexie
 
 source /etc/profile
 
