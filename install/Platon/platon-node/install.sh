@@ -45,6 +45,7 @@ local serviceName="ntp"
 systemctl is-active $service &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 # install
+EXEC "export DEBIAN_FRONTEND=noninteractive"      # disable interactive
 EXEC "apt-get update && apt-get install -y gnupg2 curl software-properties-common ntp"
 
 # start
