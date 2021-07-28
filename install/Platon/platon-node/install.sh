@@ -53,7 +53,7 @@ EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platonk
 EXEC "chmod +x $installPath/bin/*"
 
 # register bin
-EXEC "ln -fs $installPath/* /usr/bin/"
+EXEC "ln -fs $installPath/bin/* /usr/bin/"
 EXEC "platon version" && platon version
 
 # create Node public private key
