@@ -13,4 +13,7 @@
 | | [ETH-transactions-storage](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/ETH-transactions-storage/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/ETH-transactions-storage/install.sh \| bash` | ETH 索引 |
 | BTC | [Bitcoin](https://github.com/Xiechengqi/scripts/edit/master/install/BTC/Bitcoin/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcoin/install.sh \| bash -s testnet` | BTC 客户端，搭建全节点 |
 | | [Bitcore](https://github.com/Xiechengqi/scripts/edit/master/install/BTC/Bitcore/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcore/install.sh \| bash` | BTC 索引 |
+| Platon | [platon-node](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-node/install.sh \| bash [mainnet|testnet]` |
+| []() |  |
+| []() |  |
 | []() |  |
