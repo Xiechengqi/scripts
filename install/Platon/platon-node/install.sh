@@ -64,6 +64,17 @@ installPath="/data/Platon/${serviceName}-${version}"
 port="16789"
 rpcPort="6789"
 
+# get args
+if [ "$1" = "mainnet" ]
+then
+# mainnet
+options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"
+else
+# testnet
+ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/" && return 1
+# options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
+fi
+
 # check install path
 EXEC "rm -rf $installPath && mkdir -p $installPath/{bin,conf,logs,data}"
 
@@ -86,15 +97,6 @@ INFO "create BLS public private key"
 platonkey genblskeypair | tee >(grep "PrivateKey" | awk '{print $2}' > ${installPath}/conf/blskey) >(grep "PublicKey" | awk '{print $3}' > ${installPath}/conf/blspub)
 
 # create start.sh
-if [ "$1" = "mainnet" ]
-then
-# mainnet
-options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"
-else
-# testnet
-ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/" && return 1
-# options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
-fi
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 
