@@ -42,7 +42,7 @@ function install_ntp() {
 local serviceName="ntp"
 
 # check service
-systemctl is-active $service &> /dev/null && YELLOW "$serviceName is running ..." && return 0
+systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 # install
 EXEC "export DEBIAN_FRONTEND=noninteractive"      # disable interactive
