@@ -3,9 +3,8 @@
 #
 # xiechengqi
 # 2021/07/26
-# install platon
+# install platon-node
 #
-
 
 source /etc/profile
 
@@ -39,9 +38,9 @@ fi
 
 function main() {
 # environment
-serviceName="platon"
+serviceName="platon-node"
 version="1.0.0"
-installPath="/data/Platon/platon-node-${version}"
+installPath="/data/Platon/${serviceName}-${version}"
 port="16789"
 rpcPort="6789"
 
@@ -49,30 +48,35 @@ rpcPort="6789"
 EXEC "rm -rf $installPath && mkdir -p $installPath/{bin,conf,logs,data}"
 
 # download
-EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platon -o $installPath/bin/platon"
-EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platonkey -o $installPath/bin/platonkey"
+EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platon -o $installPath/bin"
+EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platonkey -o $installPath/bin"
 EXEC "chmod +x $installPath/bin/*"
 
 # register bin
-EXEC "ln -fs $installPath/bin/platon /usr/bin/platon"
-EXEC "ln -fs $installPath/bin/platonkey /usr/bin/platonkey"
+EXEC "ln -fs $installPath/* /usr/bin/"
 EXEC "platon version" && platon version
 
 # create Node public private key
-EXEC "platonkey genkeypair | tee >(grep 'PrivateKey' | awk '{print $2}' > ${installPath}/data/nodekey) >(grep 'PublicKey' | awk '{print $3}' > ${installPath}/data/nodeid)"
+INFO "create Node public private key"
+platonkey genkeypair | tee >(grep "PrivateKey" | awk '{print $2}' > ${installPath}/conf/nodekey) >(grep "PublicKey" | awk '{print $3}' > ${installPath}/conf/nodeid)
+
 
 # create BLS public private key
-EXEC "platonkey genblskeypair | tee >(grep 'PrivateKey' | awk '{print $2}' > ${installPath}/data/blskey) >(grep 'PublicKey' | awk '{print $3}' > ${installPath}/data/blspub)"
+INFO "create BLS public private key"
+platonkey genblskeypair | tee >(grep "PrivateKey" | awk '{print $2}' > ${installPath}/conf/blskey) >(grep "PublicKey" | awk '{print $3}' > ${installPath}/conf/blspub)
 
 # create start.sh
 if [ "$1" = "mainnet" ]
 then
-options="–identity platon –datadir $installPath/data –port $port –db.nogc –rpcvhosts * –rpcport $rpcPort –rpcapi \"db,platon,net,web3,admin,personal\" –rpc –nodekey $installPath/data/nodekey –cbft.blskey $installPath/data/blskey –verbosity 3 –rpcaddr 0.0.0.0 –syncmode \"full\""
+# mainnet 开启归档模式 --db.nogc 
+options="platon --identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc"
 else
-options="–identity platon –datadir $installPath/data –port $port –db.nogc –rpcvhosts * –rpcport $rpcPort –rpcapi \"db,platon,net,web3,admin,personal\" –rpc –nodekey $installPath/data/nodekey –cbft.blskey $installPath/data/blskey –verbosity 3 –rpcaddr 0.0.0.0 –syncmode \"full\" –testnet"
+# testnet --testnet
+options="platon --identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
 fi
 cat > $installPath/start.sh << EOF
-INFO "platon $options &> $installPath/logs/platon.log"
+#!/usr/bin/env bash
+
 platon $options &> $installPath/logs/platon.log
 EOF
 
@@ -104,9 +108,10 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 # info
 YELLOW "version: $version"
 YELLOW "install path: $installPath"
+YELLOW "config path: $installPath/conf"
 YELLOW "log path: $installPath/logs"
 YELLOW "db path: $installPath/data"
-YELLOW "connection cmd: palton attach http://localhost:$rpcPort"
+YELLOW "connection cmd: platon attach http://localhost:$rpcPort"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
