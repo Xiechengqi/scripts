@@ -76,6 +76,10 @@ ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/" && 
 # options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
 fi
 
+# check service
+systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
+
+
 # check install path
 EXEC "rm -rf $installPath && mkdir -p $installPath/{bin,conf,logs,data}"
 
