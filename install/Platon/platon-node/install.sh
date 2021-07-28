@@ -3,9 +3,9 @@
 #
 # xiechengqi
 # 2021/07/28
+# Ubuntu 18.04+
 # install platon-node
 #
-# xiexiexiexie
 
 source /etc/profile
 
@@ -37,7 +37,26 @@ ERROR "Execution command (${cmd}) failed, please check it and try again."
 fi
 }
 
+function install_ntp() {
+# evironments
+local serviceName="ntp"
+
+# check service
+systemctl is-active $service &> /dev/null && YELLOW "$serviceName is running ..." && return 0
+
+# install
+EXEC "apt-get update && apt-get install -y gnupg2 curl software-properties-common ntp"
+
+# start
+EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
+EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
+}
+
 function main() {
+
+# install ntp
+install_ntp
+
 # environment
 serviceName="platon-node"
 version="1.0.0"
@@ -69,11 +88,12 @@ platonkey genblskeypair | tee >(grep "PrivateKey" | awk '{print $2}' > ${install
 # create start.sh
 if [ "$1" = "mainnet" ]
 then
-# mainnet 开启归档模式 --db.nogc 
-options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc"
+# mainnet
+options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"
 else
-# testnet --testnet
-options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
+# testnet
+ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/" && return 1
+# options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
 fi
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
