@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/07/26
+# 2021/07/28
 # install platon-node
 #
 
