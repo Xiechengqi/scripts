@@ -5,7 +5,7 @@
 # 2021/07/25
 # github: https://github.com/Adamant-im/ETH-transactions-storage
 # os: ubuntu16.04
-# make install ETH indexer
+# make install ETH index
 # prerequisites
 #   geth or openethereum (with currently synchronized chain)
 #   Python 3.6
@@ -110,7 +110,7 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 }
 
-function install_eth-indexer() {
+function install_eth-index() {
 
 # environments
 local serviceName="eth-index"
@@ -219,8 +219,8 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 }
 
 function main() {
-INFO "install eth-indexer ..."
-install_eth-indexer
+INFO "install eth-index ..."
+install_eth-index
 }
 
 main
