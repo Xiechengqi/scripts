@@ -3,7 +3,9 @@
 #
 # xiechengqi
 # 2021/07/23
-# compile install bitcore (https://github.com/bitpay/bitcore)
+# https://github.com/bitpay/bitcore
+# Ubuntu 16+
+# compile install bitcore
 #
 
 source /etc/profile
@@ -38,15 +40,16 @@ fi
 
 function main() {
 # environment
-serviceName="bitcore"
+serviceName="bit-indexer"
 version="8.25.12"
 installPath="/data/BTC/${serviceName}-${version}"
 downloadUrl="https://github.com/bitpay/bitcore/archive/refs/tags/v${version}.tar.gz"
-user="bitcore"   # 启动 bitcore 用户
+user="btc-indexer"   # 启动 bitcore 用户
+hostIp="127.0.0.1" # 安装 bitcoin 主机 ip
 rpcPort="18332"  # bitcoin 配置
 p2pPort="18333"   # bitcoin 配置
+rpcUser="btc-node"    # bitcoin 配置
 rpcPassword="local321"   # bitcoin 配置
-rpcUser="bitcore"    # bitcoin 配置
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -58,7 +61,8 @@ nodeUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Nod
 pythonUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Python/install.sh"
 
 # install bitcoin
-curl -SsL $bitcoinUrl | bash -s testnet
+local netOption=${1-"testnet"}
+curl -SsL $bitcoinUrl | bash -s ${netOption}
 
 # install mongodb
 curl -SsL $mongodbUrl | bash
@@ -100,12 +104,12 @@ cat > $installPath/${serviceName}.config.json << EOF
           "chainSource": "p2p",
           "trustedPeers": [
             {
-              "host": "127.0.0.1",
+              "host": "${hostIp}",
               "port": $p2pPort 
             }
           ],
           "rpc": {
-            "host": "127.0.0.1",
+            "host": "${hostIp}",
             "port": $rpcPort,
             "username": "$rpcUser",
             "password": "$rpcPassword"
@@ -144,8 +148,8 @@ Description=A full stack for bitcoin and blockchain-based applications
 Documentation=https://github.com/bitpay/bitcore
 
 [Service]
-User=bitcore
-Group=bitcore
+User=$user
+Group=$user
 ExecStart=/bin/bash $installPath/start.sh
 ExecStop=/bin/kill -s QUIT \$MAINPID
 Restart=always
@@ -171,8 +175,7 @@ YELLOW "rpcUser: $rpcUser"
 YELLOW "rpcPassword: $rpcPassword"
 YELLOW "rpcPort: $rpcPort"
 YELLOW "p2pPort: $p2pPort"
-YELLOW "connection cmd: "
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
-main
+main $@
