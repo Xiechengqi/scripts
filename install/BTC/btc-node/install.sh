@@ -7,6 +7,7 @@
 # Ubuntu 16+
 # install bitcoin
 #
+source /etc/profile
 
 INFO() {
 printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
