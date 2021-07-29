@@ -47,7 +47,7 @@ function main() {
 # environments
 local serviceName="platon-index"
 local version="20210729"
-local installPath="/data/ETH/${serviceName}-${version}"
+local installPath="/data/Platon/${serviceName}-${version}"
 local downloadUrl="https://github.com/Xiechengqi/wx-platon-indexer/archive/refs/tags/${version}.tar.gz"
 local nodeHost="47.241.98.219"
 local startBlockNumber="214799"
