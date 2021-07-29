@@ -81,7 +81,7 @@ EXEC "su $user -c 'psql -f /home/$user/create.sql'"
 EXEC "su $user -c 'psql -f $installPath/create_table.sql $dbName'"
 cat > /home/$user/init.sql << EOF
 create user $dbUser with password '$dbPassword';
-GRANT ALL ON ethtxs TO $dbUser;
+GRANT ALL ON platontxs TO $dbUser;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $dbUser;
 EOF
 EXEC "su $user -c 'psql -f /home/$user/init.sql $dbName'"
