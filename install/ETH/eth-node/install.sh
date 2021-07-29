@@ -48,11 +48,12 @@ chainType="$1"
 [ "$chainType" = "" ] && chainType="testnet"
 
 # environments
+serviceName="eth-node"
 version="1.10.5-33ca98ec"
-installPath="/data/ETH/geth-${version}"
+installPath="/data/ETH/${serviceName}-${version}"
 downloadUrl="https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-${version}.tar.gz"
-wsport="8544"
-serviceName="eth"
+wsPort="8544"
+rpcPort="8545"
 
 # check geth
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -72,9 +73,9 @@ EXEC "geth version" && geth version
 pubIp=`curl -4 ip.sb`    # get vm public ip
 if [ "$chainType" = "mainnet" ]
 then
-options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsport --datadir $installPath/data --http.vhosts=*"
+options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsPort --datadir $installPath/data --http.vhosts=*"
 else
-options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsport --datadir $installPath/data --http.vhosts=* --rinkeby"
+options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsPort --datadir $installPath/data --http.vhosts=* --rinkeby"
 fi
 cat > $installPath/start.sh << EOF
 $installPath/geth $options &> $installPath/logs/geth.log
@@ -82,7 +83,7 @@ EOF
 chmod +x $installPath/start.sh
 
 # register service
-cat > /lib/systemd/system/$serviceName.service << EOF
+cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=Official Go implementation of the Ethereum protocol
 Documentation=https://github.com/ethereum/go-ethereum
@@ -110,7 +111,7 @@ YELLOW "version: $version"
 YELLOW "install path: $installPath"
 YELLOW "log path: $installPath/logs"
 YELLOW "db path: $installPath/data"
-YELLOW "connection cmd: geth attach http://localhost:8545"
+YELLOW "connection cmd: geth attach http://${pubIp}:${rpcPort}"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
