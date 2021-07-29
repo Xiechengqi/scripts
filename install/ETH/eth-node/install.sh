@@ -4,10 +4,11 @@
 #
 # xiechengqi
 # 2021/07/22
+# https://github.com/ethereum/go-ethereum
+# Ubuntu 16+
 # binary install Geth
 # for mainnet, need to open firewall port: 30303/tcp 30303/udp 8545/tcp
 # https://geth.ethereum.org/
-# https://github.com/ethereum/go-ethereum
 #
 
 source /etc/profile
