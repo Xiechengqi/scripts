@@ -40,11 +40,11 @@ fi
 
 function main() {
 # environment
-serviceName="bit-indexer"
+serviceName="btc-index"
 version="8.25.12"
 installPath="/data/BTC/${serviceName}-${version}"
 downloadUrl="https://github.com/bitpay/bitcore/archive/refs/tags/v${version}.tar.gz"
-user="btc-indexer"   # 启动 bitcore 用户
+user="btc-index"   # 启动 bitcore 用户
 hostIp="127.0.0.1" # 安装 bitcoin 主机 ip
 rpcPort="18332"  # bitcoin 配置
 p2pPort="18333"   # bitcoin 配置
