@@ -60,7 +60,7 @@ local dbPassword="platon"
 # install scripts url
 postgresUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh"
 
-# check
+# check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
 
 # check install path
@@ -93,10 +93,10 @@ EXEC "pip3 install web3==4.9.0"
 EXEC "pip3 install psycopg2"
 
 # install client-sdb-python
+EXEC "rm -rf /tmp/client-sdk-python"
 EXEC "git clone https://github.com/PlatONnetwork/client-sdk-python.git /tmp/client-sdk-python"
 EXEC "cd /tmp/client-sdk-python"
 EXEC "pip3 install ."
-EXEC "rm -rf /tmp/client-sdk-python"
 EXEC "cd -"
 
 # config
