@@ -10,9 +10,9 @@
 | | [Node](https://github.com/Xiechengqi/scripts/edit/master/install/Node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh \| bash` |
 | | [Ntp](https://github.com/Xiechengqi/scripts/edit/master/install/Ntp/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh \| bash` |
 | ETH | [eth-node](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/eth-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-node/install.sh \| bash` | ETH 客户端，搭建全节点 |
-| | [eth-indexer](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/eth-indexer/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-indexer/install.sh \| bash` | ETH 索引 |
-| BTC | [Bitcoin](https://github.com/Xiechengqi/scripts/edit/master/install/BTC/Bitcoin/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcoin/install.sh \| bash -s testnet` | BTC 客户端，搭建全节点 |
-| | [Bitcore](https://github.com/Xiechengqi/scripts/edit/master/install/BTC/Bitcore/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/Bitcore/install.sh \| bash` | BTC 索引 |
+| | [eth-index](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/eth-index/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-index/install.sh \| bash` | ETH 索引 |
+| BTC | [btc-node](https://github.com/Xiechengqi/scripts/edit/master/install/BTC/btc-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/btc-node/install.sh \| bash -s testnet` | BTC 客户端，搭建全节点 |
+| | [btc-index](https://github.com/Xiechengqi/scripts/edit/master/install/BTC/btc-index/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/btc-index/install.sh \| bash` | BTC 索引 |
 | Platon | [platon-node](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-node/install.sh \| bash -s [mainnet\|testnet]` |
 | []() |  |
 | []() |  |
