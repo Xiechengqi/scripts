@@ -47,12 +47,12 @@ fi
 function install_postgrest() {
 
 # environments
+local serviceName="postgrest"
 local version="7.0.1"
-local installPath="/data/postgrest-${version}"
+local installPath="/data/${serviceName}-${version}"
 local downloadUrl="https://github.com/PostgREST/postgrest/releases/download/v${version}/postgrest-v${version}-linux-x64-static.tar.xz"
 local port="3000"
 local postgresPort="5432"
-local serviceName="postgrest"
 
 # check
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
@@ -113,7 +113,7 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 function install_eth-indexer() {
 
 # environments
-local serviceName="eth-indexer"
+local serviceName="eth-index"
 local version="20210716"
 local installPath="/data/ETH/{$serviceName}-${version}"
 local downloadUrl="https://github.com/Xiechengqi/wx-eth-indexer/archive/refs/tags/${version}.tar.gz"
