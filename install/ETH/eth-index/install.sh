@@ -113,15 +113,15 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 function install_eth-indexer() {
 
 # environments
+local serviceName="eth-indexer"
 local version="20210716"
-local installPath="/data/ETH/eth-indexer-${version}"
+local installPath="/data/ETH/{$serviceName}-${version}"
 local downloadUrl="https://github.com/Xiechengqi/wx-eth-indexer/archive/refs/tags/${version}.tar.gz"
 local port="8545"
 local user="postgres"
 local dbName="eth"
 local dbUser="eth"
 local dbPassword="eth"
-local serviceName="eth-indexer"
 
 # install scripts url
 pyenvUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh"
