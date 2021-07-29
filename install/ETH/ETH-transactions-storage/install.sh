@@ -3,6 +3,7 @@
 #
 # xiechengqi
 # 2021/07/25
+# github: https://github.com/Adamant-im/ETH-transactions-storage
 # os: ubuntu16.04
 # make install ETH indexer
 # prerequisites
@@ -11,7 +12,6 @@
 #   Postgresql 10.5 (https://github.com/postgres/postgres)
 #   Postgrest for API (https://github.com/PostgREST/postgrest)
 #   nginx or other web server (in case of public API)
-# https://github.com/Adamant-im/ETH-transactions-storage
 #
 
 source /etc/profile
