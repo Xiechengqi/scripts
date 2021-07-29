@@ -3,6 +3,8 @@
 #
 # xiechengqi
 # 2021/07/14
+# https://github.com/bitcoin/bitcoin
+# Ubuntu 16+
 # install bitcoin
 #
 
@@ -36,11 +38,11 @@ fi
 
 function main() {
 # environments
-serviceName="bitcoin"
+serviceName="btc-node"
 version="0.21.1"
 installPath="/data/BTC/${serviceName}-${version}"
 downloadUrl="https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz"
-rpcUser="bitcorenodetest"
+rpcUser="btc-node"
 rpcPassword="local321"
 rpcPort="18332"
 p2pPort="18333"
@@ -90,7 +92,7 @@ EOF
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 
-$installPath/bin/bitcoind $options --rpcport=$rpcPort --rpcbind=0.0.0.0 -conf=$installPath/conf/${serviceName}.conf &> $installPath/logs/${serviceName}.log
+bitcoind $options --rpcport=$rpcPort --rpcbind=0.0.0.0 -conf=$installPath/conf/${serviceName}.conf &> $installPath/logs/${serviceName}.log
 EOF
 
 # register service
@@ -128,7 +130,7 @@ YELLOW "rpcUser: $rpcUser"
 YELLOW "rpcPassword: $rpcPassword"
 YELLOW "rpcPort: $rpcPort"
 YELLOW "p2pPort: $p2pPort"
-YELLOW "connection cmd: "
+YELLOW "blockchain info cmd: bitcoin-cli -conf=${installPath}/conf/${serviceName}.conf getblockchaininfo"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
