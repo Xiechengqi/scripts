@@ -58,7 +58,7 @@ EXEC "mkdir -p $installPath/{conf,data,logs}"
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 
 # register path
-EXEC "sed -i '/bitcoin.*\/bin/d' /etc/profile"
+EXEC "sed -i '/btc-node.*\/bin/d' /etc/profile"
 EXEC "echo 'export PATH=\$PATH:$installPath/bin' >> /etc/profile"
 EXEC "ln -fs $installPath/bin/* /usr/bin/"
 EXEC "source /etc/profile"
