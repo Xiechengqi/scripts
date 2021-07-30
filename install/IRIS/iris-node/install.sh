@@ -57,7 +57,7 @@ EXEC "rm -rf $installPath"
 EXEC "mkdir -p $installPath/logs"
 
 # install
-EXEC "git clone -b 'v${version}'  https://github.com/irisnet/irishub"
+EXEC "git clone -b 'v${version}'  https://github.com/irisnet/irishub $installPath"
 EXEC "cd $installPath"
 EXEC "make install"
 EXEC "iris verison"
