@@ -50,7 +50,7 @@ golangUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/G
 iris version &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
 
 # install golang
-EXEC "curl -SsL $golangUrl | bash"
+curl -SsL $golangUrl | bash
 
 # check install path
 EXEC "rm -rf $installPath"
