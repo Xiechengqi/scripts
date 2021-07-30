@@ -56,6 +56,9 @@ EXEC "curl -SsL $golangUrl | bash"
 EXEC "rm -rf $installPath"
 EXEC "mkdir -p $installPath/logs"
 
+# install build-essential
+EXEC "apt update && apt install -y build-essential"
+
 # install
 EXEC "git clone -b 'v${version}'  https://github.com/irisnet/irishub $installPath/src"
 EXEC "cd $installPath/src"
