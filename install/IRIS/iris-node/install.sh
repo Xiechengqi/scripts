@@ -75,7 +75,7 @@ EXEC "curl https://raw.githubusercontent.com/irisnet/mainnet/master/config/confi
 EXEC "curl https://raw.githubusercontent.com/irisnet/mainnet/master/config/genesis.json -o $installPath/data/config/genesis.json"
 
 # create start.sh
-cat $installPath/start.sh << EOF
+cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 
 iris start --home=${installPath}/data &> $installPath/logs/${serviceName}.log
