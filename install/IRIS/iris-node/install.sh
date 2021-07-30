@@ -65,6 +65,9 @@ EXEC "git clone -b 'v${version}'  https://github.com/irisnet/irishub $installPat
 EXEC "cd $installPath/src"
 EXEC "make install"
 EXEC "cd -"
+
+# register bin
+EXEC "ln -fs $GOBIN/iris /usr/local/bin/iris"
 EXEC "iris version"
 
 # init mainnet node
