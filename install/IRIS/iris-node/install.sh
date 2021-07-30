@@ -40,7 +40,7 @@ fi
 function main() {
 # environments
 serviceName="iris-node"
-version="1.1.1"
+version="1.1.0"
 installPath="/data/IRIS/${serviceName}-${version}"
 
 # download url
