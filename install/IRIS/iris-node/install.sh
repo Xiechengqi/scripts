@@ -51,7 +51,7 @@ iris version &> /dev/null && YELLOW "$serviceName has been installed ..." && ret
 
 # install golang
 curl -SsL $golangUrl | bash
-source /etc/profile
+EXEC "source /etc/profile"
 
 # check install path
 EXEC "rm -rf $installPath"
