@@ -41,7 +41,7 @@ function main() {
 # environments
 serviceName="iris-node"
 version="1.1.1"
-installPath="/data/${serviceName}-${version}"
+installPath="/data/IRIS/${serviceName}-${version}"
 
 # download url
 golangUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh"
@@ -100,7 +100,7 @@ WantedBy=multi-user.target
 EOF
 
 # change softlink
-EXEC "ln -fs $installPath $(dirname $installPath)/node"
+EXEC "ln -fs $installPath $(dirname $installPath)/${serviceName}"
 
 # start
 EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
