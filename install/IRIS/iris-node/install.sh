@@ -77,6 +77,7 @@ EXEC "curl https://raw.githubusercontent.com/irisnet/mainnet/master/config/genes
 # create start.sh
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
+source /etc/profile
 
 iris start --home=${installPath}/data &> $installPath/logs/${serviceName}.log
 EOF
