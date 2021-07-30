@@ -16,6 +16,6 @@
 | | [btc-index](https://github.com/Xiechengqi/scripts/edit/master/install/BTC/btc-index/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/btc-index/install.sh \| bash` | BTC 索引 |
 | Platon | [platon-node](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-node/install.sh \| bash -s [mainnet\|testnet]` |
 | | [platon-index](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-index/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-index/install.sh \| bash` | Platon 索引 |
-| []() |  |
+| IRIS | [iris-node](https://github.com/Xiechengqi/scripts/edit/master/install/IRIS/iris-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/IRIS/iris-node/install.sh \| bash` | |
 | []() |  |
 | []() |  |
