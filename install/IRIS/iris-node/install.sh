@@ -64,7 +64,7 @@ EXEC "git clone -b 'v${version}'  https://github.com/irisnet/irishub $installPat
 EXEC "cd $installPath/src"
 EXEC "make install"
 EXEC "cd -"
-EXEC "iris verison"
+EXEC "iris version"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/node"
