@@ -57,9 +57,10 @@ EXEC "rm -rf $installPath"
 EXEC "mkdir -p $installPath/logs"
 
 # install
-EXEC "git clone -b 'v${version}'  https://github.com/irisnet/irishub $installPath"
-EXEC "cd $installPath"
+EXEC "git clone -b 'v${version}'  https://github.com/irisnet/irishub $installPath/src"
+EXEC "cd $installPath/src"
 EXEC "make install"
+EXEC "cd -"
 EXEC "iris verison"
 
 # change softlink
