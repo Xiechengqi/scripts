@@ -54,7 +54,7 @@ local downloadUrl="https://github.com/PostgREST/postgrest/releases/download/v${v
 local port="3000"
 local postgresPort="5432"
 
-# check
+# check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
 
 # check install path
