@@ -55,7 +55,7 @@ source /etc/profile
 
 # check install path
 EXEC "rm -rf $installPath"
-EXEC "mkdir -p $installPath/logs"
+EXEC "mkdir -p $installPath/{conf,logs}"
 
 # install build-essential
 EXEC "apt update && apt install -y build-essential"
@@ -67,8 +67,44 @@ EXEC "make install"
 EXEC "cd -"
 EXEC "iris version"
 
+# init mainnet node
+EXEC "iris init iris-node --home=${installPath}/data --chain-id=irishub"
+
+# download mainnet config.toml and genesis.json
+EXEC "curl https://raw.githubusercontent.com/irisnet/mainnet/master/config/config.toml -o $installPath/data/config/config.toml"
+EXEC "curl https://raw.githubusercontent.com/irisnet/mainnet/master/config/genesis.json -o $installPath/data/config/genesis.json"
+
+# create start.sh
+cat $installPath/start.sh << EOF
+#!/usr/bin/env bash
+
+iris start --home=${installPath}/data &> $installPath/logs/${serviceName}.log
+EOF
+
+# register service
+cat > /lib/systemd/system/${serviceName}.service << EOF
+[Unit]
+Description=A BPoS blockchain that enables cross-chain interoperability through a unified service model
+Documentation=https://github.com/irisnet/irishub
+
+[Service]
+User=root
+Group=root
+ExecStart=/bin/bash $installPath/start.sh
+ExecStop=/bin/kill -s QUIT \$MAINPID
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/node"
+
+# start
+EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
+EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # INFO
 YELLOW "version: ${version}"
