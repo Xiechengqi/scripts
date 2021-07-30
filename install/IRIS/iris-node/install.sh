@@ -47,7 +47,7 @@ installPath="/data/IRIS/${serviceName}-${version}"
 golangUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh"
 
 # check service
-iris version &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
+systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
 
 # install golang
 curl -SsL $golangUrl | bash
