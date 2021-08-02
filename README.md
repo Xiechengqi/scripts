@@ -1,4 +1,4 @@
-# Hashkey Hub operation scripts
+# operation scripts
 
 
 | Type | Install | Command | NOTE |
