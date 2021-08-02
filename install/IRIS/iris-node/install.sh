@@ -45,12 +45,13 @@ installPath="/data/IRIS/${serviceName}-${version}"
 
 # download url
 golangUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh"
+golangVersion="1.16.6"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
 
 # install golang
-curl -SsL $golangUrl | bash
+curl -SsL $golangUrl | bash -s ${golangVersion}
 EXEC "source /etc/profile"
 
 # check install path
