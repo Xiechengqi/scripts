@@ -5,6 +5,7 @@
 # OS: all linux
 # 2021/07/30
 # binary install golang 
+# curl -SsL https://xxx/install.sh | bash -s Go版本号
 # 
 
 source /etc/profile
@@ -40,7 +41,7 @@ fi
 function main() {
 # environments
 serviceName="golang"
-version="1.16.6"
+version=${1-"1.16.6"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://golang.org/dl/go${version}.linux-amd64.tar.gz"
 
@@ -70,4 +71,4 @@ EXEC "ln -fs $installPath $(dirname $installPath)/${serviceName}"
 YELLOW "version: ${version}"
 }
 
-main
+main $@
