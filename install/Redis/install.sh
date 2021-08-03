@@ -80,7 +80,7 @@ EOF
 
 # register redis
 cat > /lib/systemd/system/${serviceName}.service << EOF
-t]
+[Unit]
 Description=EthereumTransactionStorage
 After=syslog.target
 After=network.target
