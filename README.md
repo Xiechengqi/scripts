@@ -17,5 +17,5 @@
 | Platon | [platon-node](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-node/install.sh \| bash -s [mainnet\|testnet]` |
 | | [platon-index](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-index/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-index/install.sh \| bash` | Platon 索引 |
 | IRIS | [iris-node](https://github.com/Xiechengqi/scripts/edit/master/install/IRIS/iris-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/IRIS/iris-node/install.sh \| bash` | |
-| Tool | [OS]() |  |
+| Tool | [OS](https://github.com/Xiechengqi/scripts/edit/master/tool/os.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh \| bash -s [OS] [OSVersion]` | 判断OS是否合适 |
 | []() |  |
