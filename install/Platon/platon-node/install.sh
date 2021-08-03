@@ -115,6 +115,7 @@ cat > $installPath/start.sh << EOF
 
 platon $options &> $installPath/logs/platon.log
 EOF
+EXEC "chmod +x $installPath/start.sh"
 
 # register service
 cat > /lib/systemd/system/${serviceName}.service << EOF
