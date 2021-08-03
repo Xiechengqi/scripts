@@ -100,7 +100,7 @@ cat > $installPath/${serviceName}.config.json << EOF
   "bitcoreNode": {
     "chains": {
       "BTC": {
-        "testnet": {
+        "${netOption}": {
           "chainSource": "p2p",
           "trustedPeers": [
             {
