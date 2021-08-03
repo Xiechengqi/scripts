@@ -104,6 +104,7 @@ cat > $installPath/start.sh << EOF
 
 bitcoind $options --rpcport=$rpcPort --rpcbind=0.0.0.0 -conf=$installPath/conf/${serviceName}.conf &> $installPath/logs/${serviceName}.log
 EOF
+EXEC "chmod +x $installPath/start.sh"
 
 # register service
 cat > /lib/systemd/system/${serviceName}.service << EOF
