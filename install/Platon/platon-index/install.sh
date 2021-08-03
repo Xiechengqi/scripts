@@ -59,6 +59,7 @@ local dbPassword="platon"
 
 # install scripts url
 postgresUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh"
+pythonUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Python/install.sh"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
@@ -86,8 +87,8 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $dbUser;
 EOF
 EXEC "su $user -c 'psql -f /home/$user/init.sql $dbName'"
 
-# install python modules
-! pipe3 --version &>/dev/null && EXEC "export DEBIAN_FRONTEND=noninteractive" && EXEC "apt update && apt install -y python3-pip"
+# install python3.6 web3 psycopg2
+curl -SsL $pythonUrl | bash -s 3.6
 pip3 list --format=legacy | grep web3 &>/dev/null && EXEC "pip3 -y uninstall pip3"
 EXEC "pip3 install web3==4.9.0"
 EXEC "pip3 install psycopg2"
