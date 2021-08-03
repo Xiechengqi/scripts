@@ -9,6 +9,12 @@
 
 source /etc/profile
 
+OS() {
+osType=$1
+osVersion=$2
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion}	|| exit 1
+}
+
 INFO() {
 printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
 printf -- "%s" "$1"
@@ -54,6 +60,8 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 }
 
 function main() {
+# check os
+OS "ubuntu" "18"
 
 # install ntp
 install_ntp
