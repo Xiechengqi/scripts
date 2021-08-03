@@ -5,10 +5,10 @@
 | :---: | :---: | :---: | :---: |
 | DB | [Postgres](https://github.com/Xiechengqi/scripts/edit/master/install/Postgres/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh \| bash` |
 | | [Mongodb](https://github.com/Xiechengqi/scripts/edit/master/install/Mongodb/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh \| bash` |
-| | [Redis](https://github.com/Xiechengqi/scripts/edit/master/install/Redis/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Redis/install.sh \| bash -s [Version]` |
+| | [Redis](https://github.com/Xiechengqi/scripts/edit/master/install/Redis/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Redis/install.sh \| bash -s [version]` |
 | ENV | [Pyenv](https://github.com/Xiechengqi/scripts/edit/master/install/Pyenv/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh \| bash` |
 | | [Python](https://github.com/Xiechengqi/scripts/edit/master/install/Python/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Python/install.sh \| bash -s 3.6` |
-| | [Node](https://github.com/Xiechengqi/scripts/edit/master/install/Node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh \| bash` |
+| | [Node](https://github.com/Xiechengqi/scripts/edit/master/install/Node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh \| bash -s [version]` |
 | | [Golang](https://github.com/Xiechengqi/scripts/edit/master/install/Golang/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh \| bash -s [version]` | |
 | | [Ntp](https://github.com/Xiechengqi/scripts/edit/master/install/Ntp/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh \| bash` |
 | ETH | [eth-node](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/eth-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-node/install.sh \| bash` | ETH 客户端，搭建全节点 |
