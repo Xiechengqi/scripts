@@ -7,6 +7,36 @@
 # Usage: curl -SsL https://xxx.os.sh | bash -s Ubuntu 16.04
 #
 
+source /etc/profile
+
+INFO() {
+printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
+printf -- "%s" "$1"
+printf "\n"
+}
+
+YELLOW() {
+printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
+printf -- "\033[33m%s\033[0m" "$1"
+printf "\n"
+}
+
+ERROR() {
+printf -- "\033[41;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
+printf -- "%s" "$1"
+printf "\n"
+exit 1
+}
+
+EXEC() {
+local cmd="$1"
+INFO "${cmd}"
+eval ${cmd} 1> /dev/null
+if [ $? -ne 0 ]; then
+ERROR "Execution command (${cmd}) failed, please check it and try again."
+fi
+}
+
 _os() {
 local os=""
 [ -f "/etc/debian_version" ] && source /etc/os-release && os="${ID}" && printf -- "%s" "${os}" && return
@@ -26,9 +56,18 @@ printf -- "%s" "${main_ver%%.*}"
 }
 
 function main() {
-_os
-_os_full
-_os_ver
+osCheck=${1}
+osVersionCheck=${2}
+[ ".${osCheck}" = "." ] && ERROR "Usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s [OS] [Version]"
+[ ".${osVersionCheck}" = "." ] && ifOsVersionCheck="false" || ifOsVersionCheck="true"
+ifOsVersionRight="true"
+ifOsRight="false"
+osReal=`_os`
+osVersionReal=`_os_ver`
+YELLOW "current os info: ${osReal}${osVersionReal}"
+echo $osReal | grep -qwi $osCheck && ifOsRight="true"
+[ "${ifOsVersionCheck}" = "true" ] && ! echo $osVersionReal | grep -qwi $osVersionCheck && ifOsVersionRight="false"
+[ "${ifOsVersionRight}" = "true" ] && [ "${ifOsVersionRight}" = "true" ] || ERROR "recommended os info: ${osCheck}${osVersionCheck}"
 }
 
-main
+main $@
