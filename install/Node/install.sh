@@ -36,7 +36,7 @@ fi
 
 function main() {
 # environment
-version="10.16.0"
+version=${1-"10.16.0"}
 installPath="/data/node-${version}"
 downloadUrl="https://nodejs.org/download/release/v${version}/node-v${version}-linux-x64.tar.gz"
 
@@ -65,4 +65,4 @@ EXEC "ln -fs $installPath $(dirname $installPath)/node"
 YELLOW "version: $version"
 }
 
-main
+main $@
