@@ -64,10 +64,10 @@ ifOsVersionRight="true"
 ifOsRight="false"
 osReal=`_os`
 osVersionReal=`_os_ver`
-YELLOW "current os info: ${osReal}${osVersionReal}"
+INFO "current os info: ${osReal}${osVersionReal}"
 echo $osReal | grep -qwi $osCheck && ifOsRight="true"
 [ "${ifOsVersionCheck}" = "true" ] && ! echo $osVersionReal | grep -qwi $osVersionCheck && ifOsVersionRight="false"
-[ "${ifOsVersionRight}" = "true" ] && [ "${ifOsVersionRight}" = "true" ] || ERROR "recommended os info: ${osCheck}${osVersionCheck}"
+[ "${ifOsRight}" = "true" ] && [ "${ifOsVersionRight}" = "true" ] || ERROR "recommended os info: ${osCheck}${osVersionCheck}"
 }
 
 main $@
