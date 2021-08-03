@@ -2,12 +2,18 @@
 
 # 
 # xiechengqi
-# OS: 
+# OS: Ubuntu18
 # 2021/07/30
 # install IRIS
 # 
 
 source /etc/profile
+
+OS() {
+osType=$1
+osVersion=$2
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion}	|| exit 1
+}
 
 INFO() {
 printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
@@ -38,6 +44,9 @@ fi
 }
 
 function main() {
+# check os
+OS "ubuntu" "18"
+
 # environments
 serviceName="iris-node"
 version="1.0.1"
