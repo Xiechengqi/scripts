@@ -115,7 +115,7 @@ function install_eth-index() {
 # environments
 local serviceName="eth-index"
 local version="20210716"
-local installPath="/data/ETH/{$serviceName}-${version}"
+local installPath="/data/ETH/${serviceName}-${version}"
 local downloadUrl="https://github.com/Xiechengqi/wx-eth-indexer/archive/refs/tags/${version}.tar.gz"
 local port="8545"
 local user="postgres"
