@@ -147,7 +147,7 @@ export LD_LIBRARY_PATH=/data/postgres/lib
 
 source $installPath/venv/bin/activate
 cd $installPath/src
-$(which python3.6) $installPath/src/platonsync.py $dbName
+python3 $installPath/src/platonsync.py $dbName
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
