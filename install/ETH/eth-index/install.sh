@@ -120,6 +120,9 @@ EOF
 # start
 EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
+
+# info
+YELLOW "$serviceName is running ..."
 }
 
 function main() {
