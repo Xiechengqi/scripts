@@ -2,8 +2,8 @@
 
 #
 # xiechengqi
-# 2021/07/28
-# Ubuntu 18.04+
+# 2021/08/03
+# Ubuntu 18.04
 # install platon-node
 #
 
@@ -12,7 +12,7 @@ source /etc/profile
 OS() {
 osType=$1
 osVersion=$2
-curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion}	|| exit 1
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
 }
 
 INFO() {
@@ -63,6 +63,9 @@ function main() {
 # check os
 OS "ubuntu" "18"
 
+# get net option
+[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+
 # install ntp
 install_ntp
 
@@ -72,17 +75,6 @@ version="1.0.0"
 installPath="/data/Platon/${serviceName}-${version}"
 port="16789"
 rpcPort="6789"
-
-# get args
-if [ "$1" = "mainnet" ]
-then
-# mainnet
-options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"
-else
-# testnet
-ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/" && return 1
-# options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
-fi
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -97,7 +89,7 @@ EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platonk
 EXEC "chmod +x $installPath/bin/*"
 
 # register bin
-EXEC "ln -fs $installPath/bin/* /usr/bin/"
+EXEC "ln -fs $installPath/bin/* /usr/local/bin/"
 EXEC "platon version" && platon version
 
 # create Node public private key
@@ -110,10 +102,21 @@ INFO "create BLS public private key"
 platonkey genblskeypair | tee >(grep "PrivateKey" | awk '{print $2}' > ${installPath}/conf/blskey) >(grep "PublicKey" | awk '{print $3}' > ${installPath}/conf/blspub)
 
 # create start.sh
+# get start options
+if [ "$net" = "mainnet" ]
+then
+# mainnet
+options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"
+else
+# testnet
+ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/" && return 1
+# options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
+fi
+
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 
-platon $options &> $installPath/logs/platon.log
+platon $options &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
@@ -122,6 +125,7 @@ cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=Golang implementation of the PlatON protocol
 Documentation=https://github.com/PlatONnetwork/PlatON-Go
+After=network.target
 
 [Service]
 User=root
