@@ -106,7 +106,7 @@ EXEC "su $user -c 'psql -f /home/$user/init.sql $dbName'"
 EXEC "pip3 install virtualenv"
 
 # create python venv
-EXEC "virtualenv $installPath/venv"
+EXEC "virtualenv --clear $installPath/venv"
 
 # active python venv
 EXEC "source $installPath/venv/bin/activate"
