@@ -118,6 +118,9 @@ RestartSec=2
 WantedBy=multi-user.target
 EOF
 
+# change softlink
+EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
+
 # start
 EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
