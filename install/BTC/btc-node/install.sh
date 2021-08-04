@@ -108,6 +108,7 @@ cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=Bitcoin Core integration/staging tree
 Documentation=https://github.com/bitcoin/bitcoin
+After=network.target
 
 [Service]
 User=root
