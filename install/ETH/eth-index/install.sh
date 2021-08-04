@@ -181,6 +181,9 @@ EXEC "su $user -c 'psql -f /home/$user/init.sql $dbName'"
 # install postgrest
 install_postgrest
 
+# install pip3
+! pip3 --version &>/dev/null && EXEC "export DEBIAN_FRONTEND=noninteractive" && EXEC "apt update && apt install -y python3-pip"
+
 # install python modules
 EXEC "pip3 install web3"
 EXEC "pip3 install psycopg2" 
