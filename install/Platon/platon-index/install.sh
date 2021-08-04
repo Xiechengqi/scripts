@@ -2,9 +2,9 @@
 
 #
 # xiechengqi
-# 2021/07/29
-# gitlab: https://github.com/Xiechengqi/wx-platon-indexer.git
+# 2021/08/03
 # os: ubuntu 18+
+# https://github.com/HashKeyHub/platon-indexer
 # make install platon index
 # prerequisites
 #   platon node
@@ -43,23 +43,29 @@ fi
 }
 
 function main() {
+# check os
+OS "ubuntu" "18"
+
+# get net option
+[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
 
 # environments
 local serviceName="platon-index"
-local version="20210729"
+local version="master"
 local installPath="/data/Platon/${serviceName}-${version}"
-local downloadUrl="https://github.com/Xiechengqi/wx-platon-indexer/archive/refs/tags/${version}.tar.gz"
-local nodeHost="47.241.98.219"
+local downloadUrl="https://github.com/Xiechengqi/wx-platon-indexer"
+# local nodeIp="47.241.98.219"
+local nodeIp="127.0.0.1"
 local startBlockNumber="214799"
 local rpcPort="6789"
 local user="postgres"
+local dbIp="127.0.0.1"
 local dbName="platon"
 local dbUser="platon"
 local dbPassword="platon"
 
 # install scripts url
 postgresUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh"
-pythonUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Python/install.sh"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
@@ -69,7 +75,7 @@ EXEC "rm -rf $installPath"
 EXEC "mkdir -p $installPath/logs"
 
 # download tarball
-EXEC "curl -SsL $downloadUrl | tar zx --strip-components 1 -C $installPath"
+EXEC "git clone -b master $downloadUrl $installPath/src"
 
 # install postgres
 curl -SsL $postgresUrl | bash
@@ -79,7 +85,7 @@ cat > /home/$user/create.sql << EOF
 create database $dbName;
 EOF
 EXEC "su $user -c 'psql -f /home/$user/create.sql'"
-EXEC "su $user -c 'psql -f $installPath/create_table.sql $dbName'"
+EXEC "su $user -c 'psql -f $installPath/src/create_table.sql $dbName'"
 cat > /home/$user/init.sql << EOF
 create user $dbUser with password '$dbPassword';
 GRANT ALL ON platontxs TO $dbUser;
@@ -87,10 +93,13 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $dbUser;
 EOF
 EXEC "su $user -c 'psql -f /home/$user/init.sql $dbName'"
 
-# install python3.6 web3 psycopg2
-curl -SsL $pythonUrl | bash -s 3.6
-pip3 list --format=legacy | grep web3 &>/dev/null && EXEC "pip3 -y uninstall pip3"
-EXEC "pip3 install web3==4.9.0"
+# install pip3
+! pip3 --version &>/dev/null && EXEC "export DEBIAN_FRONTEND=noninteractive" && EXEC "apt update && apt install -y python3-pip"
+
+# pip3 list --format=legacy | grep web3 &>/dev/null && EXEC "pip3 -y uninstall web3"
+# EXEC "pip3 install web3==4.9.0"
+
+EXEC "pip3 install web3"
 EXEC "pip3 install psycopg2"
 
 # install client-sdb-python
@@ -101,26 +110,26 @@ EXEC "pip3 install ."
 EXEC "cd -"
 
 # config
-cat > $installPath/config.ini << EOF
+cat > $installPath/src/config.ini << EOF
 [base]
-node_address = http://${nodeHost}:${rpcPort}
+node_address = http://${nodeIp}:${rpcPort}
 log_file_path = $installPath/logs/platon-index.log
 start_block_number = ${startBlockNumber}
 
 [db]
-host = 127.0.0.1
+host = $dbIp 
 user = $dbUser 
 password = $dbPassword
 EOF
 
 # create start.sh
-pythonPath=$(which python3.6)
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
-
 source /etc/profile
-cd $installPath 
-$pythonPath $installPath/platonsync.py $dbName
+export LD_LIBRARY_PATH=/data/postgres/lib
+
+cd $installPath/src
+$(which python3.6) $installPath/src/platonsync.py $dbName
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
@@ -135,9 +144,8 @@ After=postgres.service
 [Service]
 ExecStart=/bin/bash $installPath/start.sh
 ExecStop=/bin/kill -s QUIT \$MAINPID
-TimeoutSec=300
-RestartSec=90
 Restart=always
+RestartSec=2
 
 [Install]
 WantedBy=multi-user.target
@@ -153,9 +161,9 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 # info
 YELLOW "version: $version"
 YELLOW "install path: $installPath"
-YELLOW "config path: $installPath/config.ini"
+YELLOW "config path: $installPath/src/config.ini"
 YELLOW "log path: $installPath/logs"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
-main
+main $@
