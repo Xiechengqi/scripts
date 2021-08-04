@@ -4,6 +4,7 @@
 # xiechengqi
 # 2021/08/03
 # Ubuntu 18.04
+# https://github.com/PlatONnetwork/PlatON-Go
 # install platon-node
 #
 
@@ -118,6 +119,7 @@ fi
 
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
+source /etc/profile
 
 platon $options &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
 EOF
