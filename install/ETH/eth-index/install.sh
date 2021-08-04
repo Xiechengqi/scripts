@@ -217,9 +217,7 @@ cat > /lib/systemd/system/${serviceName}.service << EOF
 Description=EthereumTransactionStorage
 After=syslog.target
 After=network.target
-After=btc-node.service
 After=postgrest.service
-After=postgres.service
 
 [Service]
 ExecStart=/bin/bash $installPath/start.sh
