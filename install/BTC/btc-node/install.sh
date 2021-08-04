@@ -13,7 +13,7 @@ source /etc/profile
 OS() {
 osType=$1
 osVersion=$2
-curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion}	|| exit 1
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
 }
 
 INFO() {
@@ -101,7 +101,6 @@ EOF
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
-
 bitcoind -conf=$installPath/conf/${serviceName}.conf $options &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
 EOF
 EXEC "chmod +x $installPath/start.sh"
