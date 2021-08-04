@@ -93,6 +93,7 @@ EOF
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
+export LD_LIBRARY_PATH=/data/postgres/lib
 
 postgrest $installPath/conf/postgrest.conf &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
 EOF
@@ -205,9 +206,10 @@ EOF
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
+export LD_LIBRARY_PATH=/data/postgres/lib
 
 cd $installPath/src
-$(which python3.6) $installPath/ethsync.py $dbName
+$(which python3.6) $installPath/src/ethsync.py $dbName
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
