@@ -4,8 +4,8 @@
 # xiechengqi
 # 2021/08/03
 # https://github.com/bitcoin/bitcoin
-# Ubuntu 18.04
-# install BTC Node bitcoin
+# Ubuntu 16+
+# install bitcoin
 #
 
 source /etc/profile
@@ -99,7 +99,7 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
 
-bitcoind -conf=$installPath/conf/${serviceName}.conf $options &> $installPath/logs/${serviceName}.log
+bitcoind -conf=$installPath/conf/${serviceName}.conf $options &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
