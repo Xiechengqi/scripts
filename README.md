@@ -2,8 +2,8 @@
 
 
 | Type | Install | Command | Status |
-| :---: | :---: | :---: | :---: | :---: |
-| DB | [Postgres](https://github.com/Xiechengqi/scripts/edit/master/install/Postgres/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh \| bash -s [version]` |
+| :---: | :---: | :---: | :---: |
+| DB | [Postgres](https://github.com/Xiechengqi/scripts/edit/master/install/Postgres/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh \| bash -s [version]` | |
 | | [Mongodb](https://github.com/Xiechengqi/scripts/edit/master/install/Mongodb/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh \| bash` | ✅ |
 | | [Redis](https://github.com/Xiechengqi/scripts/edit/master/install/Redis/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Redis/install.sh \| bash -s [version]` | ✅ |
 | ENV | [Pyenv](https://github.com/Xiechengqi/scripts/edit/master/install/Pyenv/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh \| bash` | ✅ |
