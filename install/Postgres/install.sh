@@ -2,11 +2,17 @@
 
 #
 # xiechengqi
-# 2021/07/23
-# binary install postgresql
+# 2021/08/03
+# install postgresql
 #
 
 source /etc/profile
+
+OS() {
+osType=$1
+osVersion=$2
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
+}
 
 INFO() {
 printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
@@ -37,9 +43,12 @@ fi
 }
 
 function main() {
+# check os
+OS "ubuntu"
+
 # environments
 serviceName="postgres"
-version="10.5"
+version=${1-"10.5"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://get.enterprisedb.com/postgresql/postgresql-${version}-1-linux-x64-binaries.tar.gz"
 user="postgres"
@@ -62,7 +71,6 @@ EXEC "curl -SsL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 EXEC "sed -i '/postgres.*\/bin/d' /etc/profile"
 EXEC "sed -i '/postgres.*\/lib/d' /etc/profile"
 EXEC "echo 'export PATH=\$PATH:$installPath/bin' >> /etc/profile"
-EXEC "echo 'export LD_LIBRARY_PATH=$installPath/lib' >> /etc/profile"
 EXEC "ln -fs $installPath/bin/* /usr/bin/"
 EXEC "source /etc/profile"
 EXEC "psql --version" && psql --version
@@ -112,4 +120,4 @@ YELLOW "conncetion cmd: su $user && psql -p $port"
 YELLOW "managemanet cmd: systemctl [status|stop|start|restart|reload] $serviceName"
 }
 
-main
+main $@
