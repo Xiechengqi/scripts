@@ -69,6 +69,7 @@ OS "ubuntu" "18"
 
 # get net option
 [ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+[ "$net" = "testnet" && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
 
 # install ntp
 install_ntp
@@ -113,7 +114,7 @@ then
 options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"
 else
 # testnet
-ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/" && return 1
+ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
 # options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
 fi
 
