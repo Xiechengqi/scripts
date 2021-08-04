@@ -57,6 +57,9 @@ EXEC "apt-get update && apt-get install -y gnupg2 curl software-properties-commo
 # start
 EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
+
+# info
+YELLOW "$serviceName is running ..."
 }
 
 function main() {
