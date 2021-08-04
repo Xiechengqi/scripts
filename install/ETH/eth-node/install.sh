@@ -2,12 +2,11 @@
 
 #
 # xiechengqi
-# 2021/07/22
-# https://github.com/ethereum/go-ethereum
-# Ubuntu 18
-# binary install Geth
+# 2021/08.03
+# https://github.com/ethereum/go-ethereum https://geth.ethereum.org/
+# Ubuntu 18.04
+# install ETH Node Geth
 # for mainnet, need to open firewall port: 30303/tcp 30303/udp 8545/tcp
-# https://geth.ethereum.org/
 #
 
 source /etc/profile
@@ -15,7 +14,7 @@ source /etc/profile
 OS() {
 osType=$1
 osVersion=$2
-curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion}	|| exit 1
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
 }
 
 INFO() {
@@ -50,9 +49,8 @@ function main() {
 # check os
 OS "ubuntu" "18"
 
-# get chainType
-chainType="$1"
-[ "$chainType" = "" ] && chainType="testnet"
+# get net option
+[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
 
 # environments
 serviceName="eth-node"
@@ -73,22 +71,17 @@ EXEC "mkdir -p $installPath/{data,logs}"
 EXEC "curl -SsL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 
 # register bin
-EXEC "ln -fs $installPath/geth /usr/bin/geth"
+EXEC "ln -fs $installPath/geth /usr/local/bin/geth"
 EXEC "geth version" && geth version
 
 # create start.sh
 pubIp=`curl -4 ip.sb`    # get vm public ip
-if [ "$chainType" = "mainnet" ]
-then
-options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsPort --datadir $installPath/data --http.vhosts=*"
-else
-options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsPort --datadir $installPath/data --http.vhosts=* --rinkeby"
-fi
+[ "$net" = "mainnet" ] && options="" || options="--rinkeby"
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-$installPath/geth $options &> $installPath/logs/geth.log
+geth --nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsPort --datadir $installPath/data --http.vhosts=* $options &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
@@ -97,9 +90,11 @@ cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=Official Go implementation of the Ethereum protocol
 Documentation=https://github.com/ethereum/go-ethereum
+After=network.target
 
 [Service]
 User=root
+Group=root
 ExecStart=/bin/bash $installPath/start.sh
 ExecStop=/bin/kill -s QUIT \$MAINPID
 Restart=always
