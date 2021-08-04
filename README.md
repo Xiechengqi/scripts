@@ -5,6 +5,7 @@
 | :---: | :---: | :---: | :---: |
 | DB | [Postgres](https://github.com/Xiechengqi/scripts/edit/master/install/Postgres/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh \| bash -s [version]` | ✅ |
 | | [Mongodb](https://github.com/Xiechengqi/scripts/edit/master/install/Mongodb/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh \| bash` | ✅ |
+| | [Mysql](https://github.com/Xiechengqi/scripts/edit/master/install/Mysql/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh \| bash -s [version]` | ✅ |
 | | [Redis](https://github.com/Xiechengqi/scripts/edit/master/install/Redis/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Redis/install.sh \| bash -s [version]` | ✅ |
 | ENV | [Pyenv](https://github.com/Xiechengqi/scripts/edit/master/install/Pyenv/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh \| bash` | ✅ |
 | | [Python](https://github.com/Xiechengqi/scripts/edit/master/install/Python/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Python/install.sh \| bash -s 3.6` | ✅ |
