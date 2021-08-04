@@ -188,7 +188,6 @@ install_postgrest
 # install pip3
 ! pip3 --version &>/dev/null && EXEC "export DEBIAN_FRONTEND=noninteractive" && EXEC "apt update && apt install -y python3-pip"
 
-
 # install virtualenv
 EXEC "pip3 install virtualenv"
 
