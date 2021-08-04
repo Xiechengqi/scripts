@@ -2,19 +2,30 @@
 
 #
 # xiechengqi
-# 2021/07/25
+# 2021/08/03
 # github: https://github.com/Adamant-im/ETH-transactions-storage
-# os: ubuntu16.04
-# make install ETH index
+# OS: ubuntu 18.04
+# install ETH index
 # prerequisites
 #   geth or openethereum (with currently synchronized chain)
 #   Python 3.6
 #   Postgresql 10.5 (https://github.com/postgres/postgres)
 #   Postgrest for API (https://github.com/PostgREST/postgrest)
-#   nginx or other web server (in case of public API)
 #
 
 source /etc/profile
+
+trap "_clean" EXIT
+
+_clean() {
+cd /tmp && rm -f $$.tar
+}
+
+OS() {
+osType=$1
+osVersion=$2
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
+}
 
 INFO() {
 printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
@@ -45,7 +56,6 @@ fi
 }
 
 function install_postgrest() {
-
 # environments
 local serviceName="postgrest"
 local version="7.0.1"
@@ -80,7 +90,12 @@ server-port = $port
 EOF
 
 # create start.sh
-EXEC "echo 'postgrest $installPath/conf/postgrest.conf &> $installPath/logs/postgrest.log' > $installPath/start.sh"
+cat > $installPath/start.sh << EOF
+#!/usr/bin/env bash
+source /etc/profile
+
+postgrest $installPath/conf/postgrest.conf &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
+EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
@@ -88,6 +103,7 @@ cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=Transaction API with Postgrest
 After=network.target
+After=postgres.target
 
 [Service]
 User=root
@@ -95,11 +111,7 @@ Group=root
 ExecStart=/bin/bash $installPath/start.sh
 ExecStop=/bin/kill -s QUIT $MAINPID
 Restart=always
-RestartSec=5
-StartLimitInterval=0
-LimitNOFILE=infinity
-LimitNPROC=infinity
-LimitCORE=infinity
+RestartSec=2
 
 [Install]
 WantedBy=multi-user.target
@@ -110,22 +122,29 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 }
 
-function install_eth-index() {
+function main() {
+
+# check os
+OS "ubuntu" "18"
+
+# get net option
+[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
 
 # environments
 local serviceName="eth-index"
-local version="20210716"
+local version="master"
 local installPath="/data/ETH/${serviceName}-${version}"
-local downloadUrl="https://github.com/Xiechengqi/wx-eth-indexer/archive/refs/tags/${version}.tar.gz"
+local downloadUrl="https://github.com/Xiechengqi/wx-eth-indexer.git"
+local nodeIp="127.0.0.1"
 local port="8545"
 local user="postgres"
+local dbIp="127.0.0.1"
 local dbName="eth"
 local dbUser="eth"
 local dbPassword="eth"
+local startBlockNumber="6520000"
 
 # install scripts url
-pyenvUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh"
-pythonUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Python/install.sh"
 postgresUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh"
 
 # check
@@ -135,8 +154,8 @@ systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running
 EXEC "rm -rf $installPath"
 EXEC "mkdir -p $installPath/logs"
 
-# download tarball
-EXEC "curl -SsL $downloadUrl | tar zx --strip-components 1 -C $installPath"
+# download
+EXEC "git clone -b master $downloadUrl $installPath/src"
 
 # install postgres
 curl -SsL $postgresUrl | bash
@@ -147,7 +166,7 @@ create database index;
 create database $dbName;
 EOF
 EXEC "su $user -c 'psql -f /home/$user/create.sql'"
-EXEC "su $user -c 'psql -f $installPath/create_table.sql $dbName'"
+EXEC "su $user -c 'psql -f $installPath/src/create_table.sql $dbName'"
 cat > /home/$user/init.sql << EOF
 create user $dbUser with password '$dbPassword';
 GRANT ALL ON ethtxs TO $dbUser;
@@ -159,56 +178,52 @@ EXEC "su $user -c 'psql -f /home/$user/init.sql $dbName'"
 # install postgrest
 install_postgrest
 
-# install pyenv
-curl -SsL $pyenvUrl | bash
-
-# install python3.6
-curl -SsL $pythonUrl | bash -s 3.6
-
 # install python modules
 EXEC "pip3 install web3"
-EXEC "pip3 install psycopg2"
+EXEC "pip3 install psycopg2" 
 
 # config
-cat > $installPath/config.ini << EOF
+cat > $installPath/src/config.ini << EOF
 [base]
-node_address = http://127.0.0.1:$port
-log_file_path = $installPath/logs/eth-indexer.log
-start_block_number = 6520000
+node_address = http://$nodeIp:$port
+log_file_path = $installPath/logs/${serviceName}.log
+start_block_number = $startBlockNumber 
 
 [db]
-host = 127.0.0.1
+host = $dbIp
 user = $dbUser 
 password = $dbPassword
 EOF
 
+# create start.sh
+cat > $installPath/start.sh << EOF
+#!/usr/bin/env bash
+source /etc/profile
+
+cd $installPath/src
+$(which python3.6) $installPath/ethsync.py $dbName
+EOF
+EXEC "chmod +x $installPath/start.sh"
+
 # register service
-pythonPath=$(which python3.6)
 cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=EthereumTransactionStorage
 After=syslog.target
 After=network.target
+After=btc-node.service
+After=postgrest.service
 After=postgres.service
 
 [Service]
 ExecStart=/bin/bash $installPath/start.sh
 ExecStop=/bin/kill -s QUIT \$MAINPID
-TimeoutSec=300
-RestartSec=90
 Restart=always
+RestartSec=2
 
 [Install]
 WantedBy=multi-user.target
 EOF
-
-# create start.sh
-cat > $installPath/start.sh << EOF
-source /etc/profile
-cd $installPath 
-$pythonPath $installPath/ethsync.py $dbName
-EOF
-EXEC "chmod +x $installPath/start.sh"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
@@ -216,11 +231,14 @@ EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 # start
 EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
+
+# info
+YELLOW "version: $version"
+YELLOW "install path: $installPath"
+YELLOW "conf path: $installPath/src/config.ini"
+YELLOW "log path: $installPath/logs"
+YELLOW "blockchain info cmd: "
+YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
-function main() {
-INFO "install eth-index ..."
-install_eth-index
-}
-
-main
+main $@
