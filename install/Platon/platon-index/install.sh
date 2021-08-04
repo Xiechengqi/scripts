@@ -102,11 +102,17 @@ EXEC "su $user -c 'psql -f /home/$user/init.sql $dbName'"
 # install pip3
 ! pip3 --version &>/dev/null && EXEC "export DEBIAN_FRONTEND=noninteractive" && EXEC "apt update && apt install -y python3-pip"
 
-# install python modules
-# pip3 list --format=legacy | grep web3 | grep "4.9.0" &>/dev/null && EXEC "pip3 -y uninstall web3"
-# EXEC "pip3 install web3==4.9.0"
+# install virtualenv
+EXEC "pip3 install virtualenv"
 
-EXEC "pip3 install web3"
+# create python venv
+EXEC "virtualenv $installPath/venv"
+
+# active python venv
+EXEC "source $installPath/venv/bin/activate"
+
+# install web3==4.9.0 psycopg2
+EXEC "pip3 install web3==4.9.0"
 EXEC "pip3 install psycopg2"
 
 # install client-sdb-python
@@ -115,6 +121,10 @@ EXEC "git clone https://github.com/PlatONnetwork/client-sdk-python.git /tmp/clie
 EXEC "cd /tmp/client-sdk-python"
 EXEC "pip3 install ."
 EXEC "cd -"
+EXEC "pip3 list" && pip3 list
+
+# deactive python venv
+EXEC "deactivate"
 
 # config
 cat > $installPath/src/config.ini << EOF
@@ -135,6 +145,7 @@ cat > $installPath/start.sh << EOF
 source /etc/profile
 export LD_LIBRARY_PATH=/data/postgres/lib
 
+source $installPath/venv/bin/activate
 cd $installPath/src
 $(which python3.6) $installPath/src/platonsync.py $dbName
 EOF
