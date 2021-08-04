@@ -2,11 +2,12 @@
 
 #
 # xiechengqi
-# 2021/07/14
+# 2021/08/03
 # https://github.com/bitcoin/bitcoin
-# Ubuntu 16+
-# install bitcoin
+# Ubuntu 18.04
+# install BTC Node bitcoin
 #
+
 source /etc/profile
 
 OS() {
@@ -52,10 +53,10 @@ serviceName="btc-node"
 version="0.21.1"
 installPath="/data/BTC/${serviceName}-${version}"
 downloadUrl="https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz"
-rpcUser="btc-node"
+rpcUser="bitcoin"
 rpcPassword="local321"
-rpcPort="18332"
-p2pPort="18333"
+[ "$1" != "mainnet" ] && rpcPort="8332" || rpcPort="18332"
+[ "$1" != "mainnet" ] && p2pPort="8333" || p2pPort="18333"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -70,7 +71,7 @@ EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 # register path
 EXEC "sed -i '/btc-node.*\/bin/d' /etc/profile"
 EXEC "echo 'export PATH=\$PATH:$installPath/bin' >> /etc/profile"
-EXEC "ln -fs $installPath/bin/* /usr/bin/"
+EXEC "ln -fs $installPath/bin/* /usr/local/bin/"
 EXEC "source /etc/profile"
 EXEC "bitcoin-cli -version" && bitcoin-cli -version
 
@@ -78,22 +79,17 @@ EXEC "bitcoin-cli -version" && bitcoin-cli -version
 [ "$1" = "mainnet" ] && ifTestnet="0" || ifTestnet="1"    # get testnet or mainnet
 cat > $installPath/conf/${serviceName}.conf << EOF
 datadir=$installPath/data
-testnet=${ifTestnet}
 server=1
-whitebind=127.0.0.1:$p2pPort
 whitelist=127.0.0.1
 txindex=1
 addressindex=1
 timestampindex=1
 spentindex=1
 zmqpubrawtx=tcp://127.0.0.1:28332
-zmqpubhashtx=tcp://127.0.0.1:28333
-zmqpubhashblock=tcp://127.0.0.1:28334
-zmqpubrawblock=tcp://127.0.0.1:28335
-rpcallowip=0.0.0.0/0
-rpcport=$rpcPort
-rpcuser=$rpcUser
-rpcpassword=$rpcPassword
+zmqpubhashblock=tcp://127.0.0.1:28332
+rpcallowip=127.0.0.1
+rpcuser=${rpcUser}
+rpcpassword=${rpcPassword}
 uacomment=bitcore
 EOF
 
@@ -101,8 +97,9 @@ EOF
 [ "$1" != "mainnet" ] && options="--testnet"    # get options
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
+source /etc/profile
 
-bitcoind $options --rpcport=$rpcPort --rpcbind=0.0.0.0 -conf=$installPath/conf/${serviceName}.conf &> $installPath/logs/${serviceName}.log
+bitcoind -conf=$installPath/conf/${serviceName}.conf $options &> $installPath/logs/${serviceName}.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
