@@ -2,9 +2,9 @@
 
 # 
 # xiechengqi
-# OS: Ubuntu18
-# 2021/07/30
-# install IRIS
+# OS: Ubuntu 18.04
+# 2021/08/03
+# install IRIS Node
 # 
 
 source /etc/profile
@@ -12,7 +12,7 @@ source /etc/profile
 OS() {
 osType=$1
 osVersion=$2
-curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion}	|| exit 1
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
 }
 
 INFO() {
@@ -47,10 +47,14 @@ function main() {
 # check os
 OS "ubuntu" "18"
 
+# get net option
+[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+[ "$net" = "testnet" ] && ERROR "IRIS testnet is not avaliable，See https://github.com/irisnet/irishub/issues/2644"
+
 # environments
 serviceName="iris-node"
 version="1.0.1"
-installPath="/data/IRIS/${serviceName}-${version}"
+installPath="/data/IRIS/iris-node/${serviceName}-${version}"
 
 # download url
 golangUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh"
@@ -77,11 +81,11 @@ EXEC "make install"
 EXEC "cd -"
 
 # register bin
-EXEC "ln -fs $GOBIN/iris /usr/local/bin/iris"
-EXEC "iris version"
+EXEC "ln -fs $GOBIN/* /usr/local/bin"
+EXEC "iris version" && iris version
 
 # init mainnet node
-EXEC "iris init iris-node --home=${installPath}/data --chain-id=irishub"
+EXEC "iris init iris-node --home=${installPath}/data --chain-id=irishub-1"
 
 # download mainnet config.toml and genesis.json
 EXEC "curl https://raw.githubusercontent.com/irisnet/mainnet/master/config/config.toml -o $installPath/data/config/config.toml"
@@ -92,7 +96,7 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-iris start --home=${installPath}/data &> $installPath/logs/${serviceName}.log
+iris start --home=${installPath}/data &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
 EOF
 
 # register service
@@ -100,6 +104,7 @@ cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=A BPoS blockchain that enables cross-chain interoperability through a unified service model
 Documentation=https://github.com/irisnet/irishub
+After=network.target
 
 [Service]
 User=root
@@ -124,4 +129,4 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 YELLOW "version: ${version}"
 }
 
-main
+main $@
