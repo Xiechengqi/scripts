@@ -192,7 +192,7 @@ install_postgrest
 EXEC "pip3 install virtualenv"
 
 # create python venv
-EXEC "virtualenv $installPath/venv"
+EXEC "virtualenv --clear $installPath/venv"
 
 # active python venv
 EXEC "source $installPath/venv/bin/activate"
@@ -225,7 +225,7 @@ export LD_LIBRARY_PATH=/data/postgres/lib
 
 source $installPath/venv/bin/activate
 cd $installPath/src
-$(which python3.6) $installPath/src/ethsync.py $dbName
+python3 $installPath/src/ethsync.py $dbName
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
