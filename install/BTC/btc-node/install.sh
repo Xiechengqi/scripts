@@ -4,7 +4,7 @@
 # xiechengqi
 # 2021/08/03
 # https://github.com/bitcoin/bitcoin
-# Ubuntu 16+
+# Ubuntu 18.04
 # install bitcoin
 #
 
@@ -48,6 +48,9 @@ function main() {
 # check os
 OS "ubuntu" "18"
 
+# get net option
+[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+
 # environments
 serviceName="btc-node"
 version="0.21.1"
@@ -55,8 +58,8 @@ installPath="/data/BTC/${serviceName}-${version}"
 downloadUrl="https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz"
 rpcUser="bitcoin"
 rpcPassword="local321"
-[ "$1" != "mainnet" ] && rpcPort="8332" || rpcPort="18332"
-[ "$1" != "mainnet" ] && p2pPort="8333" || p2pPort="18333"
+[ "$net" = "mainnet" ] && rpcPort="8332" || rpcPort="18332"
+[ "$net" = "mainnet" ] && p2pPort="8333" || p2pPort="18333"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -94,7 +97,7 @@ uacomment=bitcore
 EOF
 
 # create start.sh
-[ "$1" != "mainnet" ] && options="--testnet"    # get options
+[ "$net" = "mainnet" ] && options="" || options="--testnet"
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
