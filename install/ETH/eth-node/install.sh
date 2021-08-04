@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
-{
 
 #
 # xiechengqi
 # 2021/07/22
 # https://github.com/ethereum/go-ethereum
-# Ubuntu 16+
+# Ubuntu 18
 # binary install Geth
 # for mainnet, need to open firewall port: 30303/tcp 30303/udp 8545/tcp
 # https://geth.ethereum.org/
 #
 
 source /etc/profile
+
+OS() {
+osType=$1
+osVersion=$2
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion}	|| exit 1
+}
 
 INFO() {
 printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
@@ -42,6 +47,8 @@ fi
 }
 
 function main() {
+# check os
+OS "ubuntu" "18"
 
 # get chainType
 chainType="$1"
@@ -78,9 +85,12 @@ else
 options="--nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsPort --datadir $installPath/data --http.vhosts=* --rinkeby"
 fi
 cat > $installPath/start.sh << EOF
+#!/usr/bin/env bash
+source /etc/profile
+
 $installPath/geth $options &> $installPath/logs/geth.log
 EOF
-chmod +x $installPath/start.sh
+EXEC "chmod +x $installPath/start.sh"
 
 # register service
 cat > /lib/systemd/system/${serviceName}.service << EOF
@@ -116,4 +126,3 @@ YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
-}
