@@ -69,7 +69,7 @@ OS "ubuntu" "18"
 
 # get net option
 [ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
-[ "$net" = "testnet" && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
+[ "$net" = "testnet" ] && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
 
 # install ntp
 install_ntp
