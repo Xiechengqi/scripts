@@ -6,7 +6,6 @@
 # https://github.com/ethereum/go-ethereum https://geth.ethereum.org/
 # Ubuntu 18.04
 # install ETH Node Geth
-# for mainnet, need to open firewall port: 30303/tcp 30303/udp 8545/tcp
 #
 
 source /etc/profile
