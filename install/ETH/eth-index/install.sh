@@ -188,9 +188,22 @@ install_postgrest
 # install pip3
 ! pip3 --version &>/dev/null && EXEC "export DEBIAN_FRONTEND=noninteractive" && EXEC "apt update && apt install -y python3-pip"
 
-# install python modules
+
+# install virtualenv
+EXEC "pip3 install virtualenv"
+
+# create python venv
+EXEC "virtualenv $installPath/venv"
+
+# active python venv
+EXEC "source $installPath/venv/bin/activate"
+
+# install web3 psycopg2
 EXEC "pip3 install web3"
-EXEC "pip3 install psycopg2" 
+EXEC "pip3 install psycopg2"
+
+# deactive python venv
+EXEC "deactivate"
 
 # config
 cat > $installPath/src/config.ini << EOF
@@ -211,6 +224,7 @@ cat > $installPath/start.sh << EOF
 source /etc/profile
 export LD_LIBRARY_PATH=/data/postgres/lib
 
+source $installPath/venv/bin/activate
 cd $installPath/src
 $(which python3.6) $installPath/src/ethsync.py $dbName
 EOF
@@ -222,6 +236,7 @@ cat > /lib/systemd/system/${serviceName}.service << EOF
 Description=EthereumTransactionStorage
 After=syslog.target
 After=network.target
+After=postgres.service
 After=postgrest.service
 
 [Service]
