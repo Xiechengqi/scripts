@@ -97,7 +97,7 @@ EXEC "su $user -c 'psql -f /home/$user/init.sql $dbName'"
 ! pip3 --version &>/dev/null && EXEC "export DEBIAN_FRONTEND=noninteractive" && EXEC "apt update && apt install -y python3-pip"
 
 # install python modules, web3 must be 4.9.0
-pip3 list --format=legacy | grep web3 &>/dev/null && EXEC "pip3 -y uninstall web3"
+pip3 list --format=legacy | grep web3 | grep "4.9.0" &>/dev/null && EXEC "pip3 -y uninstall web3"
 EXEC "pip3 install web3==4.9.0"
 EXEC "pip3 install psycopg2"
 
