@@ -68,7 +68,7 @@ installPath="/data/Polkadot/${serviceName}-${version}"
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
 
 # check install path
-EXEC "rm -rf $(dirname $installPath)/${serviceName}*"
+EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{bin,conf,data,logs}"
 
 # download
