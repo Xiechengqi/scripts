@@ -54,7 +54,7 @@ OS "ubuntu" "18"
 # environments
 serviceName="iris-node"
 version="1.0.1"
-installPath="/data/IRIS/iris-node/${serviceName}-${version}"
+installPath="/data/IRIS/${serviceName}-${version}"
 
 # download url
 golangUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh"
