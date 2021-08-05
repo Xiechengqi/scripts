@@ -65,7 +65,7 @@ rpcPassword="local321"
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 # check install path
-EXEC "rm -rf $installPath"
+EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{conf,data,logs}"
 
 # download tarball
