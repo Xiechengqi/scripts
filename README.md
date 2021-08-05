@@ -1,6 +1,5 @@
 # operation scripts
 
-
 | Type | Install | Command | Status |
 | :---: | :---: | :---: | :---: |
 | DB | [Postgres](https://github.com/Xiechengqi/scripts/edit/master/install/Postgres/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh \| bash -s [version]` | ✅ |
