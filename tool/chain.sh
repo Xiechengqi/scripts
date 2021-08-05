@@ -94,7 +94,7 @@ EXEC "ss -plunt | grep conflux" && ss -plunt | grep conflux
 function check_iris() {
 EXEC "ps aux | grep -v grep | grep iris" && ps aux | grep -v grep | grep iris
 EXEC "ss -plunt | grep iris" && ss -plunt | grep iris
-EXEC "iris status" && iris status
+INFO "iris status" && iris status
 }
 
 main() {
