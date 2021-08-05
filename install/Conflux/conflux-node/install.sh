@@ -79,6 +79,7 @@ EXEC "cd /tmp && rm -rf ${serviceName} && cd -"
 EXEC "ln -fs $installPath/bin/* /usr/local/bin"
 
 # config
+INFO "sed -i \"s#log\/#$installPath\/logs\/#g\" $installPath/conf/log.yaml"
 sed -i "s#log\/#$installPath\/logs\/#g" $installPath/conf/log.yaml
 
 # create start.sh
@@ -88,7 +89,7 @@ cat > $installPath/start.sh << EOF
 source /etc/profile
 
 export RUST_BACKTRACE=1
-conflux --config $installPath/conf/${configFileName} --block-db-dir $installPath/data --log-conf $installPath/conf/log.yaml 2> $installPath/logs/error.log 1> /dev/null
+conflux --config $installPath/conf/${configFileName} --block-db-dir $installPath/data --log-conf $installPath/conf/log.yaml 2> $installPath/logs/$(date +%Y%m%d%H%M%S)-error.log 1> /dev/null
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
