@@ -68,7 +68,7 @@ curl -SsL $golangUrl | bash -s ${golangVersion}
 EXEC "source /etc/profile"
 
 # check install path
-EXEC "rm -rf $installPath"
+EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{conf,logs}"
 
 # install build-essential
