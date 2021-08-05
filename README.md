@@ -20,6 +20,6 @@
 | | [btc-index](https://github.com/Xiechengqi/scripts/edit/master/install/BTC/btc-index/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/btc-index/install.sh \| bash -s [mainnet\|testnet]` | ❌ |
 | IRIS | [iris-node](https://github.com/Xiechengqi/scripts/edit/master/install/IRIS/iris-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/IRIS/iris-node/install.sh \| bash -s [mainnet\|testnet]` | ✅ |
 | Conflux | [conflux-node](https://github.com/Xiechengqi/scripts/edit/master/install/Conflux/conflux-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Conflux/conflux-node/install.sh \| bash -s [mainnet\|testnet]` | ✅ |
+| Polkadot | [polkadot-node](https://github.com/Xiechengqi/scripts/edit/master/install/Polkadot/polkadot/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Polkadot/polkadot/install.sh \| bash -s [polkadot\|kusama\|westend] | ✅ |
 | Tool | [判断OS](https://github.com/Xiechengqi/scripts/edit/master/tool/os.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh \| bash -s [OS] [OSVersion]` | ✅ |
-| | Polkadot | [polkadot-node](https://github.com/Xiechengqi/scripts/edit/master/install/Polkadot/polkadot/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Polkadot/polkadot/install.sh \| bash -s [polkadot\|kusama\|westend] | ✅ |
 | []() |  |
