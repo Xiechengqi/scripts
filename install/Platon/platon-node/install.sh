@@ -84,9 +84,9 @@ rpcPort="6789"
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
-
 # check install path
-EXEC "rm -rf $installPath && mkdir -p $installPath/{bin,conf,logs,data}"
+EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
+EXEC "mkdir -p $installPath/{bin,conf,logs,data}"
 
 # download
 EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platon -o $installPath/bin/platon"
