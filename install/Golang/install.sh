@@ -49,7 +49,7 @@ downloadUrl="https://golang.org/dl/go${version}.linux-amd64.tar.gz"
 go version &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
 
 # check install path
-EXEC "rm -rf $installPath"
+EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{data,path}"
 
 # download tarball
