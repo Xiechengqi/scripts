@@ -98,6 +98,7 @@ source /etc/profile
 
 iris start --home=${installPath}/data &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
 EOF
+EXEC "chmod +x $installPath/start.sh"
 
 # register service
 cat > /lib/systemd/system/${serviceName}.service << EOF
