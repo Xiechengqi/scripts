@@ -82,7 +82,7 @@ EXEC "platon attach http://127.0.0.1:6789 -exec 'platon.syncing'" && platon atta
 function check_polkadot() {
 EXEC "ps axu | grep -v grep | grep polkadot" && ps axu | grep -v grep | grep polkadot
 EXEC "ss -plunt | grep polkadot" && ss -plunt | grep polkadot
-EXEC "curl -s -H \"Content-Type: application/json\" -d '{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"chain_getBlock\"}' http://localhost:9933/ | grep number" && curl -s -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "chain_getBlock"}' http://localhost:9933/
+EXEC "curl -s -H \"Content-Type: application/json\" -d '{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"chain_getBlock\"}' http://localhost:9933/ | grep number" && curl -s -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "chain_getBlock"}' http://localhost:9933/ | grep number
 }
 
 function check_conflux() {
@@ -94,7 +94,8 @@ EXEC "ss -plunt | grep conflux" && ss -plunt | grep conflux
 function check_iris() {
 EXEC "ps aux | grep -v grep | grep iris" && ps aux | grep -v grep | grep iris
 EXEC "ss -plunt | grep iris" && ss -plunt | grep iris
-INFO "iris status" && iris status
+INFOF "current block height: " && iris status |& awk -F 'latest_block_height":"' '{print $2}' | awk -F '"' '{print $1}'
+INFOF "current block hash: " && iris status |& awk -F 'latest_block_hash":"' '{print $2}' | awk -F '"' '{print $1}'
 }
 
 main() {
