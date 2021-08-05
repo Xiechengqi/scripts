@@ -61,7 +61,7 @@ systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running
 ! cat /etc/passwd | grep $user &> /dev/null && EXEC "useradd -m $user"
 
 # check install path
-EXEC "rm -rf $installPath"
+EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{data,logs} && cd $installPath"
 
 # download tarball
