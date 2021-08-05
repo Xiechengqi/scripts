@@ -82,7 +82,8 @@ EXEC "gcc --version" && gcc --version
 EXEC "g++ --version" && g++ --version
 
 # check install path
-[ ! -d $installPath ] && EXEC "mkdir -p $installPath/logs"
+EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
+EXEC "mkdir -p $installPath/logs"
 
 # check user
 ! cat /etc/passwd | grep $user &> /dev/null && EXEC "useradd -m $user"
