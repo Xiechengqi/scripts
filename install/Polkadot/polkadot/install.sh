@@ -68,7 +68,7 @@ installPath="/data/Polkadot/${serviceName}-${version}"
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
 
 # check install path
-EXEC "rm -rf $installPath"
+EXEC "rm -rf $(dirname $installPath)/${serviceName}*"
 EXEC "mkdir -p $installPath/{bin,conf,data,logs}"
 
 # download
@@ -127,6 +127,11 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 
 # INFO
 YELLOW "version: ${version}"
+YELLOW "install path: $installPath"
+YELLOW "log path: $installPath/logs"
+YELLOW "db path: $installPath/data"
+YELLOW "view block height: curl -SsL -H \"Content-Type: application/json\" -d '{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"chain_getBlock\"}' http://localhost:9933/ | jq .result.block.header.number"
+YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
