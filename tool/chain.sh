@@ -82,7 +82,9 @@ EXEC "platon attach http://127.0.0.1:6789 -exec 'platon.syncing'" && platon atta
 function check_polkadot() {
 EXEC "ps axu | grep -v grep | grep polkadot" && ps axu | grep -v grep | grep polkadot
 EXEC "ss -plunt | grep polkadot" && ss -plunt | grep polkadot
-EXEC "curl -s -H \"Content-Type: application/json\" -d '{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"chain_getBlock\"}' http://localhost:9933/ | grep number" && curl -s -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "chain_getBlock"}' http://localhost:9933/ | grep number
+INFOF "sync network: " && curl -s -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "system_chain"}' http://localhost:9933/ | jq .result -r
+EXEC "curl -H "Content-Type: application/json" --data '{ "jsonrpc":"2.0", "method":"system_health", "params":[],"id":1 }' localhost:9933 | jq ." && curl -H "Content-Type: application/json" --data '{ "jsonrpc":"2.0", "method":"system_health", "params":[],"id":1 }' localhost:9933  | jq .
+# EXEC "curl -s -H \"Content-Type: application/json\" -d '{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"chain_getBlock\"}' http://localhost:9933/ | grep number" && curl -s -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "chain_getBlock"}' http://localhost:9933/
 }
 
 function check_conflux() {
@@ -101,6 +103,8 @@ INFOF "current block hash: " && iris status |& awk -F 'latest_block_hash":"' '{p
 main() {
 
 clear
+
+! hash jq && EXEC "apt install -y jq"
 
 if [ ".$1" = "." ]
 then
