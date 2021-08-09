@@ -52,8 +52,8 @@ main() {
 installScriptUrl="https://gitlab.com/tezos/tezos/raw/carthagenet/scripts/alphanet.sh"
 
 # install script url
-dockerUrl="curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | bash"
-dockerComposeUrl="curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | bash"
+dockerUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh"
+dockerComposeUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh"
 
 # install docker and docker-compose
 curl -SsL $dockerUrl | bash
