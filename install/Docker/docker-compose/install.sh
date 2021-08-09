@@ -46,6 +46,9 @@ main() {
 version=${1-"1.29.2"}
 downloadUrl="https://github.com/docker/compose/releases/download/${version}/docker-compose-Linux-x86_64"
 
+# check service
+docker-compose version &> /dev/null && YELLOW "docker-compose has been installed ..." && return 0
+
 # download
 EXEC "curl -SsL $downloadUrl > /usr/local/bin/docker-compose"
 
