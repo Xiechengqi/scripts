@@ -50,6 +50,7 @@ main() {
 # installScriptUrl="https://gitlab.com/tezos/tezos/raw/latest-release/scripts/tezos-docker-manager.sh"
 # old install script url
 installScriptUrl="https://gitlab.com/tezos/tezos/raw/carthagenet/scripts/alphanet.sh"
+installPath="/data/Tezos/tezos-node"
 
 # install script url
 dockerUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh"
