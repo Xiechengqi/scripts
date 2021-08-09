@@ -59,6 +59,7 @@ systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running
 apt-get remove docker docker-engine docker.io containerd runc &> /dev/null
 
 # install requirements
+EXEC "export DEBIAN_FRONTEND=noninteractive"
 EXEC "apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release"
 
 # add app source
