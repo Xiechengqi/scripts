@@ -65,12 +65,17 @@ dockerComposeUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/in
 curl -SsL $dockerUrl | bash
 curl -SsL $dockerComposeUrl | bash
 
+# get install script name
+[ "$net" = "mainnet" ] && fileName="mainnet" || fileName="carthagenet"
+
+# check service
+bash $installPath/${fileName}.sh status &> /dev/null && YELLOW "tezos-node is running ..." && return 0
+
 # check install path
 EXEC "rm -rf $installPath"
 EXEC "mkdir -p $installPath"
 
 # install
-[ "$net" = "mainnet" ] && fileName="mainnet" || fileName="carthagenet"
 EXEC "curl $installScriptUrl -o $installPath/${fileName}.sh"
 EXEC "chmod +x $installPath/${fileName}.sh"
 
