@@ -80,8 +80,8 @@ EXEC "source /etc/profile.d/tezos.sh"
 EXEC "bash $installPath/${fileName}.sh start --rpc-port 0.0.0.0:8732"
 
 # info
-YELLOW "bash $installPath/${fileName}.sh head" && bash $installPath/${fileName}.sh head
 YELLOW "bash $installPath/${fileName}.sh node status" && bash $installPath/${fileName}.sh node status
+YELLOW "look log: bash $installPath/${fileName}.sh node log"
 }
 
 main $@
