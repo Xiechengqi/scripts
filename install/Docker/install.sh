@@ -3,7 +3,9 @@
 #
 # xiechengqi
 # 2021/08/09
-# make install docker
+# Ubuntu 18.04+
+# https://docs.docker.com/engine/install/ubuntu/
+# install docker
 #
 
 source /etc/profile
@@ -45,7 +47,7 @@ fi
 main() {
 EXEC "apt-get remove docker docker-engine docker.io containerd runc"
 
-EXEC "apt-get update && apt-get install apt-transport-https ca-certificates curl gnupg lsb-release"
+EXEC "apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release"
     
 EXEC "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
 
@@ -53,7 +55,7 @@ cat > /etc/apt/sources.list.d/docker.list << EOF
 deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
 EOF
 
-EXEC "apt-get update && apt-get install docker-ce docker-ce-cli containerd.io"
+EXEC "apt-get update && apt-get -y install docker-ce docker-ce-cli containerd.io"
  
 EXEC "docker run hello-world"
 }
