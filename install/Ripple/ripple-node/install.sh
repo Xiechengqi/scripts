@@ -70,54 +70,16 @@ EXEC "apt-key finger"
 EXEC "echo 'deb https://repos.ripple.com/repos/rippled-deb bionic stable' | tee -a /etc/apt/sources.list.d/ripple.list"
 EXEC "apt update && apt install -y rippled"
 
-# ln conf bin
+# ln conf bin data logs
 EXEC "ln -fs /opt/ripple/bin $installPath/bin"
 EXEC "ln -fs /opt/ripple/etc $installPath/conf"
+EXEC "ln -fs /var/lib/rippled/db $installPath/data"
+EXEC "ln -fs /var/log/rippled $installPath/logs"
+
+# register bin
+EXEC "ln -fs $installPath/bin/* /usr/local/bin"
 
 # conf
-cat > $installPath/conf/rippled.cfg << EOF
-[server]
-port_rpc_admin_local
-port_peer
-port_ws_admin_local
-[port_rpc_admin_local]
-port = 5005
-ip = 127.0.0.1
-admin = 127.0.0.1
-protocol = http
-[port_peer]
-port = 51235
-ip = 0.0.0.0
-protocol = peer
-[port_ws_admin_local]
-port = 6006
-ip = 127.0.0.1
-admin = 127.0.0.1
-protocol = ws
-[node_size]
-medium
-[node_db]
-type=NuDB
-path=$installPath/data/nudb
-online_delete=512
-advisory_delete=0
-[database_path]
-$installPath/data
-[debug_logfile]
-$installPath/${serviceName}.log
-[sntp_servers]
-time.windows.com
-time.apple.com
-time.nist.gov
-pool.ntp.org
-[validators_file]
-validators.txt
-[rpc_startup]
-{ \"command\": \"log_level\", \"severity\": \"warning\" }
-[ssl_verify]
-1
-EOF
-
 if [ "$net" = "mainnet" ]
 then
 cat > /opt/ripple/etc/validators.txt << EOF
