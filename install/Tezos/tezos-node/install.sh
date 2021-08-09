@@ -47,10 +47,14 @@ main() {
 [ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
 
 # environments
+if [ "$net" = "mainnet" ]
+then
 # new install script url
-# installScriptUrl="https://gitlab.com/tezos/tezos/raw/latest-release/scripts/tezos-docker-manager.sh"
+installScriptUrl="https://gitlab.com/tezos/tezos/raw/latest-release/scripts/tezos-docker-manager.sh"
+else
 # old install script url
 installScriptUrl="https://gitlab.com/tezos/tezos/raw/carthagenet/scripts/alphanet.sh"
+fi
 installPath="/data/Tezos/tezos-node"
 
 # install script url
