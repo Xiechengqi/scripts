@@ -61,7 +61,7 @@ systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running
 
 # check install path
 EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
-EXEC "mkdir -p $installPath/{logs,data}"
+EXEC "mkdir -p $installPath"
 
 # install
 EXEC "apt update && apt install -y apt-transport-https ca-certificates wget gnupg"
