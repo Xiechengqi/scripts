@@ -3,6 +3,7 @@
 #
 # xiechnegqi
 # 2021/08/09
+# https://gitlab.com/tezos/tezos
 # docker-compose install Tezos
 #
 
