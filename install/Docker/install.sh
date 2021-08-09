@@ -56,7 +56,7 @@ serviceName="docker"
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
 
 # remove old apps
-EXEC "apt-get remove docker docker-engine docker.io containerd runc"
+apt-get remove docker docker-engine docker.io containerd runc &> /dev/null
 
 # install requirements
 EXEC "apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release"
