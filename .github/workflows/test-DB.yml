@@ -19,7 +19,7 @@ jobs:
         with:
           server_address: smtp.google.com
           server_port: 465
-          username: ${{secrets.GMAIL_ACCOUNT}}
+          username: ${{secrets.GMAIL_USERNAME}}
           password: ${{secrets.GMAIL_PASSWORD}}
           sender: Github
           subject: 测试数据库安装脚本
