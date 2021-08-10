@@ -55,7 +55,7 @@ OS "ubuntu" "18"
 # environments
 serviceName="qtum-node"
 version="0.20.3"
-installPath="/data/Qtum/${serviceName}-${versioin}"
+installPath="/data/Qtum/${serviceName}-${version}"
 downloadUrl="https://github.com/qtumproject/qtum/releases/download/mainnet-fastlane-v${version}/qtum-${version}-x86_64-linux-gnu.tar.gz"
 rpcUser="user"
 rpcPassword="password"
