@@ -6,5 +6,7 @@ jobs:
     steps:
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | sudo bash
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh | sudo bash
-      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh | bash -s 5.7
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh | sudo bash -s 5.7
+      - run: sudo ss -plunt
+      - run: sudo apt install -qy tree && sudo tree /data
       - run: echo "🍏 This job's status is ${{ job.status }}."
