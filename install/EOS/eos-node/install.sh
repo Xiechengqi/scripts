@@ -157,8 +157,10 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
 
+timestamp=\$(date +%Y%m%d%H%M%S)
+touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
 [ \$(ls $installPath/data/\$* | wc -w) = "0" ] && genesisOptions="--genesis-json $installPath/conf/genesis.json --delete-all-blocks" || genesisOptions=""
-nodeos \$genesisOptions --config-dir $installPath/conf --data-dir $installPath/data  &> $installPath/logs/\$(date +%Y%m%d%H%M%S).log
+nodeos \$genesisOptions --config-dir $installPath/conf --data-dir $installPath/data &> $installPath/logs/\${timestamp}.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
@@ -189,11 +191,11 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-YELLOW "version: $version"
+YELLOW "${serviceName} version: $version"
 YELLOW "install path: $installPath"
 YELLOW "config path: $installPath/conf"
-YELLOW "log path: $installPath/logs"
 YELLOW "data path: $installPath/data"
+YELLOW "tail log cmd: tail -f $installPath/logs/latest.log"
 YELLOW "blockchain info cmd: cleos get info"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
