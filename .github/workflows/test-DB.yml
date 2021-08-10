@@ -1,0 +1,10 @@
+name: GitHub Actions Demo
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-18.04
+    steps:
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | sudo bash
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh | sudo bash
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh | bash -s 5.7
+      - run: echo "🍏 This job's status is ${{ job.status }}."
