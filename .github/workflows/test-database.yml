@@ -1,0 +1,30 @@
+name: GitHub Actions Demo
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-18.04
+    steps:
+#       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh | sudo bash -s 5.7
+#       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | sudo bash
+#       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh | sudo bash
+#       - run: sudo systemctl stop mysqld && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh | sudo bash -s 8.0
+      - run: sudo ss -plunt
+      - run: sudo apt install -q -y tree && sudo tree -d -L 3 /data
+      - run: echo ${{secrets.GMAIL_ACCOUNT}}
+      - run: echo 'github test' > /tmp/README.md
+      - run: echo "🍏 This job's status is ${{ job.status }}." >> /tmp/README.md
+          
+      - name: Send email
+        uses: devellany/send-mail@v1.0.2
+        with:
+          host: smtp.google.com
+          port: 465
+          account: ${{secrets.GMAIL_USERNAME}}
+          password: ${{secrets.GMAIL_PASSWORD}}
+          sender: Github
+          from: ${{secrets.GMAIL_ACCOUNT}}
+          to: xiechengqiemail@163.com
+          subject: Test Database Install Scripts
+          body: file:///tmp/README.md
+          contentType: text/plain
+          attachments: '[{"path":"/tmp/README.md"}]'
