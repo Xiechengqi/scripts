@@ -99,7 +99,7 @@ https://vl.altnet.rippletest.net
 ED264807102805220DA0F312E71FC2C69E1552C9C5790F6C25E3729DEB573D5860
 EOF
 
-cat > /opt/ripple/etc/rippled.cfg << EOF
+cat >> /opt/ripple/etc/rippled.cfg << EOF
 [ips]
 r.altnet.rippletest.net 51235
 EOF
