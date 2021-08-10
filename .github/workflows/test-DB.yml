@@ -13,19 +13,18 @@ jobs:
       - run: echo ${{secrets.GMAIL_ACCOUNT}}
       - run: echo 'github test' > /tmp/README.md
       - run: echo "🍏 This job's status is ${{ job.status }}." >> /tmp/README.md
-      
+          
       - name: Send email
-        uses: dawidd6/action-send-mail@v3.4.1
+        uses: devellany/send-mailer@v1.0.2
         with:
-          server_address: smtp.google.com
-          server_port: 465
-          username: ${{secrets.GMAIL_USERNAME}}
+          host: smtp.google.com
+          port: 465
+          account: ${{secrets.GMAIL_USERNAME}}
           password: ${{secrets.GMAIL_PASSWORD}}
           sender: Github
-          subject: 测试数据库安装脚本
           from: ${{secrets.GMAIL_ACCOUNT}}
-          body: file:///tmp/README.md
-          contentType: text/html
-          attachments: '[{"path":"/tmp/README.md"}]'
           to: xiechengqiemail@163.com
-
+          subject: Test Database Install Scripts
+          body: file:///tmp/README.md
+          contentType: text/plain
+          attachments: '[{"path":"/tmp/README.md"}]'
