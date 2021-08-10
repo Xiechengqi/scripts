@@ -4,7 +4,8 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-18.04
     steps:
-      - run: sudo ls && whoami && sudo su && whoami
+      - run: sudo ls /root && whoami && sudo su && whoami
+      - run: sudo whoami
       - run: ls -alht && pwd && curl ip.sb -4 && whoami && cat /etc/os-release
 #       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | bash
 #       - name: Check out repository code
