@@ -24,6 +24,7 @@
 | Polkadot | [polkadot-node](https://github.com/Xiechengqi/scripts/edit/master/install/Polkadot/polkadot/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Polkadot/polkadot/install.sh \| bash -s [polkadot\|kusama\|westend]` | ✅ |
 | Tezos | [tezos-node](https://github.com/Xiechengqi/scripts/edit/master/install/Tezos/tezos-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Tezos/tezos-node/install.sh \| bash -s [mainnet\|testnet]` | ✅ |
 | Ripple | [ripple-node](https://github.com/Xiechengqi/scripts/edit/master/install/Ripple/ripple-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ripple/ripple-node/install.sh \| bash -s [mainnet\|testnet]` | ✅ |
+| EOS | [eos-node](https://github.com/Xiechengqi/scripts/edit/master/install/EOS/eos-node/install.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/EOS/eos-node/install.sh \| bash -s [mainnet\|testnet]` | ✅ |
 | Tool | [判断OS](https://github.com/Xiechengqi/scripts/edit/master/tool/os.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh \| bash -s [OS] [OSVersion]` | ✅ |
 | | [检查全节点](https://github.com/Xiechengqi/scripts/edit/master/tool/chain.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/chain.sh \| bash` | ✅ |
 | []() |  |
