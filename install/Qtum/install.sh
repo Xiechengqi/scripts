@@ -90,6 +90,13 @@ source /etc/profile
 qtumd $options -datadir=$installPath/data -conf=$installPath/conf/${serviceName}.conf -debuglogfile=$installPath/logs/\$(date +%Y%m%d%H%M%S).log 
 EOF
 
+# change softlink
+EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
+
+# start
+EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
+EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
+
 # info
 # curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:3889/
 YELLOW "version: $version"
