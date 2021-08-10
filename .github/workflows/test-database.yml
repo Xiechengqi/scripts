@@ -18,13 +18,12 @@ jobs:
         uses: devellany/send-mail@v1.0.2
         with:
           host: smtp.google.com
-          port: 465
-          account: ${{secrets.GMAIL_USERNAME}}
+          account: ${{secrets.GMAIL_ACCOUNT}}
           password: ${{secrets.GMAIL_PASSWORD}}
           sender: Github
           from: ${{secrets.GMAIL_ACCOUNT}}
-          to: xiechengqiemail@163.com
           subject: Test Database Install Scripts
           body: file:///tmp/README.md
           contentType: text/plain
           attachments: '[{"path":"/tmp/README.md"}]'
+          to: Xiechengqiemail@163.com
