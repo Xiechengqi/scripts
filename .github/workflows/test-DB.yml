@@ -4,33 +4,28 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-18.04
     steps:
-      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh | sudo bash -s 5.7
-      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | sudo bash
-      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh | sudo bash
-      - run: sudo systemctl stop mysqld && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh | sudo bash -s 8.0
+#       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh | sudo bash -s 5.7
+#       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | sudo bash
+#       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh | sudo bash
+#       - run: sudo systemctl stop mysqld && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh | sudo bash -s 8.0
       - run: sudo ss -plunt
       - run: sudo apt install -q -y tree && sudo tree -d -L 3 /data
+      - run: echo ${{secrets.GMAIL_ACCOUNT}}
+      - run: echo 'github test' > /data/README.md
       - run: echo "🍏 This job's status is ${{ job.status }}."
       
       - name: Send email
-        # You may pin to the exact commit or the version.
-        # uses: dawidd6/action-send-mail@ceb614a2c5737d913f2d2729e2bcc70ad933382b
         uses: dawidd6/action-send-mail@v3.4.1
         with:
-          # SMTP server address
           server_address: smtp.google.com
-          # SMTP server port
           server_port: 465
-          # Authenticate as this user to SMTP server
           username: ${{secrets.GMAIL_ACCOUNT}}
-          # Authenticate with this password to SMTP server
           password: ${{secrets.GMAIL_PASSWORD}}
-          # Subject of mail message
+          sender: Github
           subject: 测试数据库安装脚本
-          # Recipients mail addresses (separated with comma)
-          to: xiechengqiemail@163.com
-          # Full name of mail sender (might be with an email address specified in <>)
           from: ${{secrets.GMAIL_ACCOUNT}}
-          body: file://README.md
+          body: file:///data/README.md
           contentType: text/html
-          attachments: file://attachmets.json
+          attachments: '[{"path":"/data/README.md"}]'
+          to: xiechengqiemail@163.com
+
