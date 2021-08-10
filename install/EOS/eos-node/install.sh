@@ -73,6 +73,7 @@ EXEC "curl -sSL $downloadUrl -o $installPath/src/${serviceName}-${version}.deb"
 EXEC "curl -SsL $genesisFileUrl -o $installPath/conf/genesis.json"
 
 # install
+EXEC "apt update && apt install -y libpq5"
 EXEC "dpkg -i $installPath/src/${serviceName}-${version}.deb"
 EXEC "nodeos -v" && nodeos -v
 
@@ -99,12 +100,12 @@ chain-threads = 8
 http-threads = 6
 http-max-response-time-ms = 60000
 abi-serializer-max-time-ms = 50000
-mongodb-queue-size = 256
 
 plugin = eosio::chain_plugin
 plugin = eosio::chain_api_plugin
 plugin = eosio::http_plugin
 plugin = eosio::history_api_plugin
+
 EOF
 
 if [ "$net" = "mainnet" ]
@@ -156,8 +157,8 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
 
-[ ! -d $installPath/data ] && genesisOptions="--genesis-json $installPath/conf/genesis.json --delete-all-blocks" || genesisOptions=""
-nodeos $genesisOptions --config-dir $installPath/conf --data-dir $installPath/data  &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
+[ \$(ls $installPath/data/\$* | wc -w) = "0" ] && genesisOptions="--genesis-json $installPath/conf/genesis.json --delete-all-blocks" || genesisOptions=""
+nodeos \$genesisOptions --config-dir $installPath/conf --data-dir $installPath/data  &> $installPath/logs/\$(date +%Y%m%d%H%M%S).log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
@@ -193,7 +194,7 @@ YELLOW "install path: $installPath"
 YELLOW "config path: $installPath/conf"
 YELLOW "log path: $installPath/logs"
 YELLOW "data path: $installPath/data"
-YELLOW "blockchain info cmd: "
+YELLOW "blockchain info cmd: cleos get info"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
