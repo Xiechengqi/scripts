@@ -4,10 +4,8 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-18.04
     steps:
-      - run: sudo ls /root && whoami && sudo su && whoami
-      - run: sudo whoami
       - run: ls -alht && pwd && curl ip.sb -4 && whoami && cat /etc/os-release
-#       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | bash
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | sudo bash
 #       - name: Check out repository code
 #         uses: actions/checkout@v2
 #       - run: ls -alht && pwd && ls ${{ github.workspace }} && echo ${{ github.workspace }}
