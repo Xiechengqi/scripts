@@ -81,7 +81,6 @@ EXEC "nodeos -v" && nodeos -v
 EXEC "ln -fs /usr/opt/eosio/${version}/bin $installPath/bin"
 
 # conf，config file name must be config.ini
-[ "$1" = "mainnet" ] && ifTestnet="0" || ifTestnet="1"    # get testnet or mainnet
 cat > $installPath/conf/config.ini << EOF
 blocks-dir = "$installPath/data"
 http-server-address = 0.0.0.0:$httpPort
