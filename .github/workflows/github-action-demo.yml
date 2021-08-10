@@ -2,13 +2,14 @@ name: GitHub Actions Demo
 on: [push]
 jobs:
   Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - run: ls -alht && pwd && curl ip.sb -4 && whoami && cat /etc/os-release
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - run: ls -alht && pwd && ls ${{ github.workspace }} && echo ${{ github.workspace }}
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh | bash
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#       - run: ls -alht && pwd && ls ${{ github.workspace }} && echo ${{ github.workspace }}
+#       - name: List files in the repository
+#         run: |
+#           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
