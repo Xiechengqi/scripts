@@ -11,7 +11,7 @@ jobs:
       - run: sudo ss -plunt
       - run: sudo apt install -q -y tree && sudo tree -d -L 3 /data
       - run: echo ${{secrets.GMAIL_ACCOUNT}}
-      - run: echo 'github test' > /data/README.md
+      - run: echo 'github test' > /tmp/README.md
       - run: echo "🍏 This job's status is ${{ job.status }}."
       
       - name: Send email
@@ -24,8 +24,8 @@ jobs:
           sender: Github
           subject: 测试数据库安装脚本
           from: ${{secrets.GMAIL_ACCOUNT}}
-          body: file:///data/README.md
+          body: file:///tmp/README.md
           contentType: text/html
-          attachments: '[{"path":"/data/README.md"}]'
+          attachments: '[{"path":"/tmp/README.md"}]'
           to: xiechengqiemail@163.com
 
