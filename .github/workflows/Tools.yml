@@ -1,13 +1,13 @@
 name: Test Tools Install Scripts
 on:
-#   push:
-#     branches:
-#       - master
-  schedule:
-    - cron: '0 4 * * *'
+  push:
+    branches:
+      - master
+#   schedule:
+#     - cron: '0 4 * * *'
 jobs:
   Explore-GitHub-Actions:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu:18.04
     steps:
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | sudo bash
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash
