@@ -9,10 +9,10 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-18.04
     steps:
-      - run: systemctl stop docker && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | sudo bash
-      - run: rm -f `which docker-compose` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash
-      - run: rm -f `which node` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh | sudo bash
-      - run: rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash
+      - run: sudo systemctl stop docker && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | sudo bash
+      - run: sudo rm -f `which docker-compose` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash
+      - run: sudo rm -f `which node` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh | sudo bash
+      - run: sudo rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh | sudo bash
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh | sudo bash
       - run: sudo ss -plunt
