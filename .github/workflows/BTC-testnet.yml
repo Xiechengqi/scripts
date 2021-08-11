@@ -1,8 +1,8 @@
 name: Test BTC Testnet Install Scripts
 on:
-#   push:
-#     branches:
-#       - master
+  push:
+    branches:
+      - master
   schedule:
     - cron: '0 0 * * *'
 jobs:
@@ -11,6 +11,12 @@ jobs:
     steps:
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/btc-node/install.sh | sudo bash -s testnet
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/btc-index/install.sh | sudo bash -s testnet
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-node/install.sh | sudo bash -s testnet
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-index/install.sh | sudo bash -s testnet
+      - run curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-node/install.sh | sudo bash -s testnet
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-index/install.sh | bash -s testnet
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Qtum/qtum-node/install.sh | sudo bash -s testnet
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Qtum/qtum-index/install.sh | sudo bash -s testnet
       - run: sleep 30 && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/chain.sh | sudo bash
       - run: sudo ss -plunt
       - run: sudo apt install -q -y tree && sudo tree -d -L 3 /data
