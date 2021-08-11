@@ -1,3 +1,4 @@
+``` ini
 ##
 ## qtum.conf configuration file. Lines beginning with # are comments.
 ##
@@ -143,3 +144,4 @@
 
 # Minimize to the system tray
 #minimizetotray=1
+```
