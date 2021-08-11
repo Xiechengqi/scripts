@@ -2,10 +2,10 @@
 
 #
 # xiechengqi
-# 2021/08/10
+# 2021/08/11
 # https://github.com/qtumproject/qtum
 # Ubuntu 18.04
-# install qtum
+# install qtum-node
 #
 
 source /etc/profile
@@ -57,7 +57,6 @@ serviceName="qtum-node"
 version="0.20.3"
 installPath="/data/Qtum/${serviceName}-${version}"
 downloadUrl="https://github.com/qtumproject/qtum/releases/download/mainnet-fastlane-v${version}/qtum-${version}-x86_64-linux-gnu.tar.gz"
-rpcPort="3889"
 rpcUser="user"
 rpcPassword="password"
 
@@ -78,7 +77,6 @@ EXEC "qtumd -version" && qtumd -version
 # conf
 cat > $installPath/conf/${serviceName}.conf << EOF
 logevents=1
-rpcport=$rpcPort
 rpcuser=$rpcUser
 rpcpassword=$rpcPassword
 EOF
@@ -96,7 +94,7 @@ EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
 Description=Qtum Node
 Documentation=https://github.com/qtumproject/qtum
@@ -113,6 +111,8 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
