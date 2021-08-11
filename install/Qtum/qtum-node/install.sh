@@ -57,6 +57,7 @@ serviceName="qtum-node"
 version="0.20.3"
 installPath="/data/Qtum/${serviceName}-${version}"
 downloadUrl="https://github.com/qtumproject/qtum/releases/download/mainnet-fastlane-v${version}/qtum-${version}-x86_64-linux-gnu.tar.gz"
+rpcPort="3889"
 rpcUser="user"
 rpcPassword="password"
 
@@ -77,6 +78,7 @@ EXEC "qtumd -version" && qtumd -version
 # conf
 cat > $installPath/conf/${serviceName}.conf << EOF
 logevents=1
+rpcport=$rpcPort
 rpcuser=$rpcUser
 rpcpassword=$rpcPassword
 EOF
@@ -124,8 +126,8 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 YELLOW "${serviceName} version: $version"
 YELLOW "install path: $installPath"
 YELLOW "config path: $installPath/conf"
-YELLOW "log path: $installPath/logs"
 YELLOW "data path: $installPath/data"
+YELLOW "tail log cmd: tail -f $installPath/logs/latest.log"
 YELLOW "blockchain info cmd: alias qtum-cli=\"qtum-cli -conf=${installPath}/conf/${serviceName}.conf\" && qtum-cli getblockchaininfo"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
