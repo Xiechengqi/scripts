@@ -126,7 +126,7 @@ YELLOW "install path: $installPath"
 YELLOW "config path: $installPath/conf"
 YELLOW "log path: $installPath/logs"
 YELLOW "data path: $installPath/data"
-YELLOW "blockchain info cmd: qtum-cli -conf=${installPath}/conf/${serviceName}.conf getinfo"
+YELLOW "blockchain info cmd: alias qtum-cli=\"qtum-cli -conf=${installPath}/conf/${serviceName}.conf\" && qtum-cli getblockchaininfo"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
