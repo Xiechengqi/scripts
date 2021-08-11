@@ -36,8 +36,9 @@ fi
 
 function main() {
 # environment
+serviceName="node"
 version=${1-"12.16.0"}
-installPath="/data/node-${version}"
+installPath="/data/${serviceName}-${version}"
 downloadUrl="https://nodejs.org/download/release/v${version}/node-v${version}-linux-x64.tar.gz"
 
 # check node
@@ -59,7 +60,7 @@ EXEC "node -v" && node -v
 EXEC "npm -v" && npm -v
 
 # change softlink
-EXEC "ln -fs $installPath $(dirname $installPath)/node"
+EXEC "ln -fs $installPath $(dirname $installPath)/${serviceName}"
 
 # info
 YELLOW "version: $version"
