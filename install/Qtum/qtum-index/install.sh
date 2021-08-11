@@ -112,9 +112,16 @@ cat > $installPath/qtuminfo-node.json << EOF
 EOF
 
 # Create database and import structure.sql
-INFO "mysql -u${dbUser} -p${dbPassword} -e 'CREATE DATABASE ${dbName};'" && mysql -u${dbUser} -p${dbPassword} -e 'CREATE DATABASE ${dbName};'
-EXEC "curl -SsL $initSqlUrl -o $installPath/init.sql"
-INFO "mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/structure.sql" && mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/init.sql
+mysql -uroot -p${dbRootPassword} << EOF
+set global validate_password.policy=0;
+set global validate_password.length=4;
+CREATE DATABASE IF NOT EXISTS qtum_${chainId};
+CREATE USER '${dbUser}'@'%' IDENTIFIED WITH mysql_native_password BY '${dbPassword}';
+GRANT ALL PRIVILEGES ON qtum_${chainId}.* TO 'qtum'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EOF
+EXEC "curl -SsL $initSqlUrl -o $installPath/structure.sql"
+INFO "mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/structure.sql" && mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/structure.sql
 
 # create start.sh
 cat > $installPath/start.sh << EOF
@@ -317,8 +324,9 @@ OS "ubuntu" "18"
 local installPath="/data/Qtum/qtum-index"
 local dbHost="localhost"
 local dbPort="3306"
-local dbUser="root"
-local dbPassword="P@ssword"
+local dbRootPassword="P@ssword"
+local dbUser="qtum"
+local dbPassword="qtum"
 local rpcUser="user"
 local rpcPassword="password"
 local serverPort="3001"
