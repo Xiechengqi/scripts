@@ -112,9 +112,9 @@ cat > $installPath/qtuminfo-node.json << EOF
 EOF
 
 # Create database and import structure.sql
-EXEC "mysql -u${dbUser} -p${dbPassword} -e 'CREATE DATABASE ${dbName};'"
-EXEC "curl -SsL $initSqlUrl -o $installPath/structure.sql"
-EXEC "mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/structure.sql"
+INFO "mysql -u${dbUser} -p${dbPassword} -e 'CREATE DATABASE ${dbName};'" && mysql -u${dbUser} -p${dbPassword} -e 'CREATE DATABASE ${dbName};'
+EXEC "curl -SsL $initSqlUrl -o $installPath/init.sql"
+INFO "mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/structure.sql" && mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/init.sql
 
 # create start.sh
 cat > $installPath/start.sh << EOF
