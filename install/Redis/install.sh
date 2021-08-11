@@ -79,7 +79,7 @@ cat >> $installPath/redis.conf << EOF
 
 requirepass $redisPassword
 dir $installPath/data
-logfile \"$installPath/logs/redis.log\"
+logfile "$installPath/logs/redis.log"
 EOF
 
 # create start.sh
