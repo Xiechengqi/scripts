@@ -80,7 +80,7 @@ bind_ip = 0.0.0.0    #允许所有的连接
 EOF
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
 Description=MongoDB Database Server
 Documentation=https://docs.mongodb.org/manual
@@ -117,6 +117,8 @@ TasksAccounting=false
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/${serviceName}"
@@ -126,8 +128,8 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName" && systemctl status $serviceName
 
 # info
-YELLOW "version: $version"
-YELLOW "port: $port"
+YELLOW "${serviceName} version: $version"
+YELLOW "${serviceName} port: $port"
 YELLOW "install path: $installPath"
 YELLOW "config path: $installPath/conf"
 YELLOW "data path: $installPath/data"
