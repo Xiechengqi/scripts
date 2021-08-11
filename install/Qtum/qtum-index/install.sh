@@ -69,43 +69,43 @@ EXEC "cd $installPath && npm install"
 # Edit file qtuminfo-node.json and change the configurations if needed
 cat > $installPath/qtuminfo-node.json << EOF
 {
-  \"version\": \"0.0.1\",
-  \"chain\": \"$chainId\",
-  \"services\": [
-    \"db\",
-    \"p2p\",
-    \"header\",
-    \"block\",
-    \"transaction\",
-    \"contract\",
-    \"mempool\",
-    \"server\"
+  "version": "0.0.1",
+  "chain": "$chainId",
+  "services": [
+    "db",
+    "p2p",
+    "header",
+    "block",
+    "transaction",
+    "contract",
+    "mempool",
+    "server"
   ],
-  \"servicesConfig\": {
-    \"db\": {
-      \"mysql\": {
-        \"uri\": \"mysql://${dbUser}:${dbPassword}@${dbHost}/${dbName}\"
+  "servicesConfig": {
+    "db": {
+      "mysql": {
+        "uri": "mysql://${dbUser}:${dbPassword}@${dbHost}/${dbName}"
       },
-      \"rpc\": {
-        \"protocol\": \"http\",
-        \"host\": \"localhost\",
-        \"port\": $rpcPort,
-        \"user\": \"$rpcUser\",
-        \"password\": \"$rpcPassword\"
+      "rpc": {
+        "protocol": "http",
+        "host": "localhost",
+        "port": $rpcPort,
+        "user": "$rpcUser",
+        "password": "$rpcPassword"
       }
     },
-    \"p2p\": {
-      \"peers\": [
+    "p2p": {
+      "peers": [
         {
-          \"ip\": {
-            \"v4\": \"127.0.0.1\"
+          "ip": {
+            "v4": "127.0.0.1"
           },
-          \"port\": $p2pPort 
+          "port": $p2pPort 
         }
       ]
     },
-    \"server\": {
-      \"port\": $serverPort 
+    "server": {
+      "port": $serverPort 
     }
   }
 }
