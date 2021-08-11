@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/08/02
+# 2021/08/11
 # make install redis
 #
 
@@ -51,13 +51,14 @@ serviceName="redis"
 version=${1-"5.0.3"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="http://download.redis.io/releases/redis-${version}.tar.gz"
+redisPassword="P@ssword"
 
 # check servcie
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
 
 # check install path
 EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
-EXEC "mkdir -p $installPath"
+EXEC "mkdir -p $installPath/{data,logs}"
 
 # download tarball
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
@@ -70,6 +71,17 @@ EXEC "cd $installPath"
 EXEC "make && make install"
 EXEC "cd -"
 
+# conf
+sed -i '/^requirepass/d' $installPath/redis.conf
+sed -i '/^dir/d' $installPath/redis.conf
+sed -i '/^logfile/d' $installPath/redis.conf
+cat >> $installPath/redis.conf << EOF
+
+requirepass $redisPassword
+dir $installPath/data
+logfile \"$installPath/logs/redis.log\"
+EOF
+
 # create start.sh
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
@@ -77,14 +89,14 @@ source /etc/profile
 
 redis-server $installPath/redis.conf
 EOF
+EXEC "chmod +x $installPath/start.sh"
 
-# register redis
-cat > /lib/systemd/system/${serviceName}.service << EOF
+# register service
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
-Description=EthereumTransactionStorage
+Description=Redis Server
 After=syslog.target
 After=network.target
-After=postgres.service
 
 [Service]
 ExecStart=/bin/bash $installPath/start.sh
@@ -96,6 +108,8 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
@@ -105,7 +119,14 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-YELLOW "version: $version"
+YELLOW "$serviceName version: $version"
+YELLOW "$serviceName password: $redisPassword"
+YELLOW "install path: $installPath"
+YELLOW "config path: $installPath/redis.conf"
+YELLOW "data path: $installPath/data"
+YELLOW "log cmd: tail -f $installPath/logs/redis.log"
+YELLOW "connect cmd: redis-cli -h 127.0.0.1 -p 6379 -a ${redisPassword}" 
+YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
