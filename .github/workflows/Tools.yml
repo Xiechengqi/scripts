@@ -1,4 +1,4 @@
-name: Test BTC Install Scripts
+name: Test Tools Install Scripts
 on:
   push:
     branches:
