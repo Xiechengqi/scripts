@@ -113,8 +113,8 @@ EOF
 
 # Create database and import structure.sql
 EXEC "mysql -u${dbUser} -p${dbPassword} -e 'CREATE DATABASE ${dbName};'"
-EXEC "curl -SsL $initSqlUrl -o $installPath/conf/structure.sql"
-EXEC "mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/conf/structure.sql"
+EXEC "curl -SsL $initSqlUrl -o $installPath/structure.sql"
+EXEC "mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/structure.sql"
 
 # create start.sh
 cat > $installPath/start.sh << EOF
