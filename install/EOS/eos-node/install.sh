@@ -160,7 +160,7 @@ source /etc/profile
 timestamp=\$(date +%Y%m%d%H%M%S)
 touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
 [ \$(ls $installPath/data/\$* | wc -w) = "0" ] && genesisOptions="--genesis-json $installPath/conf/genesis.json --delete-all-blocks" || genesisOptions=""
-nodeos \$genesisOptions --config-dir $installPath/conf --data-dir $installPath/data &> $installPath/logs/\${timestamp}.log
+nodeos \$genesisOptions --config-dir $installPath/conf --data-dir $installPath/data &> $installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
