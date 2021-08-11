@@ -113,15 +113,13 @@ EOF
 
 # Create database and import structure.sql
 mysql -uroot -p${dbRootPassword} << EOF
-set global validate_password.policy=0;
-set global validate_password.length=4;
 CREATE DATABASE IF NOT EXISTS qtum_${chainId};
 CREATE USER '${dbUser}'@'%' IDENTIFIED WITH mysql_native_password BY '${dbPassword}';
 GRANT ALL PRIVILEGES ON qtum_${chainId}.* TO 'qtum'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EOF
 EXEC "curl -SsL $initSqlUrl -o $installPath/structure.sql"
-INFO "mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/structure.sql" && mysql -u${dbUser} -p${dbPassword} $dbName < $installPath/structure.sql
+INFO "mysql -u${dbUser} -p${dbPassword} ${dbName} < $installPath/structure.sql" && mysql -u${dbUser} -p${dbPassword} ${dbName} < $installPath/structure.sql
 
 # create start.sh
 cat > $installPath/start.sh << EOF
