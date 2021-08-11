@@ -179,7 +179,7 @@ EXEC "mkdir -p $installPath/{config,logs}"
 EXEC "cd $installPath && npm install"
 
 # conf
-cat > $installPath/config/config.prod.js << EOF
+cat > $installPath/config/config.default.js << EOF
 const path = require('path')
 const Redis = require('ioredis')
 
@@ -341,7 +341,7 @@ local rpcPort="13889"
 local p2pPort="13888"
 fi
 local redisHost="localhost"
-local redisPort="6397"
+local redisPort="6379"
 local redisPassword="P@ssword"
 
 
