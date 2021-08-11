@@ -1,0 +1,20 @@
+name: Test BTC Install Scripts
+on:
+  push:
+    branches:
+      - master
+#   schedule:
+#     - cron: '0 4 * * *'
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-18.04
+    steps:
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | sudo bash
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh | sudo bash
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh | sudo bash
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh | sudo bash
+      - run: sudo ss -plunt
+      - run: sudo apt install -q -y tree && sudo tree -d -L 3 /data
+      - run: echo "🍏 This job's status is ${{ job.status }}"
