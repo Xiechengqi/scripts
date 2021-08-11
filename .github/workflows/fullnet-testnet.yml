@@ -9,7 +9,7 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-18.04
     steps:
-      - run: sudo rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/IRIS/iris-node/install.sh | sudo bash -s testnet
+#       - run: sudo rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/IRIS/iris-node/install.sh | sudo bash -s testnet
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Tezos/tezos-node/install.sh | sudo bash -s testnet
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ripple/ripple-node/install.sh | sudo bash -s testnet
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/EOS/eos-node/install.sh | sudo bash -s testnet
