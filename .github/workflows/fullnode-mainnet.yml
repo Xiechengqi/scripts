@@ -1,4 +1,4 @@
-name: Test BTC Install Scripts
+name: Test fullnode mainnet Install Scripts
 on:
   push:
     branches:
