@@ -9,12 +9,12 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-18.04
     steps:
-      - run: sudo systemctl stop docker && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | sudo bash
-      - run: sudo rm -f `which docker-compose` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash
-      - run: sudo rm -f `which node` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh | sudo bash
-      - run: sudo rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash
-      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh | sudo bash
-      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh | sudo bash
+      - run: sudo systemctl stop docker && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | sudo bash || true
+      - run: sudo rm -f `which docker-compose` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash || true
+      - run: sudo rm -f `which node` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh | sudo bash || true
+      - run: sudo rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash || true
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh | sudo bash || true
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh | sudo bash || true
       - run: sudo ss -plunt
       - run: sudo apt install -q -y tree && sudo tree -d -L 3 /data
       - run: echo "🍏 This job's status is ${{ job.status }}"
