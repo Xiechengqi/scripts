@@ -16,7 +16,7 @@ jobs:
 #       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Polkadot/polkadot-node/install.sh | sudo bash -s mainnet
 #       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Conflux/conflux-node/install.sh | sudo bash -s mainnet
       - run: sudo cat /etc/profile && sudo ls -alht /usr/bin/go
-      - run: sudo ls -alht /usr/bin/node && ls -alht /usr/bin/docker
+      - run: sudo ls -alht `which node` && sudo ls -alht `which docker`
       - run: sudo ss -plunt
       - run: sudo apt install -q -y tree && sudo tree -d -L 3 /data
       - run: echo "🍏 This job's status is ${{ job.status }}"
