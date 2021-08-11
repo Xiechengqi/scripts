@@ -82,7 +82,7 @@ EXEC "chown -R $user.$user $installPath"
 EXEC "su $user -c '$installPath/bin/initdb -E UTF8 --locale=en_US.utf8 -D $installPath/data'"
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
 Description=PostgreSQL database server
 After=network.target
@@ -103,6 +103,8 @@ TimeoutSec=300
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
@@ -112,7 +114,7 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-YELLOW "version: $version"
+YELLOW "${serviceName} version: $version"
 YELLOW "install path: $installPath"
 YELLOW "data path: $installPath/data"
 YELLOW "log path: $installPath/logs"
