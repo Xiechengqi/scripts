@@ -113,7 +113,7 @@ local chainList=("eth" "btc" "platon" "polkadot" "conflux" "iris")
 for nodeName in ${chainList[*]}
 do
 local serviceName="${nodeName}-node"
-check_service $serviceName && check_${nodeName}
+check_service $serviceName && check_${nodeName} || continue
 done  
 
 else
