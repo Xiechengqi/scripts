@@ -1,0 +1,17 @@
+name: Test ETH Testnet Install Scripts
+on:
+#   push:
+#     branches:
+#       - master
+  schedule:
+    - cron: '0 3 * * *'
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-18.04
+    steps:
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-node/install.sh | sudo bash -s testnet
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-index/install.sh | sudo bash -s testnet
+      - run: sleep 30 && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/chain.sh | sudo bash
+      - run: sudo ss -plunt
+      - run: sudo apt install -q -y tree && sudo tree -d -L 3 /data
+      - run: echo "🍏 This job's status is ${{ job.status }}"
