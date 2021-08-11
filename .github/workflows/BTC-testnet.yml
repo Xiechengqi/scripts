@@ -13,7 +13,7 @@ jobs:
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/BTC/btc-index/install.sh | sudo bash -s testnet
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-node/install.sh | sudo bash -s testnet
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ETH/eth-index/install.sh | sudo bash -s testnet
-      - run curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-node/install.sh | sudo bash -s testnet
+      - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-node/install.sh | sudo bash -s testnet
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Platon/platon-index/install.sh | bash -s testnet
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Qtum/qtum-node/install.sh | sudo bash -s testnet
       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Qtum/qtum-index/install.sh | sudo bash -s testnet
