@@ -1,8 +1,8 @@
 name: Test fullnode testnet Install Scripts
 on:
-  push:
-    branches:
-      - master
+#   push:
+#     branches:
+#       - master
   schedule:
     - cron: '0 1 * * *'
 jobs:
