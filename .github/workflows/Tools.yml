@@ -15,7 +15,8 @@ jobs:
 #       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash
 #       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh | sudo bash
 #       - run: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh | sudo bash
-      - run: which docker && which docker-compose && which noe && which go && which pyenv
+      - run: which docker && which docker-compose && which node && which go && which pyenv
+      - run: ls -alht /usr/bin/docker
       - run: sudo ss -plunt
       - run: sudo apt install -q -y tree && sudo tree -d -L 3 /data
       - run: echo "🍏 This job's status is ${{ job.status }}"
