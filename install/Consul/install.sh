@@ -68,7 +68,7 @@ EXEC "unzip /tmp/${serviceName}/${serviceName}.zip -d ${installPath}/bin"
 EXEC "ln -fs $installPath/bin/consul /usr/local/bin/consul"
 
 # create start.sh
-cat > $installPath/${serviceName}.service << EOF
+cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
@@ -76,6 +76,7 @@ timestamp=\$(date +%Y%m%d%H%M%S)
 touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
 consul agent -server -bootstrap-expect=1 -data-dir=$installPath/data -node=master -bind=127.0.0.1 -config-dir=$installPath/conf -client 0.0.0.0 -ui &> $installPath/logs/latest.log
 EOF
+EXEC "chmod +x $installPath/start.sh"
 
 # register service
 cat > $installPath/${serviceName}.service << EOF
