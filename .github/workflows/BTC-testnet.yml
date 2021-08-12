@@ -1,4 +1,4 @@
-name: Test BTC Testnet Install Scripts
+name: Test Testnet Node And Index Install Scripts
 on:
 #   push:
 #     branches:
