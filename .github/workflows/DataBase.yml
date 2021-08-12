@@ -1,7 +1,7 @@
 name: Test Database Install Scripts
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 1 * * *'
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-18.04
