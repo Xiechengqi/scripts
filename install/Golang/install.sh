@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-# 
+#
 # xiechengqi
-# OS: all linux
-# 2021/07/30
-# binary install golang 
-# curl -SsL https://xxx/install.sh | bash -s Go版本号
-# 
+# OS: ubuntu
+# 2021/08/14
+# binary install golang (adapt to China)
+#
 
 source /etc/profile
 
@@ -43,7 +42,8 @@ function main() {
 serviceName="golang"
 version=${1-"1.16.6"}
 installPath="/data/${serviceName}-${version}"
-downloadUrl="https://golang.org/dl/go${version}.linux-amd64.tar.gz"
+countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
+[ "$countryCode" = "CN" ] && downloadUrl="https://mirrors.ustc.edu.cn/golang/go${version}.linux-amd64.tar.gz" || downloadUrl="https://golang.org/dl/go${version}.linux-amd64.tar.gz"
 
 # check service
 go version &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
