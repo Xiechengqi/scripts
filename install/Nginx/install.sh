@@ -91,7 +91,7 @@ PIDFile=$installPath/nginx.pid
 # Nginx will fail to start if /run/nginx.pid already exists but has the wrong
 # SELinux context. This might happen when running `nginx -t` from the cmdline.
 # https://bugzilla.redhat.com/show_bug.cgi?id=1268621
-ExecStartPre=/usr/bin/rm -f $installPath/nginx.pid
+ExecStartPre=/bin/rm -f $installPath/nginx.pid
 ExecStartPre=/usr/local/bin/nginx -t
 ExecStart=/usr/local/bin/nginx
 ExecReload=/bin/kill -s HUP $MAINPID
