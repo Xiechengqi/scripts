@@ -10,4 +10,3 @@ jobs:
         with:
           source-repo: "git@github.com:Xiechengqi/scripts.git"
           destination-repo: "git@gitee.com:Xiechengqi/scripts.git"
-          
