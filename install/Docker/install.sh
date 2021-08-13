@@ -51,9 +51,10 @@ OS "ubuntu"
 
 # environments
 serviceName="docker"
+countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
 
 # check service
-systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
+systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 # remove old apps
 apt-get remove docker docker-engine docker.io containerd runc &> /dev/null
@@ -64,13 +65,20 @@ EXEC "apt-get update && apt-get install -y apt-transport-https ca-certificates c
 
 # add app source
 EXEC "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
+if [ "$countryCode" = "CN" ]
+then
+cat > /etc/apt/sources.list.d/docker.list << EOF
+deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable
+EOF
+else
 cat > /etc/apt/sources.list.d/docker.list << EOF
 deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
 EOF
+fi
 
 # install
 EXEC "apt-get update && apt-get -y install docker-ce docker-ce-cli containerd.io"
- 
+
 # check docker
 EXEC "docker run hello-world"
 }
