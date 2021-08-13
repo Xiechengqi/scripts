@@ -11,7 +11,7 @@ source /etc/profile
 OS() {
 osType=$1
 osVersion=$2
-curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion}	|| exit 1
+curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/os.sh | bash -s ${osType} ${osVersion}	|| exit 1
 }
 
 INFO() {
@@ -48,7 +48,7 @@ OS "ubuntu" "18"
 
 # environments
 serviceName="mongod"
-version="4.0.25"
+version=${1-"4.0.25"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${version}.tgz"
 port="27017"
