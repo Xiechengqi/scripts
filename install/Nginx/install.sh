@@ -71,6 +71,12 @@ EXEC "export DEBIAN_FRONTEND=noninteractive"
 EXEC "apt install -y build-essential libtool libpcre3 libpcre3-dev zlib1g-dev libssl-dev"
 
 # make and install
+## --prefix	定义保存nginx的目录
+## --with-pcre	强制使用PCRE库
+## --with-http_ssl_module	支持构建将SSL/TLS协议支持添加到流模块的模块
+## --with-http_v2_module	支持构建支持HTTP2的模块.这个模块默认是不构建的
+## --with-http_gunzip_module	支持为不支持gzip编码方法的客户端构建ngx_http_gunzip_module模块，该模块使用 Content-Encoding：gzip解压缩响应。 默认情况下未构建此模块
+## --with-http_gzip_static_module	支持构建ngx_http_gzip_static_module模块，该模块支持发送扩展名为.gz的预压缩文件，而不是常规文件。 默认情况下未构建此模块
 EXEC "cd $installPath/src"
 EXEC "./configure --prefix=$installPath --with-pcre --with-http_ssl_module --with-http_v2_module --with-http_gunzip_module --with-http_gzip_static_module --pid-path=$installPath/nginx.pid"
 EXEC "make"
