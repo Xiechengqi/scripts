@@ -72,9 +72,9 @@ EXEC "apt install -y build-essential libtool libpcre3 libpcre3-dev zlib1g-dev li
 
 # make and install
 EXEC "cd $installPath/src"
-INFO "./configure --prefix=$installPath --with-pcre --with-http_ssl_module --with-http_v2_module --with-http_gunzip_module --with-http_gzip_static_module --pid-path=$installPath/nginx.pid" && ./configure --prefix=$installPath --with-pcre --with-http_ssl_module --with-http_v2_module --with-http_gunzip_module --with-http_gzip_static_module --pid-path=$installPath/nginx.pid
-INFO "make" && make
-INFO "make install" && make install
+EXEC "./configure --prefix=$installPath --with-pcre --with-http_ssl_module --with-http_v2_module --with-http_gunzip_module --with-http_gzip_static_module --pid-path=$installPath/nginx.pid"
+EXEC "make"
+EXEC "make install"
 
 # register bin
 EXEC "ln -fs $installPath/sbin/* /usr/local/bin"
