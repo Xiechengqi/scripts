@@ -67,6 +67,7 @@ EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath/src"
 
 # install requirements，gcc/g++/make/c++ lib/ssl lib/pcre/zlib
 EXEC "apt update"
+EXEC "export DEBIAN_FRONTEND=noninteractive"
 EXEC "apt install -y build-essential libtool libpcre3 libpcre3-dev zlib1g-dev libssl-dev"
 
 # make and install
