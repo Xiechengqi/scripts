@@ -51,7 +51,7 @@ serviceName="redis"
 version=${1-"5.0.3"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="http://download.redis.io/releases/redis-${version}.tar.gz"
-redisPassword="P@ssword"
+port="6379"  # redis default port
 
 # check servcie
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
@@ -77,7 +77,6 @@ sed -i '/^dir/d' $installPath/redis.conf
 sed -i '/^logfile/d' $installPath/redis.conf
 cat >> $installPath/redis.conf << EOF
 
-requirepass $redisPassword
 dir $installPath/data
 logfile "$installPath/logs/redis.log"
 EOF
@@ -120,12 +119,11 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 
 # info
 YELLOW "$serviceName version: $version"
-YELLOW "$serviceName password: $redisPassword"
 YELLOW "install path: $installPath"
 YELLOW "config path: $installPath/redis.conf"
 YELLOW "data path: $installPath/data"
 YELLOW "log cmd: tail -f $installPath/logs/redis.log"
-YELLOW "connect cmd: redis-cli -h 127.0.0.1 -p 6379 -a ${redisPassword}" 
+YELLOW "connect cmd: redis-cli -h 127.0.0.1 -p $port" 
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
