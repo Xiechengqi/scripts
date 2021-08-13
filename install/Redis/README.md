@@ -17,6 +17,8 @@ redis-cli -h 127.0.0.1 -p 6397
 ...
 requirepass P@ssword
 ...
+
+# 重启 redis
 ```
 
 * **开放远程连接**
@@ -27,3 +29,7 @@ requirepass P@ssword
 bind 0.0.0.0
 ...
 bind 127.0.0.1
+...
+
+# 重启 redis
+```
