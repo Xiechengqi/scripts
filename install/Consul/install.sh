@@ -79,7 +79,7 @@ fi
 main() {
 # environments
 serviceName="consul"
-version="1.10.1"
+version=${1-"1.10.1"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://releases.hashicorp.com/consul/${version}/consul_${version}_linux_amd64.zip"
 
