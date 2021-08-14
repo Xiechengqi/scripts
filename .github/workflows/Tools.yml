@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: docker
         run: |
-          sudo systemctl stop docker && curl -SsL ${{SCRITP_URL}}/Docker/install.sh | sudo bash || true
+          sudo systemctl stop docker && curl -SsL ${{env.SCRITP_URL}}/Docker/install.sh | sudo bash || true
 #       - name: docker-compose 
 #         run: |
 #           sudo rm -f `which docker-compose` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash || true
