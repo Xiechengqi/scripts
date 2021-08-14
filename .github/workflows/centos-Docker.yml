@@ -15,8 +15,9 @@ jobs:
       - name: Docker
         run: |
           sudo docker pull centos:7
-          sudo docker run --rm -d --name centos7 centos:7 /bin/sh -c 'curl -SsL $SCRIPT_URL/Docker/install.sh | sudo bash'
+          sudo docker run --rm -d --name centos7 centos:7
           sudo docker exec centos7 which curl
+# /bin/sh -c 'curl -SsL $SCRIPT_URL/Docker/install.sh | sudo bash'
 #       - name: check
 #         run: |
 #           sleep 10
