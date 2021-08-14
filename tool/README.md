@@ -21,7 +21,6 @@ elif [ -f "/etc/fedora-release" ]; then
 os="fedora"
 elif [ -f "/etc/redhat-release" ]; then
 os="centos"
-
 else
 exit 1
 fi
@@ -32,6 +31,8 @@ elif [ -f /etc/os-release ]; then
 local os_full=`awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release`
 elif [ -f /etc/lsb-release ]; then
 local os_full=`awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release`
+else
+exit 1
 fi
 
 local main_ver="$( echo $os_full | grep -oE  "[0-9.]+")"
