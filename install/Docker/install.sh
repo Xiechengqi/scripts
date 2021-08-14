@@ -89,11 +89,11 @@ EXEC "apt-get update && apt-get -y install docker-ce docker-ce-cli containerd.io
 }
 
 _centos() {
-INFO "yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine" && yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
+INFO "yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine" && yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
 EXEC "yum install -y yum-utils device-mapper-persistent-data lvm2"
 EXEC "yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
 [ "${countryCode}" = "CN" ] && EXEC "sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo" && EXEC "yum makecache fast"
-EXEC "yum install docker-ce docker-ce-cli containerd.io"
+EXEC "yum install -y docker-ce docker-ce-cli containerd.io"
 }
 
 main() {
