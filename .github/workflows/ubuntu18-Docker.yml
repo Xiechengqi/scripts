@@ -1,4 +1,4 @@
-name: Test Env Install Scripts
+name: Test Docker install script on ubuntu:18.04
 on:
   push:
     branches:
@@ -15,9 +15,10 @@ jobs:
       - name: Docker
         run: |
           sudo systemctl stop docker && curl -SsL $SCRIPT_URL/Docker/install.sh | sudo bash || true
-          sleep 10 && systemctl status docker
       - name: check
         run: |
+          sleep 10
+          sudo systemctl status docker
           sudo ss -plunt
-          sudo apt install -q -y tree && sudo tree -d -L 3 /data
+          sudo ls --color=auto -alht /data/*
           echo "🍏 Docker Ubuntu 18.04 install script is ${{ job.status }}"
