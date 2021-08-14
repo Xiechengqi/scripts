@@ -8,7 +8,7 @@ on:
 jobs:
   Ubuntu-2004:
     runs-on: ubuntu-20.04
-    env:
+    environment:
       SCRIPT_URL: https://gitee.com/Xiechengqi/scripts/raw/master/install
     steps:
       - name: docker
