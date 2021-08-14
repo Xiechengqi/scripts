@@ -6,7 +6,7 @@ on:
   schedule:
     - cron: '0 0 * * *'
 jobs:
-  ubuntu-1804:
+  centos7:
     name: Docker on centos7
     runs-on: ubuntu-18.04
     env:
@@ -14,30 +14,15 @@ jobs:
     steps:
       - name: Docker
         run: |
-          sudo docker run -itd --name centos7 centos:7 /bin/bash
-          sudo docker exec centos7 /bin/curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | bash
-          sudo docker logs -f centos7
-# /bin/sh -c 'curl -SsL $SCRIPT_URL/Docker/install.sh | sudo bash'
-#       - name: check
-#         run: |
-#           sleep 10
-#           sudo systemctl status docker
-#           sudo ss -plunt
-#           sudo ls --color=auto -alht /data/*
-#           echo "🍏 Docker Ubuntu 18.04 install script is ${{ job.status }}"
-#   ubuntu-2004:
-#     name: Docker on ubuntu:20.04
-#     runs-on: ubuntu-20.04
-#     env:
-#       SCRIPT_URL: https://gitee.com/Xiechengqi/scripts/raw/master/install
-#     steps:
-#       - name: Docker
-#         run: |
-#           sudo systemctl stop docker && curl -SsL $SCRIPT_URL/Docker/install.sh | sudo bash
-#       - name: check
-#         run: |
-#           sleep 10
-#           sudo systemctl status docker
-#           sudo ss -plunt
-#           sudo ls --color=auto -alht /data/*
-#           echo "🍏 Docker Ubuntu 20.04 install script is ${{ job.status }}"
+          sudo docker run -itd --privileged --name centos7 centos:7 /sbin/init
+          sudo docker exec centos7 /bin/bash -c '/bin/curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | bash && sleep 10 && systemctl status docker'          
+  centos8:
+    name: Docker on centos8
+    runs-on: ubuntu-18.04
+    env:
+      SCRIPT_URL: https://gitee.com/Xiechengqi/scripts/raw/master/install
+    steps:
+      - name: Docker
+        run: |
+          sudo docker run -itd --privileged --name centos8 centos:8 /sbin/init
+          sudo docker exec centos8 /bin/bash -c '/bin/curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | bash && sleep 10 && systemctl status docker'    
