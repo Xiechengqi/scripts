@@ -1,4 +1,4 @@
-name: Test Docker install script on ubuntu:18.04
+name: 🐤
 on:
   push:
     branches:
