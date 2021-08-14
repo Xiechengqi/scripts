@@ -1,0 +1,23 @@
+name: Test Env Install Scripts
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  ubuntu-1804:
+    name: Docker on ubuntu:18.04
+    runs-on: ubuntu-18.04
+    env:
+      SCRIPT_URL: https://gitee.com/Xiechengqi/scripts/raw/master/install
+    steps:
+      - name: Docker
+        run: |
+          sudo systemctl stop docker && curl -SsL $SCRIPT_URL/Docker/install.sh | sudo bash || true
+          sleep 10 && systemctl status docker
+      - name: check
+        run: |
+          sudo ss -plunt
+          sudo apt install -q -y tree && sudo tree -d -L 3 /data
+          echo "🍏 Docker Ubuntu 18.04 install script is ${{ job.status }}"
