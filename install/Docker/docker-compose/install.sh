@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# 
+#
 # 2021/08/09
 # xiechengqi
 # install docker-compose
-# 
+#
 
 source /etc/profile
 
@@ -44,7 +44,8 @@ fi
 
 main() {
 version=${1-"1.29.2"}
-downloadUrl="https://github.com/docker/compose/releases/download/${version}/docker-compose-Linux-x86_64"
+countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
+[ "$countryCode" = "CN" ] && downloadUrl="https://get.daocloud.io/docker/compose/releases/download/${version}/docker-compose-`uname -s`-`uname -m`" || downloadUrl="https://github.com/docker/compose/releases/download/${version}/docker-compose-`uname -s`-`uname -m`"
 
 # check service
 docker-compose version &> /dev/null && YELLOW "docker-compose has been installed ..." && return 0
