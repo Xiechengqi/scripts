@@ -8,53 +8,55 @@ on:
 jobs:
   Ubuntu-2004:
     runs-on: ubuntu-20.04
+    env:
+      SCRIPT_URL: https://gitee.com/Xiechengqi/scripts/raw/master/install
     steps:
       - name: docker
         run: |
-          sudo systemctl stop docker && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | sudo bash || true
-      - name: docker-compose 
-        run: |
-          sudo rm -f `which docker-compose` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash || true
-      - name: node
-        run: |
-          sudo rm -f `which node` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh | sudo bash || true
-      - name: golang
-        run: |
-          sudo rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash || true
-      - name: ntp
-        run: |
-          curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh | sudo bash || true
-      - name: pyenv
-        run: |
-          curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh | sudo bash || true
-      - name: check
-        run: |
-          sudo ss -plunt
-          sudo apt install -q -y tree && sudo tree -d -L 3 /data
-          echo "🍏 Ubuntu 20.04 is ${{ job.status }}"
-  Ubuntu-1804:
-    runs-on: ubuntu-18.04
-    steps:
-      - name: docker
-        run: |
-          sudo systemctl stop docker && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | sudo bash || true
-      - name: docker-compose 
-        run: |
-          sudo rm -f `which docker-compose` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash || true
-      - name: node
-        run: |
-          sudo rm -f `which node` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh | sudo bash || true
-      - name: golang
-        run: |
-          sudo rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash || true
-      - name: ntp
-        run: |
-          curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh | sudo bash || true
-      - name: pyenv
-        run: |
-          curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh | sudo bash || true
-      - name: check
-        run: |
-          sudo ss -plunt
-          sudo apt install -q -y tree && sudo tree -d -L 3 /data
-          echo "🍏 Ubuntu 18.04 is ${{ job.status }}"
+          sudo systemctl stop docker && curl -SsL ${{SCRITP_URL}}/Docker/install.sh | sudo bash || true
+#       - name: docker-compose 
+#         run: |
+#           sudo rm -f `which docker-compose` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash || true
+#       - name: node
+#         run: |
+#           sudo rm -f `which node` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh | sudo bash || true
+#       - name: golang
+#         run: |
+#           sudo rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash || true
+#       - name: ntp
+#         run: |
+#           curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh | sudo bash || true
+#       - name: pyenv
+#         run: |
+#           curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh | sudo bash || true
+#       - name: check
+#         run: |
+#           sudo ss -plunt
+#           sudo apt install -q -y tree && sudo tree -d -L 3 /data
+#           echo "🍏 Ubuntu 20.04 is ${{ job.status }}"
+#   Ubuntu-1804:
+#     runs-on: ubuntu-18.04
+#     steps:
+#       - name: docker
+#         run: |
+#           sudo systemctl stop docker && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh | sudo bash || true
+#       - name: docker-compose 
+#         run: |
+#           sudo rm -f `which docker-compose` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh | sudo bash || true
+#       - name: node
+#         run: |
+#           sudo rm -f `which node` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh | sudo bash || true
+#       - name: golang
+#         run: |
+#           sudo rm -f `which go` && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh | sudo bash || true
+#       - name: ntp
+#         run: |
+#           curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Ntp/install.sh | sudo bash || true
+#       - name: pyenv
+#         run: |
+#           curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Pyenv/install.sh | sudo bash || true
+#       - name: check
+#         run: |
+#           sudo ss -plunt
+#           sudo apt install -q -y tree && sudo tree -d -L 3 /data
+#           echo "🍏 Ubuntu 18.04 is ${{ job.status }}"
