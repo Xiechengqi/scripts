@@ -16,11 +16,11 @@ curl -SsL https://api.github.com/repos/alibaba/nacos/releases/latest | grep tag_
 
 # 获取当前主机系统和主版本
 if [ -f "/etc/debian_version" ]; then
-source /etc/os-release && os="${ID}"
+source /etc/os-release && local os="${ID}"
 elif [ -f "/etc/fedora-release" ]; then
-os="fedora"
+local os="fedora"
 elif [ -f "/etc/redhat-release" ]; then
-os="centos"
+local os="centos"
 else
 exit 1
 fi
