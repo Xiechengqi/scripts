@@ -1,7 +1,7 @@
 name: Sync To Gitee
 on: [ push, delete, create ]
 jobs:
-  sync:
+  syncToGitee:
     runs-on: ubuntu-latest
     steps:
       - uses: wearerequired/git-mirror-action@v1
@@ -10,3 +10,12 @@ jobs:
         with:
           source-repo: "git@github.com:Xiechengqi/scripts.git"
           destination-repo: "git@gitee.com:Xiechengqi/scripts.git"
+  syncToHashKey:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wearerequired/git-mirror-action@v1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+        with:
+          source-repo: "git@github.com:Xiechengqi/scripts.git"
+          destination-repo: "git@github.com:HashKeyHub/install.git"
