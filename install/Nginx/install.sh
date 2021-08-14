@@ -47,7 +47,7 @@ fi
 main() {
 
 # check os
-OS "ubuntu" "18"
+OS "ubuntu"
 
 # environments
 serviceName="nginx"
