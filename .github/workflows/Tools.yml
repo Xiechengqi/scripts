@@ -6,7 +6,7 @@ on:
   schedule:
     - cron: '0 1 * * *'
 jobs:
-  Ubuntu-16.04:
+  Ubuntu-1604:
     runs-on: ubuntu-16.04
     steps:
       - name: docker
@@ -32,7 +32,7 @@ jobs:
           sudo ss -plunt
           sudo apt install -q -y tree && sudo tree -d -L 3 /data
           echo "🍏 Ubuntu 16.04 is ${{ job.status }}"
-  Ubuntu-18.04:
+  Ubuntu-1804:
     runs-on: ubuntu-18.04
     steps:
       - name: docker
