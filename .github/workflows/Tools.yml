@@ -6,7 +6,8 @@ on:
   schedule:
     - cron: '0 1 * * *'
 jobs:
-  Ubuntu-2004:
+  ubuntu-2004:
+    name: verify install scripts on ubuntu:20.04
     runs-on: ubuntu-20.04
     environment:
       SCRIPT_URL: https://gitee.com/Xiechengqi/scripts/raw/master/install
