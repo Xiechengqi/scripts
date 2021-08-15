@@ -10,58 +10,7 @@
 
 source /etc/profile
 
-OS() {
-if [ -f "/etc/debian_version" ]; then
-source /etc/os-release && local os="${ID}"
-elif [ -f "/etc/fedora-release" ]; then
-local os="fedora"
-elif [ -f "/etc/redhat-release" ]; then
-local os="centos"
-else
-exit 1
-fi
-
-if [ -f /etc/redhat-release ]; then
-local os_full=`awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release`
-elif [ -f /etc/os-release ]; then
-local os_full=`awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release`
-elif [ -f /etc/lsb-release ]; then
-local os_full=`awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release`
-else
-exit 1
-fi
-
-local main_ver="$( echo $os_full | grep -oE  "[0-9.]+")"
-printf -- "%s" "${os}${main_ver%%.*}"
-}
-
-INFO() {
-printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "%s" "$1"
-printf "\n"
-}
-
-YELLOW() {
-printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "\033[33m%s\033[0m" "$1"
-printf "\n"
-}
-
-ERROR() {
-printf -- "\033[41;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "%s" "$1"
-printf "\n"
-exit 1
-}
-
-EXEC() {
-local cmd="$1"
-INFO "${cmd}"
-eval ${cmd} 1> /dev/null
-if [ $? -ne 0 ]; then
-ERROR "Execution command (${cmd}) failed, please check it and try again."
-fi
-}
+source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
 
 _ubuntu() {
 # remove old apps
@@ -99,7 +48,7 @@ EXEC "yum install -y docker-ce docker-ce-cli containerd.io"
 main() {
 
 # get os info
-osInfo=`OS`
+osInfo=`get_os`
 
 # environments
 serviceName="docker"
@@ -115,7 +64,7 @@ echo $osInfo | grep centos &> /dev/null && _centos
 EXEC "systemctl start docker"
 
 # check docker
-EXEC "docker run hello-world"
+INFO "docker run hello-world" && docker run hello-world
 }
 
 main $@
