@@ -22,7 +22,7 @@ yum install epel-release java-${version}-openjdk-devel
 
 main() {
 
-os=`get_os`
+osInfo=`get_os`
 
 # environments
 version=${1-"11"}
