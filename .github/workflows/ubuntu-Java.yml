@@ -1,0 +1,35 @@
+name: check
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  ubuntu-1804:
+    name: Java on ubuntu:18.04
+    runs-on: ubuntu-18.04
+    env:
+      SCRIPT_URL: https://gitee.com/Xiechengqi/scripts/raw/master/install
+    steps:
+      - name: Java
+        run: |
+          sudo rm -f `which java` && curl -SsL $SCRIPT_URL/Java/install.sh | sudo bash
+      - name: check
+        run: |
+          sudo ls --color=auto -alht /data/*
+          echo "🍏 Java Ubuntu 18.04 install script is ${{ job.status }}"
+  ubuntu-2004:
+    name: Java on ubuntu:20.04
+    runs-on: ubuntu-20.04
+    env:
+      SCRIPT_URL: https://gitee.com/Xiechengqi/scripts/raw/master/install
+    steps:
+      - name: Java
+        run: |
+          sudo rm -f `which java` && curl -SsL $SCRIPT_URL/Java/install.sh | sudo bash
+      - name: check
+        run: |
+          sudo ss -plunt
+          sudo ls --color=auto -alht /data/*
+          echo "🍏 Java Ubuntu 20.04 install script is ${{ job.status }}"
