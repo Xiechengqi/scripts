@@ -41,7 +41,4 @@ jobs:
           cd ~/install
           echo '------'
           git add -A
-          git commit -F ~/commit-message.log
-          
-          
-# git push origin master
+          git commit -F ~/commit-message.log && git push origin master || true
