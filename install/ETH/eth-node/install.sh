@@ -3,9 +3,8 @@
 #
 # xiechengqi
 # 2021/08.03
-# https://github.com/ethereum/go-ethereum https://geth.ethereum.org/
 # Ubuntu 18.04
-# install ETH Node Geth
+# install ETH Node
 #
 
 source /etc/profile
@@ -15,13 +14,15 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 main() {
 
 # get chainId
-if [ "$1" = "mainnet" ]; then
-chainId="mainnet"
+chainId=$1
+
+# install
+if [ "$chainId" = "mainnet" ]; then
 curl -SsL $BASEURL/install/ETH/eth-node/geth_install.sh | bash -s $chainId
-elif [ "$1" = "rinkey" ]; then
+elif [ "$chainId" = "rinkey" ]; then
 chainId="testnet"
 curl -SsL $BASEURL/install/ETH/eth-node/geth_install.sh | bash -s $chainId
-elif [ "$1" = "kovan" ]; then
+elif [ "$chainId" = "kovan" ]; then
 chainId="kovan"
 curl -SsL $BASEURL/install/ETH/eth-node/parity_install.sh | bash -s $chainId
 else

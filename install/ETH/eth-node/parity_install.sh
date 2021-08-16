@@ -12,15 +12,17 @@ BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
-# check os
-OS "ubuntu" "18"
 
-# get net option
-net=${1-"kovan"}
+# check os
+osInfo=`get_os`
+! echo "$countryCode" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && EXEC "You could only install on os: ubuntu18、ubuntu20"
+
+chainId=$1
 
 # environments
-serviceName="eth-${net}-node"
+serviceName="eth-node"
 version="3.2.6"
+installPath="/data/${serviceName}-${version}"
 downloadUrl="https://github.com/openethereum/openethereum/releases/download/v${version}/openethereum-linux-v${version}.zip"
 
 # check service
@@ -46,7 +48,7 @@ EXEC "openethereum -v" && openethereum -v
 # config
 cat > $installPath/conf/config.toml << EOF
 [parity]
-chain = "$net"
+chain = "$chainId"
 base_path = "$installPath/data"
 
 [rpc]
@@ -69,7 +71,7 @@ EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-nstallPath/${serviceName}.service << EOF
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
 Description=ETH Node
 Documentation=https://github.com/openethereum/openethereum
@@ -98,10 +100,10 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 
 # info
 YELLOW "${serviceName} version: $version"
-YELLOW "install path: $installPath"
-YELLOW "config path: $installPath/conf"
-YELLOW "data path: $installPath/data"
-YELLOW "tail log cmd: tail -f $installPath/logs/latest.log"
+YELLOW "chain: $chainId"
+YELLOW "config: $installPath/conf"
+YELLOW "data: $installPath/data"
+YELLOW "log: tail -f $installPath/logs/latest.log"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 

@@ -14,7 +14,10 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 main()
 # check os
-OS "ubuntu" "18" || OS "ubuntu" "20"
+osInfo=`get_os`
+! echo "$countryCode" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && EXEC "You could only install on os: ubuntu18、ubuntu20"
+
+chainId=$1
 
 # environments
 serviceName="eth-node"
@@ -41,7 +44,7 @@ EXEC "geth version" && geth version
 
 # create start.sh
 pubIp=`curl -4 ip.sb`    # get vm public ip
-[ "$1" = "mainnet" ] && options="" || options="--rinkeby"
+[ "$chainId" = "mainnet" ] && options="" || options="--$chainId"
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
