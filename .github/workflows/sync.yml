@@ -19,6 +19,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: set git config 
+        run: |
+          git config --global user.name "Xiechengqi"
+          git config --global user.email "Xiechengqi01@gmail.com"
       - name: add ssh primary key
         run: |
           mkdir ~/.ssh/
