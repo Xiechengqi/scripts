@@ -9,7 +9,7 @@
 source /etc/profile
 source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
 
-function main() {
+main() {
 # environment
 serviceName="node"
 version=${1-"12.16.0"}
