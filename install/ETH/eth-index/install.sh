@@ -101,7 +101,7 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 YELLOW "$serviceName is running ..."
 }
 
-function main() {
+main() {
 
 # check os
 OS "ubuntu" "18"
