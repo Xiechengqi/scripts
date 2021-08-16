@@ -9,7 +9,9 @@
 #
 
 source /etc/profile
-source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
+
+BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os
@@ -34,8 +36,8 @@ rpcPassword="local321"   # 同 bitcoin 配置
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 # install script url
-mongodbUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mongodb/install.sh"
-nodeUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh"
+mongodbUrl="$BASEURL/install/Mongodb/install.sh"
+nodeUrl="$BASEURL/install/Node/install.sh"
 
 # install mongodb
 curl -SsL $mongodbUrl | bash
