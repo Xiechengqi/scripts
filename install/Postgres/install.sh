@@ -7,13 +7,6 @@
 #
 
 source /etc/profile
-
-OS() {
-osType=$1
-osVersion=$2
-curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
-}
-
 source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
 
 function main() {
