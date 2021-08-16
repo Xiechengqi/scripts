@@ -13,9 +13,9 @@ BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
-
 # check os
-OS "ubuntu"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
 # environments
 serviceName="nginx"

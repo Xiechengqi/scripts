@@ -22,7 +22,9 @@ yum install epel-release java-${version}-openjdk-devel
 
 main() {
 
-osInfo=`get_os`
+# check os
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20|centos7|centos8' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20、centos7、centos8"
 
 # environments
 version=${1-"11"}

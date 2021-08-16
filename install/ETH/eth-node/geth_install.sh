@@ -17,6 +17,14 @@ main()
 osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
+# check os
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
+
+# get chainId
+chainId="$1" && INFO "chain: $chainId"
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
+
 chainId=$1
 
 # environments

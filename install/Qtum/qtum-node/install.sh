@@ -13,12 +13,13 @@ BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
-
 # check os
-OS "ubuntu" "18"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# get net option
-[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+# get chainId
+chainId="$1" && INFO "chain: $chainId"
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 # environments
 serviceName="qtum-node"
@@ -50,7 +51,7 @@ rpcpassword=$rpcPassword
 EOF
 
 # create start.sh
-[ "$net" = "mainnet" ] && options="" || options="-testnet"
+[ "$chainId" = "mainnet" ] && options="" || options="-testnet"
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env
 source /etc/profile

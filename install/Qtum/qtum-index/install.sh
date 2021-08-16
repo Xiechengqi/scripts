@@ -279,12 +279,13 @@ EXEC "cd $installPath && npm install"
 }
 
 main() {
-
 # check os
-OS "ubuntu" "18"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# get net option
-[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+# get chainId
+chainId="$1" && INFO "chain: $chainId"
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 # environments
 local installPath="/data/Qtum/qtum-index"
@@ -296,7 +297,8 @@ local dbPassword="qtum"
 local rpcUser="user"
 local rpcPassword="password"
 local serverPort="3001"
-if [ "$net" = "mainnet" ]
+
+if [ "$chainId" = "mainnet" ]
 then
 local chainId="mainnet"
 local dbName="qtum_$chainId"
@@ -308,6 +310,7 @@ local dbName="qtum_$chainId"
 local rpcPort="13889"
 local p2pPort="13888"
 fi
+
 local redisHost="localhost"
 local redisPort="6379"
 local redisPassword="P@ssword"

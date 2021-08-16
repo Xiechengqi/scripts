@@ -13,10 +13,12 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os
-OS "ubuntu" "18"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# get net option
-[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+# get chainId
+chainId="$1" && INFO "chain: $chainId"                                                                                                
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 # environments
 serviceName="eos-node"
@@ -25,7 +27,7 @@ installPath="/data/EOS/${serviceName}-${version}"
 downloadUrl="https://github.com/eosio/eos/releases/download/v${version}/eosio_${version}-1-ubuntu-18.04_amd64.deb"
 httpPort="8888"
 p2pPort="9876"
-[ "$net" = "mainnet" ] && genesisFileUrl="$BASEURL/install/EOS/eos-node/mainnet-genesis.json" || genesisFileUrl="$BASEURL/install/EOS/eos-node/jungle-genesis.json"
+[ "$chainId" = "mainnet" ] && genesisFileUrl="$BASEURL/install/EOS/eos-node/mainnet-genesis.json" || genesisFileUrl="$BASEURL/install/EOS/eos-node/jungle-genesis.json"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -76,7 +78,7 @@ plugin = eosio::history_api_plugin
 
 EOF
 
-if [ "$net" = "mainnet" ]
+if [ "$chainId" = "mainnet" ]
 then
 ## mainnet p2p-peer-address，https://eosnodes.privex.io/?config=1
 cat >> $installPath/conf/config.ini << EOF
@@ -120,7 +122,7 @@ EOF
 fi
 
 # create start.sh
-[ "$net" = "mainnet" ] && options="" || options="--testnet"
+[ "$chainId" = "mainnet" ] && options="" || options="--testnet"
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile

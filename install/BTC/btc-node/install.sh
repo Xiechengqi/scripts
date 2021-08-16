@@ -14,10 +14,12 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os
-OS "ubuntu" "18"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# get net option
-[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+# get chainId
+chainId="$1" && INFO "chain: $chainId"                                                                                                
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 # environments
 serviceName="btc-node"
@@ -26,8 +28,8 @@ installPath="/data/BTC/${serviceName}-${version}"
 downloadUrl="https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz"
 rpcUser="bitcoin"
 rpcPassword="local321"
-[ "$net" = "mainnet" ] && rpcPort="8332" || rpcPort="18332"
-[ "$net" = "mainnet" ] && p2pPort="8333" || p2pPort="18333"
+[ "$chainId" = "mainnet" ] && rpcPort="8332" || rpcPort="18332"
+[ "$chainId" = "mainnet" ] && p2pPort="8333" || p2pPort="18333"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -65,7 +67,7 @@ uacomment=bitcore
 EOF
 
 # create start.sh
-[ "$net" = "mainnet" ] && options="" || options="--testnet"
+[ "$chainId" = "mainnet" ] && options="" || options="--testnet"
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile

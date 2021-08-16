@@ -33,11 +33,13 @@ YELLOW "$serviceName is running ..."
 
 function main() {
 # check os
-OS "ubuntu" "18"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# get net option
-[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
-[ "$net" = "testnet" ] && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
+# get chainId
+chainId="$1" && INFO "chain: $chainId"                                                                                                
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
+[ "$chainId" = "testnet" ] && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
 
 # install ntp
 install_ntp
@@ -76,7 +78,7 @@ platonkey genblskeypair | tee >(grep "PrivateKey" | awk '{print $2}' > ${install
 
 # create start.sh
 # get start options
-if [ "$net" = "mainnet" ]
+if [ "$chainId" = "mainnet" ]
 then
 # mainnet
 options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"

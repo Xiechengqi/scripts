@@ -41,7 +41,7 @@ EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{conf,logs}"
 
 # download tarball
-EXEC "curl -SsL $downloadUrl | xz -d > /tmp/$$.tar"
+EXEC "curl -SsL $downloadUrl | xz -d > /tmp/$$.tarn"
 EXEC "tar xf /tmp/$$.tar -C $installPath"
 
 # register bin
@@ -105,10 +105,12 @@ YELLOW "$serviceName is running ..."
 main() {
 
 # check os
-OS "ubuntu" "18"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# get net option
-[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+# get chainId
+chainId="$1" && INFO "chain: $chainId"                                                                                                
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 # environments
 local serviceName="eth-index"

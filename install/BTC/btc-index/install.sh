@@ -15,10 +15,12 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os
-OS "ubuntu" "18"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# get net option
-[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+# get chainId
+chainId="$1" && INFO "chain: $chainId"                                                                                                
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 # environment
 serviceName="btc-index"
@@ -27,8 +29,8 @@ installPath="/data/BTC/${serviceName}-${version}"
 downloadUrl="https://github.com/bitpay/bitcore/archive/refs/tags/v${version}.tar.gz"
 user="btc-index"   # 启动 bitcore 用户
 hostIp="127.0.0.1" # 安装 bitcoin 主机 ip
-[ "$net" = "mainnet" ] && rpcPort="8332" || rpcPort="18332"  # 同 bitcoin 配置
-[ "$net" = "mainnet" ] && p2pPort="8333" || p2pPort="18333"  # 同 bitcoin 配置
+[ "$chainId" = "mainnet" ] && rpcPort="8332" || rpcPort="18332"  # 同 bitcoin 配置
+[ "$chainId" = "mainnet" ] && p2pPort="8333" || p2pPort="18333"  # 同 bitcoin 配置
 rpcUser="bitcoin"    # 同 bitcoin 配置
 rpcPassword="local321"   # 同 bitcoin 配置
 
@@ -73,7 +75,7 @@ cat > $installPath/bitcore.config.json << EOF        # 配置文件名不可修�
   "bitcoreNode": {
     "chains": {
       "BTC": {
-        "$net": {
+        "$chainId": {
           "chainSource": "p2p",
           "trustedPeers": [
             {

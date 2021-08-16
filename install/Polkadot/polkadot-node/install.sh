@@ -13,18 +13,12 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os
-OS "ubuntu" "18"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# get net option
-if [ "$1" = "polkadot" ]; then
-net="polkadot"
-elif [ "$1" = "kusama" ]; then
-net="kusama"
-elif [ "$1" = "westend" ]; then
-net="westend"
-else
-ERROR "You can only choose network: polkadot、kusama or westend"
-fi
+# get chainId
+chainId="$1" && INFO "chain: $chainId"                                                                                                
+! echo "$chainId" | grep -E 'polkadot|kusama|westend' &> /dev/null && ERROR "You could only choose chain: polkadot|kusama|westend"
 
 # environments
 serviceName="polkadot-node"
@@ -63,7 +57,7 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-polkadot --pruning archive --name "$serviceName-$net" --chain $net -d $installPath/data --rpc-external --ws-external --rpc-cors all &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
+polkadot --pruning archive --name "$serviceName-$chainId" --chain $chainId -d $installPath/data --rpc-external --ws-external --rpc-cors all &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 

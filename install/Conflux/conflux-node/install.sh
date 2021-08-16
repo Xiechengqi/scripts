@@ -13,16 +13,18 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os
-OS "ubuntu" "18"
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# get net option
-[ "$1" = "mainnet" ] && net="mainnet" || net="testnet"
+# get chainId
+chainId="$1" && INFO "chain: $chainId"                                                                                                
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 # environments
 serviceName="conflux-node"
 version="1.1.4"
 installPath="/data/Conflux/${serviceName}-${version}"
-[ "$net" = "mainnet" ] && downloadUrl="https://github.com/Conflux-Chain/conflux-rust/releases/download/v${version}/conflux_linux_v${version}.zip" || downloadUrl="https://github.com/Conflux-Chain/conflux-rust/releases/download/v${version}-testnet/conflux_linux_v${version}-testnet.zip"
+[ "$chainId" = "mainnet" ] && downloadUrl="https://github.com/Conflux-Chain/conflux-rust/releases/download/v${version}/conflux_linux_v${version}.zip" || downloadUrl="https://github.com/Conflux-Chain/conflux-rust/releases/download/v${version}-testnet/conflux_linux_v${version}-testnet.zip"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
@@ -50,7 +52,7 @@ INFO "sed -i \"s#log\/#$installPath\/logs\/#g\" $installPath/conf/log.yaml"
 sed -i "s#log\/#$installPath\/logs\/#g" $installPath/conf/log.yaml
 
 # create start.sh
-[ "$net" = "mainnet" ] && configFileName="tethys.toml" || configFileName="testnet.toml"
+[ "$chainId" = "mainnet" ] && configFileName="tethys.toml" || configFileName="testnet.toml"
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
