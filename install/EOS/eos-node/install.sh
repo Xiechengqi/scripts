@@ -8,7 +8,8 @@
 #
 
 source /etc/profile
-source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
+BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os
@@ -24,7 +25,7 @@ installPath="/data/EOS/${serviceName}-${version}"
 downloadUrl="https://github.com/eosio/eos/releases/download/v${version}/eosio_${version}-1-ubuntu-18.04_amd64.deb"
 httpPort="8888"
 p2pPort="9876"
-[ "$net" = "mainnet" ] && genesisFileUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/EOS/eos-node/mainnet-genesis.json" || genesisFileUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/EOS/eos-node/jungle-genesis.json"
+[ "$net" = "mainnet" ] && genesisFileUrl="$BASEURL/install/EOS/eos-node/mainnet-genesis.json" || genesisFileUrl="$BASEURL/install/EOS/eos-node/jungle-genesis.json"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0

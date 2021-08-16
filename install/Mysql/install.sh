@@ -13,7 +13,8 @@ cd /tmp && rm -f mysql.tar.* $$*
 }
 
 source /etc/profile
-source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
+BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os

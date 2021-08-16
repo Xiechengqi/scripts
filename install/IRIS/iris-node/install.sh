@@ -8,7 +8,8 @@
 # 
 
 source /etc/profile
-source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
+BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os
@@ -24,7 +25,7 @@ version="1.0.1"
 installPath="/data/IRIS/${serviceName}-${version}"
 
 # download url
-golangUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Golang/install.sh"
+golangUrl="$BASEURL/install/Golang/install.sh"
 golangVersion="1.16.6"
 
 # check service

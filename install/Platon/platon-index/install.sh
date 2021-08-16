@@ -13,7 +13,8 @@
 #
 
 source /etc/profile
-source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
+BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+source <(curl -SsL $BASEURL/tool/common.sh)
 
 function main() {
 # check os
@@ -38,7 +39,7 @@ local dbUser="platon"
 local dbPassword="platon"
 
 # install scripts url
-postgresUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh"
+postgresUrl="$BASEURL/install/Postgres/install.sh"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 

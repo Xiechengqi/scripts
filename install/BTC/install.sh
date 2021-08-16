@@ -5,27 +5,9 @@
 # install BTC
 #
 
-INFO() {
-	printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-	printf -- "%s" "$1"
-	printf "\n"
-}
-
-ERROR() {
-	printf -- "\033[41;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-	printf -- "%s" "$1"
-	printf "\n"
-	exit 1
-}
-
-EXEC() {
-	local cmd="$1"
-	INFO "${cmd}"
-	eval ${cmd} 1>/dev/null
-	if [ $? -ne 0 ]; then
-		ERROR "Execution command (${cmd}) failed, please check it and try again."
-	fi
-}
+source /etc/profile
+BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+source <(curl -SsL $BASEURL/tool/common.sh)
 
 function install_bitcoin() {
 	# environments
@@ -307,7 +289,7 @@ EOF
 	EXEC "systemctl status bitcore" && systemctl status bitcore
 }
 
-function main() {
+main() {
 	INFO "install bitcoin ..."
 	systemctl is-active bitcoin &>/dev/null || install_bitcoin
 	INFO "install_mongodb ..."

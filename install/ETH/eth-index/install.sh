@@ -21,7 +21,8 @@ _clean() {
 cd /tmp && rm -f $$.tar
 }
 
-source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
+BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+source <(curl -SsL $BASEURL/tool/common.sh)
 
 function install_postgrest() {
 # environments
@@ -124,7 +125,7 @@ local dbPassword="eth"
 local startBlockNumber="6520000"
 
 # install scripts url
-postgresUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Postgres/install.sh"
+postgresUrl="$BASEURL/install/Postgres/install.sh"
 
 # check
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 

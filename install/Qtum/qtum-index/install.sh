@@ -12,7 +12,8 @@
 #
 
 source /etc/profile
-source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
+BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+source <(curl -SsL $BASEURL/tool/common.sh)
 
 function install_qtuminfo() {
 
@@ -313,9 +314,9 @@ local redisPassword="P@ssword"
 
 
 # install script url
-nodeUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Node/install.sh"
-redisUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Redis/install.sh"
-mysqlUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Mysql/install.sh"
+nodeUrl="$BASEURL/install/Node/install.sh"
+redisUrl="$BASEURL/install/Redis/install.sh"
+mysqlUrl="$BASEURL/install/Mysql/install.sh"
 
 # check install path
 EXEC "mkdir -p $installPath"
