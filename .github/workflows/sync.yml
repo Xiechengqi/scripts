@@ -31,8 +31,11 @@ jobs:
       - name: sync to hashkey github
         run: |
           git clone -b master git@github.com:HashKeyHub/install.git ~/install
+          echo '------'
           cp -rf ./* ~/install
+          echo '------'
           cd ~/install
+          echo '------'
           git add -A && git commit -m "commit from Github Actions at `TZ=UTC-8 date +"%Y-%m-%d %H:%M:%S"`"
           
           
