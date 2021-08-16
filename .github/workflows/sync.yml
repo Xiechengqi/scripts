@@ -1,4 +1,4 @@
-name: Sync To Gitee
+name: Sync Code
 on: 
   [ push, delete, create ]
 #   schedule:
