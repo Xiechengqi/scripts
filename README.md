@@ -16,7 +16,7 @@
 | [Ntp](https://github.com/Xiechengqi/scripts/edit/master/install/Ntp/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Ntp/install.sh \| bash` |
 | [Consul](https://github.com/Xiechengqi/scripts/edit/master/install/Consul/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Consul/install.sh \| bash -s [version]` |
 | [Nginx](https://github.com/Xiechengqi/scripts/edit/master/install/Nginx/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Nginx/install.sh \| bash -s [version]` |
-| [eth-node](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/eth-node/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/ETH/eth-node/install.sh \| bash -s [mainnet\|testnet]` |
+| [eth-node](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/eth-node/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/ETH/eth-node/install.sh \| bash -s [mainnet\|testnet\|kovan]` |
 | [eth-index](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/eth-index/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/ETH/eth-index/install.sh \| bash -s [mainnet\|testnet]` |
 | [platon-node](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-node/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Platon/platon-node/install.sh \| bash -s [mainnet\|testnet]` |
 | [platon-index](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-index/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Platon/platon-index/install.sh \| bash -s [mainnet\|testnet]` |
