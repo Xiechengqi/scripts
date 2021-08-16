@@ -28,6 +28,7 @@
 | [tezos-node](https://github.com/Xiechengqi/scripts/edit/master/install/Tezos/tezos-node/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Tezos/tezos-node/install.sh \| bash -s [mainnet\|testnet]` |
 | [ripple-node](https://github.com/Xiechengqi/scripts/edit/master/install/Ripple/ripple-node/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Ripple/ripple-node/install.sh \| bash -s [mainnet\|testnet]` |
 | [eos-node](https://github.com/Xiechengqi/scripts/edit/master/install/EOS/eos-node/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/EOS/eos-node/install.sh \| bash -s [mainnet\|testnet]` |
+| [chainx-node](https://github.com/Xiechengqi/scripts/edit/master/install/ChainX/chainx-node/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/ChainX/chainx-node/install.sh \| bash -s [mainnet\|testnet]` |
 | [判断OS](https://github.com/Xiechengqi/scripts/edit/master/tool/os.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh \| bash -s [OS] [OSVersion]` |
 | [检查全节点](https://github.com/Xiechengqi/scripts/edit/master/tool/chain.sh) | `curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/chain.sh \| bash` |
 |                                                              |                                                              |
