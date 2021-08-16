@@ -107,7 +107,7 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 YELLOW "version: $version"
 YELLOW "install path: $installPath"
 YELLOW "config path: $installPath/conf"
-YELLOW "log path: $installPath/logs"
+YELLOW "tail log cmd: tail -f $installPath/logs/latest.log"
 YELLOW "data path: $installPath/data"
 YELLOW "rpcUser: $rpcUser"
 YELLOW "rpcPassword: $rpcPassword"
