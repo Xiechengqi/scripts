@@ -21,39 +21,7 @@ _clean() {
 cd /tmp && rm -f $$.tar
 }
 
-OS() {
-osType=$1
-osVersion=$2
-curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
-}
-
-INFO() {
-printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "%s" "$1"
-printf "\n"
-}
-
-YELLOW() {
-printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "\033[33m%s\033[0m" "$1"
-printf "\n"
-}
-
-ERROR() {
-printf -- "\033[41;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "%s" "$1"
-printf "\n"
-exit 1
-}
-
-EXEC() {
-local cmd="$1"
-INFO "${cmd}"
-eval ${cmd} 1> /dev/null
-if [ $? -ne 0 ]; then
-ERROR "Execution command (${cmd}) failed, please check it and try again."
-fi
-}
+source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
 
 function install_postgrest() {
 # environments
@@ -95,12 +63,14 @@ cat > $installPath/start.sh << EOF
 source /etc/profile
 export LD_LIBRARY_PATH=/data/postgres/lib
 
-postgrest $installPath/conf/postgrest.conf &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
+timestamp=\$(date +%Y%m%d%H%M%S)
+touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
+postgrest $installPath/conf/postgrest.conf &> $installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
 Description=Transaction API with Postgrest
 After=network.target
@@ -117,6 +87,8 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
@@ -230,7 +202,7 @@ EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
 Description=EthereumTransactionStorage
 After=syslog.target
@@ -247,6 +219,8 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
