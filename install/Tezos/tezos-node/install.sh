@@ -27,8 +27,8 @@ fi
 installPath="/data/Tezos/tezos-node"
 
 # install script url
-dockerUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/install.sh"
-dockerComposeUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Docker/docker-compose/install.sh"
+dockerUrl="https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh"
+dockerComposeUrl="https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/docker-compose/install.sh"
 
 # install docker and docker-compose
 curl -SsL $dockerUrl | bash
