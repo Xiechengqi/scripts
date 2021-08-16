@@ -14,12 +14,24 @@ jobs:
         with:
           source-repo: "git@github.com:Xiechengqi/scripts.git"
           destination-repo: "git@gitee.com:Xiechengqi/scripts.git"
-#   syncToHashKey:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: wearerequired/git-mirror-action@v1
-#         env:
-#           SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
-#         with:
-#           source-repo: "git@github.com:Xiechengqi/scripts.git"
-#           destination-repo: "git@github.com:HashKeyHub/install.git"
+  syncToHashKey:
+    runs-on: ubuntu-latest
+    steps:
+      - name: add ssh primary key
+        run: |
+          mkdir ~/.ssh/
+          echo "${{ secrets.HASHKEY_SSH_PRIVATE_KEY }}"> ~/.ssh/id_rsa
+          chmod 600 /home/runner/.ssh/id_rsa
+          ssh-keyscan -t rsa "github.com" >> ~/.ssh/known_hosts
+#       - name: set logfile
+#         run: |
+#           git log --pretty=format:"%s from Github Actions at `TZ=UTC-8 date +"%Y-%m-%d %H:%M:%S"`" --date=short -n 1  > commit-message.log
+      - name: sync to hashkey github
+        run: |
+          git clone -b master git@github.com:HashKeyHub/install.git ~/install
+          cp -rf ./* ~/install
+          cd ~/install
+          git add -A && git commit -m "commit from Github Actions at `TZ=UTC-8 date +"%Y-%m-%d %H:%M:%S"`"
+          
+          
+# git push origin master
