@@ -15,7 +15,7 @@ main() {
 
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$countryCode" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
 chainId=$1
 
