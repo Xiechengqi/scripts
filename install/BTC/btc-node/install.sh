@@ -68,12 +68,15 @@ EOF
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
-bitcoind -conf=$installPath/conf/${serviceName}.conf $options &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
+
+timestamp=\$(date +%Y%m%d%H%M%S)
+touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
+bitcoind -conf=$installPath/conf/${serviceName}.conf $options &> $installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
 Description=Bitcoin Core integration/staging tree
 Documentation=https://github.com/bitcoin/bitcoin
@@ -90,6 +93,8 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
