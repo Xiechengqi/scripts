@@ -10,7 +10,7 @@
 source /etc/profile
 source <(curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/common.sh)
 
-function main() {
+main() {
 # environments
 serviceName="golang"
 version=${1-"1.16.6"}
