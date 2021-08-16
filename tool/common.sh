@@ -64,3 +64,9 @@ fi
 local main_ver="$( echo $os_full | grep -oE  "[0-9.]+")"
 printf -- "%s" "${os}${main_ver%%.*}"
 }
+
+OS() {
+osType=$1
+osVersion=$2
+curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
+}
