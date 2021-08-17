@@ -24,7 +24,7 @@ chainId="$1" && INFO "chain: $chainId"
 
 # environments
 serviceName="stellar-node"
-installPath="/data/${serviceName}"
+installPath="/data/Stellar/${serviceName}"
 port="8000"
 dockerUrl="$BASEURL/install/Docker/install.sh"
 
