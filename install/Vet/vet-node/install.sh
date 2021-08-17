@@ -25,7 +25,7 @@ serviceName="vet-node"
 version="2.0.0-stage.0"
 installPath="/data/Vet/${serviceName}-${version}"
 downloadUrl="https://github.com/vechain/thor/archive/refs/tags/v${version}.tar.gz"
-goUrl="$BASEPATH/install/Golang/install.sh"
+goUrl="$BASEURL/install/Golang/install.sh"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
