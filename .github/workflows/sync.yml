@@ -35,7 +35,7 @@ jobs:
           git log --pretty=format:"%s from Github Actions at `TZ=UTC-8 date +"%Y-%m-%d %H:%M:%S"`" --date=short -n 1  > ~/commit-message.log
       - name: sync to hashkey github
         run: |
-          git clone -b master git@github.com:HashKeyHub/install.git ~/install
+          git clone -b master git@github.com:HashKeyHub/fullnode-install.git ~/install
           echo '------'
           cp -rf ./* ~/install
           echo '------'
