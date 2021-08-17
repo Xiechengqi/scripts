@@ -3,7 +3,7 @@
 |                           Install                            |                           Command                            |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | [Postgres](https://github.com/Xiechengqi/scripts/edit/master/install/Postgres/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Postgres/install.sh \| bash -s [version]` |
-| [Mongodb](https://github.com/Xiechengqi/scripts/edit/master/install/Mongodb/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Mongodb/install.sh \| bash` |
+| [Mongodb](https://github.com/Xiechengqi/scripts/edit/master/install/Mongodb/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Mongodb/install.sh \| bash -s [version]` |
 | [Mysql](https://github.com/Xiechengqi/scripts/edit/master/install/Mysql/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Mysql/install.sh \| bash -s [version]` |
 | [Redis](https://github.com/Xiechengqi/scripts/edit/master/install/Redis/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Redis/install.sh \| bash -s [version]` |
 | [Pyenv](https://github.com/Xiechengqi/scripts/edit/master/install/Pyenv/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Pyenv/install.sh \| bash` |
