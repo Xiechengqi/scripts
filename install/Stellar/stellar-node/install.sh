@@ -22,8 +22,10 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 chainId="$1" && INFO "chain: $chainId"                                                                                                
 ! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
+# environments
 serviceName="stellar-node"
 installPath="/data/${serviceName}"
+port="8000"
 dockerUrl="$BASEURL/install/Docker/install.sh"
 
 # check service
@@ -34,13 +36,14 @@ curl -SsL $dockerUrl | bash
 
 # docker run service
 [ "$chainId" = "mainnet" ] && options="--pubnet" || options="--testnet"
-EXEC "docker run -itd --restart=always -p 8000:8000 -v $installPath/data:/opt/stellar --name ${serviceName} stellar/quickstart $options"
+EXEC "docker run -itd --restart=always -p $port:8000 -v $installPath/data:/opt/stellar --name ${serviceName} stellar/quickstart $options"
 
 # check
 EXEC "sleep 5"
 EXEC "docker ps | grep ${serviceName}"
 
 # info
+YELLOW "port: $port"
 YELLOW "log: docker logs -f $serviceName"
 YELLOW "data: $installPath/data"
 YELLOW "managemanet cmd: docker [stop|start|restart] $serviceName"
