@@ -37,6 +37,9 @@ EXEC "mkdir -p $installPath/{src,data,logs}"
 # download tarball
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath/src"
 
+# install gcc
+EXEC "apt update && apt install -y build-essential"
+
 # install golang
 curl -SsL $goUrl | bash
 
