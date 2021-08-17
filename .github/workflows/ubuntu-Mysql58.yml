@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Mysql5.8
         run: |
-          sudo systemctl stop mysqld && curl -SsL $SCRIPT_URL/Mysql/install.sh | sudo bash -s 5.8
+          curl -SsL $SCRIPT_URL/Mysql/install.sh | sudo bash -s 5.8
       - name: check
         run: |
           sleep 10
@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Mysql5.8
         run: |
-          sudo systemctl stop mysqld && curl -SsL $SCRIPT_URL/Mysql/install.sh | sudo bash -s 5.8
+          curl -SsL $SCRIPT_URL/Mysql/install.sh | sudo bash -s 5.8
       - name: check
         run: |
           sleep 10
