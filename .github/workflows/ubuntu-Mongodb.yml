@@ -18,7 +18,7 @@ jobs:
       - name: check
         run: |
           sleep 10
-          sudo systemctl status Mongodb
+          sudo systemctl status mongod
           sudo ss -plunt
           sudo ls --color=auto -alht /data/*
           echo "🍏 Mongodb Ubuntu 18.04 install script is ${{ job.status }}"
@@ -34,7 +34,7 @@ jobs:
       - name: check
         run: |
           sleep 10
-          sudo systemctl status mongodb
+          sudo systemctl status mongod
           sudo ss -plunt
           sudo ls --color=auto -alht /data/*
           echo "🍏 Mongodb Ubuntu 20.04 install script is ${{ job.status }}"
