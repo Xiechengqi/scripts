@@ -22,7 +22,7 @@ chainId=$1
 # environments
 serviceName="eth-node"
 version="3.2.6"
-installPath="/data/${serviceName}-${version}"
+installPath="/data/ETH/${serviceName}-${version}"
 downloadUrl="https://github.com/openethereum/openethereum/releases/download/v${version}/openethereum-linux-v${version}.zip"
 
 # check service
