@@ -10,21 +10,21 @@ source /etc/profile
 
 # println information
 INFO() {
-printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
+printf -- "\033[44;37m%s\033[0m " "[$(TZ=UTC-8 date "+%Y-%m-%d %H:%M:%S")]"
 printf -- "%s" "$1"
 printf "\n"
 }
 
 # println yellow color information
 YELLOW() {
-printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
+printf -- "\033[44;37m%s\033[0m " "[$(TZ=UTC-8 date "+%Y-%m-%d %H:%M:%S")]"
 printf -- "\033[33m%s\033[0m" "$1"
 printf "\n"
 }
 
 # println error information
 ERROR() {
-printf -- "\033[41;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
+printf -- "\033[41;37m%s\033[0m " "[$(TZ=UTC-8 date "+%Y-%m-%d %H:%M:%S")]"
 printf -- "%s" "$1"
 printf "\n"
 exit 1
