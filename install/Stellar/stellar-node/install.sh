@@ -22,7 +22,6 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 chainId="$1" && INFO "chain: $chainId"                                                                                                
 ! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
-main() {
 serviceName="stellar-node"
 installPath="/data/${serviceName}"
 dockerUrl="$BASEURL/Docker/install.sh"
