@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Mongodb
         run: |
-          sudo systemctl stop mongodb && curl -SsL $SCRIPT_URL/Mongodb/install.sh | sudo bash
+          curl -SsL $SCRIPT_URL/Mongodb/install.sh | sudo bash
       - name: check
         run: |
           sleep 10
@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Mongodb
         run: |
-          sudo systemctl stop mongodb && curl -SsL $SCRIPT_URL/Mongodb/install.sh | sudo bash
+          curl -SsL $SCRIPT_URL/Mongodb/install.sh | sudo bash
       - name: check
         run: |
           sleep 10
