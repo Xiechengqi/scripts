@@ -24,7 +24,7 @@ chainId="$1" && INFO "chain: $chainId"
 
 serviceName="stellar-node"
 installPath="/data/${serviceName}"
-dockerUrl="$BASEURL/Docker/install.sh"
+dockerUrl="$BASEURL/install/Docker/install.sh"
 
 # check service
 docker ps -a | grep ${serviceName} &> /dev/null && ERROR "${serviceName} is running ..."
