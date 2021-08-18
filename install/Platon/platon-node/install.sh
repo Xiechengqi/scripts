@@ -39,7 +39,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 # get chainId
 chainId="$1" && INFO "chain: $chainId"                                                                                                
 ! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
-[ "$chainId" = "testnet" ] && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
+# [ "$chainId" = "testnet" ] && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
 
 # install ntp
 install_ntp
@@ -59,8 +59,13 @@ EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{bin,conf,logs,data}"
 
 # download
+if [ "$chainId" = "mainnet" ]; then
 EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platon -o $installPath/bin/platon"
 EXEC "curl -SsL https://download.platon.network/platon/platon/${version}/platonkey -o $installPath/bin/platonkey"
+else
+EXEC "curl -SsL https://download.platon.network/platon/devnet/platon/${version}/platon -o $installPath/bin/platon"
+EXEC "curl -SsL https://download.platon.network/platon/devnet/platon/${version}/platonkey -o $installPath/bin/platonkey"
+fi
 EXEC "chmod +x $installPath/bin/*"
 
 # register bin
