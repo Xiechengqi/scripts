@@ -39,7 +39,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 # get chainId
 chainId="$1" && INFO "chain: $chainId"                                                                                                
 ! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
-# [ "$chainId" = "testnet" ] && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
+[ "$chainId" = "testnet" ] && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
 
 # install ntp
 install_ntp
