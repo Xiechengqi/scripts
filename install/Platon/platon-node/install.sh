@@ -2,8 +2,8 @@
 
 #
 # xiechengqi
-# 2021/08/03
-# Ubuntu 18.04
+# 2021/08/18
+# Ubuntu 18+
 # https://github.com/PlatONnetwork/PlatON-Go
 # install platon-node
 #
@@ -39,7 +39,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 # get chainId
 chainId="$1" && INFO "chain: $chainId"                                                                                                
 ! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
-[ "$chainId" = "testnet" ] && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
+# [ "$chainId" = "testnet" ] && ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
 
 # install ntp
 install_ntp
@@ -81,23 +81,28 @@ platonkey genblskeypair | tee >(grep "PrivateKey" | awk '{print $2}' > ${install
 if [ "$chainId" = "mainnet" ]
 then
 # mainnet
-options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"
+options="--identity ${serviceName}-${chainId} --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"
 else
-# testnet
-ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
-# options="--identity platon --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --testnet"
+# testnet - https://devdocs.platon.network/docs/zh-CN/Become_PlatON_Dev_Verification
+EXEC "curl -SsL https://download.platon.network/platon/devnet/platon/1.0.0/genesis.json -o $installPath/conf/genesis.json"
+EXEC "cd $installPath && platon --datadir ./data init ./conf/genesis.json"
+EXEC "cd -"
+options="--identity ${serviceName}-${chainId} --datadir $installPath/data --port ${port} --rpcport ${rpcPort} --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey $installPath/conf/nodekey --cbft.blskey $installPath/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --bootnodes enode://c72a4d2cb8228ca6f9072daa66566bcafa17bec6a9e53765c85c389434488c393357c5c7c5d18cf9b26ceda46aca4da20755cd01bcc1478fff891a201042ba84@devnetnode1.platon.network:16789 --syncmode \"fast\""
+# ERROR "Platon testnet is not avaliable，See https://platon.network/galaxy/"
 fi
 
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-platon $options &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
+timestamp=\$(date +%Y%m%d%H%M%S)
+touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
+platon $options &> $installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
 Description=Golang implementation of the PlatON protocol
 Documentation=https://github.com/PlatONnetwork/PlatON-Go
@@ -114,6 +119,8 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
@@ -123,11 +130,11 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-YELLOW "version: $version"
-YELLOW "install path: $installPath"
-YELLOW "config path: $installPath/conf"
-YELLOW "log path: $installPath/logs"
-YELLOW "db path: $installPath/data"
+YELLOW "${serviceName} version: $version"
+YELLOW "rpc port: ${rpcPort}"
+YELLOW "conf: $installPath/conf"
+YELLOW "data: $installPath/data"
+YELLOW "log: tail -f $installPath/logs/latest.log"
 YELLOW "connection cmd: platon attach http://localhost:$rpcPort"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
