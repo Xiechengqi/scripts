@@ -2,10 +2,11 @@
 
 #
 # xiechengqi
-# 2021/08.03
-# https://github.com/ethereum/go-ethereum https://geth.ethereum.org/
-# Ubuntu 18.04
-# install ETH Node Geth
+# 2021/08/19
+# https://github.com/ethereum/go-ethereum
+# https://geth.ethereum.org/
+# Ubuntu 18+
+# geth install ETH Node
 #
 
 source /etc/profile
@@ -17,15 +18,9 @@ main()
 osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-# check os
-osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
-
 # get chainId
 chainId="$1" && INFO "chain: $chainId"
 ! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
-
-chainId=$1
 
 # environments
 serviceName="eth-node"
@@ -57,14 +52,15 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
+installPath="$installPath"
 timestamp=\$(date +%Y%m%d%H%M%S)
-touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
-geth --nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsPort --datadir $installPath/data --http.vhosts=* $options &> $installPath/logs/latest.log
+touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
+geth --nat=extip:$pubIp --http --http.addr 0.0.0.0 --ws --ws.addr 0.0.0.0 --ws.port $wsPort --datadir \$installPath/data --http.vhosts=* $options &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > $installPath/${serviceName}.service << EOF
+cat > ${installPath}/${serviceName}.service << EOF
 [Unit]
 Description=Official Go implementation of the Ethereum protocol
 Documentation=https://github.com/ethereum/go-ethereum
@@ -96,8 +92,8 @@ YELLOW "${serviceName} version: $version"
 YELLOW "chain: $chainId"
 YELLOW "data: $installPath/data"
 YELLOW "log: tail -f $installPath/logs/latest.log"
-YELLOW "connection cmd: geth attach http://${pubIp}:${rpcPort}"
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "info cmd: geth attach http://$(hostname -I | awk '{print $1}'):${rpcPort} --exec 'eth.syncing'"
+YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
