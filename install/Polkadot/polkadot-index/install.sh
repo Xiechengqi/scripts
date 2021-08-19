@@ -31,7 +31,7 @@ wsPort="9944"
 
 # install script url
 dockerUrl="$BASEURL/install/Docker/install.sh"
-dockerComposeUrl="$BASEURL/install/docker-compose/install.sh"
+dockerComposeUrl="$BASEURL/install/Docker/docker-compose/install.sh"
 
 # check service
 docker ps | grep polkadot-index &> /dev/null && ERROR "${serviceName} is running ..." 
