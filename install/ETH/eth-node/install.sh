@@ -2,8 +2,8 @@
 
 #
 # xiechengqi
-# 2021/08.03
-# Ubuntu 18.04
+# 2021/08/19
+# Ubuntu 18+
 # install ETH Node
 #
 
