@@ -57,12 +57,15 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-polkadot --pruning archive --name "$serviceName-$chainId" --chain $chainId -d $installPath/data --rpc-external --ws-external --rpc-cors all &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
+installPath="$installPath"
+timestamp=\$(date +%Y%m%d%H%M%S)
+touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
+polkadot --pruning archive --name "$serviceName-$chainId" --chain $chainId -d \$installPath/data --rpc-external --ws-external --rpc-cors all &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > $installPath/${serviceName}.service << EOF
 [Unit]
 Description=Polkadot Node Implementation
 Documentation=https://github.com/paritytech/polkadot
@@ -79,6 +82,8 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/${serviceName}"
