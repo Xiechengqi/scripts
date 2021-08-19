@@ -27,7 +27,7 @@ version="0.18.1"
 installPath="/data/Litecoin/${serviceName}-${version}"
 downloadUrl="https://download.litecoin.org/litecoin-${version}/linux/litecoin-${version}-x86_64-linux-gnu.tar.gz"
 rpcUser="litecore"
-rpcPasword="local321"
+rpcPassword="local321"
 # use default port
 [ "$chainId" = "mainnet" ] && rpcPort="9332" || rpcPort="19332"
 [ "$chainId" = "mainnet" ] && p2pPort="9333" || p2pPort="19335"
@@ -58,7 +58,7 @@ zmqpubrawtx=tcp://127.0.0.1:29332
 zmqpubhashblock=tcp://127.0.0.1:29332
 rpcallowip=127.0.0.1
 rpcuser=${rpcUser}
-rpcpassword=${rpcPasword}
+rpcpassword=${rpcPassword}
 uacomment=litecore
 EOF
 
