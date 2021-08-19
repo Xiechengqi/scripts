@@ -23,7 +23,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 serviceName="polkadot-index"
 version="master"
 installPath="/data/Polkadot/${serviceName}-${version}"
-downloadUrl="https://github.com/HashKeyHub/polkadot-indexer.git"
+downloadUrl="https://github.com/HashKeyHub/subscan-essentials"
 # fullnode host ip
 nodeHost=`hostname -I | awk '{print $1}'`
 # fullnode wx rpc port
