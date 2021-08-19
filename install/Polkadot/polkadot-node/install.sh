@@ -35,9 +35,9 @@ EXEC "mkdir -p $installPath/{bin,conf,data,logs}"
 
 # download
 EXEC "curl -SsL $downloadUrl -o $installPath/bin/polkadot"
-EXEC "chmod +x $installPath/bin/polkadot"
 
 # register bin
+EXEC "chmod +x $installPath/bin/polkadot"
 EXEC "ln -fs $installPath/bin/* /usr/local/bin"
 EXEC "polkadot --version" && polkadot --version
 
@@ -65,7 +65,7 @@ EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > $installPath/${serviceName}.service << EOF
+cat > ${installPath}/${serviceName}.service << EOF
 [Unit]
 Description=Polkadot Node Implementation
 Documentation=https://github.com/paritytech/polkadot
@@ -93,12 +93,12 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # INFO
-YELLOW "version: ${version}"
-YELLOW "install path: $installPath"
-YELLOW "log path: $installPath/logs"
-YELLOW "db path: $installPath/data"
-YELLOW "view block height: curl -SsL -H \"Content-Type: application/json\" -d '{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"chain_getBlock\"}' http://localhost:9933/ | jq .result.block.header.number"
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "${serviceName} version: ${version}"
+YELLOW "config: $installPath/conf"
+YELLOW "data: $installPath/data"
+YELLOW "log: tail -f $installPath/logs/latest.log"
+YELLOW "block cmd: curl -SsL -H \"Content-Type: application/json\" -d '{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"chain_getBlock\"}' http://localhost:9933/ | jq .result.block.header.number"
+YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
