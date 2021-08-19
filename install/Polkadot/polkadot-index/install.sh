@@ -108,6 +108,7 @@ EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 EXEC "docker-compose -f docker-compose-full.yml up -d mysql"
 EXEC "sleep 3"
 EXEC "docker-compose -f docker-compose-full.yml up -d"
+INFO "docker-compose -f docker-compose-full.yml ps" && docker-compose -f docker-compose-full.yml ps
 
 # info
 YELLOW "${serviceName} version: $version"
