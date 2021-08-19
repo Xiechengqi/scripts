@@ -30,7 +30,7 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 YELLOW "$serviceName is running ..."
 }
 
-main()
+main() {
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
