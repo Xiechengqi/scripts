@@ -70,7 +70,7 @@ source /etc/profile
 
 timestamp=\$(date +%Y%m%d%H%M%S)
 touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
-litecoind -conf=$installPath/conf/${serviceName}.conf $options &> $installPath/logs/latest.log
+litecoind -conf=$installPath/conf/${serviceName}.conf --datadir=$installPath/data $options &> $installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
