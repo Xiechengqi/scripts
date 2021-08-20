@@ -91,9 +91,11 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-timestamp=\$(date +%Y%m%d%H%M%S)
-touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
-alaya --identity ${serviceName}-${chainId} --datadir $installPath/data --port $port --rpcaddr 0.0.0.0 --rpcport $rpcPort --rpc --rpcapi "db,platon,net,web3,admin,personal" --nodekey $installPath/conf/nodekey --cbft.blskey $installPath/conf/blskey --verbosity 3 --syncmode "fast" &> $installPath/logs/latest.log
+
+installPath=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
+timestamp=$(date +%Y%m%d)
+touch \$installPath/logs/${timestamp}.log && ln -fs \$installPath/logs/${timestamp}.log \$installPath/logs/latest.log
+alaya --identity ${serviceName}-${chainId} --datadir \$installPath/data --port $port --rpcaddr 0.0.0.0 --rpcport $rpcPort --rpc --rpcapi "db,platon,net,web3,admin,personal" --nodekey \$installPath/conf/nodekey --cbft.blskey \$installPath/conf/blskey --verbosity 3 --syncmode "fast" &> \$installPath/logs/latest.log
 EOF
 
 else
@@ -107,9 +109,10 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-timestamp=\$(date +%Y%m%d%H%M%S)
-touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
-alaya --identity ${serviceName}-${chainId} --datadir $installPath/data --port $port --rpcport $rpcPort --rpcapi "db,platon,net,web3,admin,personal" --rpc --nodekey $installPath/conf/nodekey --cbft.blskey $installPath/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --bootnodes enode://48f9ebd7559b7849f80e00d89d87fb92604c74a541a7d76fcef9f2bcc67043042dfab0cfbaeb5386f921208ed9192c403f438934a0a39f4cad53c55d8272e5fb@devnetnode1.alaya.network:16789 --syncmode "fast" &> $installPath/logs/latest.log
+installPath=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
+timestamp=$(date +%Y%m%d)
+touch \$installPath/logs/${timestamp}.log && ln -fs \$installPath/logs/${timestamp}.log \$installPath/logs/latest.log
+alaya --identity ${serviceName}-${chainId} --datadir \$installPath/data --port $port --rpcport $rpcPort --rpcapi "db,platon,net,web3,admin,personal" --rpc --nodekey \$installPath/conf/nodekey --cbft.blskey \$installPath/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --bootnodes enode://48f9ebd7559b7849f80e00d89d87fb92604c74a541a7d76fcef9f2bcc67043042dfab0cfbaeb5386f921208ed9192c403f438934a0a39f4cad53c55d8272e5fb@devnetnode1.alaya.network:16789 --syncmode "fast" &> \$installPath/logs/latest.log
 EOF
 
 fi
@@ -117,7 +120,7 @@ EXEC "chmod +x $installPath/start.sh"
 
 cat > ${installPath}/${serviceName}.service << EOF 
 [Unit]
-Description=Alaya node service
+Description=${serviceName}
 Documentation=https://github.com/AlayaNetwork/Alaya-Go
 After=network.target
 
@@ -148,8 +151,8 @@ YELLOW "rpc port: ${rpcPort}"
 YELLOW "conf: $installPath/conf"
 YELLOW "data: $installPath/data"
 YELLOW "log: tail -f $installPath/logs/latest.log"
-YELLOW "connection cmd: alaya attach http://localhost:$rpcPort"
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "check cmd: alaya attach http://localhost:$rpcPort"
+YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
