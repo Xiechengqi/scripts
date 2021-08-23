@@ -104,6 +104,7 @@ cat > $installPath/bitcore.config.json << EOF        # 配置文件名不可修�
 EOF
 
 # compile and install
+EXEC "cd $installPath"
 INFO "sudo npm install" && sudo npm install || exit 1
 INFO "sudo npm run bootstrap" && sudo npm run bootstrap || exit 1
 INFO "sudo npm run compile" && sudo npm run compile || exit 1
