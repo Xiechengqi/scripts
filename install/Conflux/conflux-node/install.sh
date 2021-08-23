@@ -53,12 +53,13 @@ sed -i "s#log\/#$installPath\/logs\/#g" $installPath/conf/log.yaml
 
 # create start.sh
 [ "$chainId" = "mainnet" ] && configFileName="tethys.toml" || configFileName="testnet.toml"
+echo "conflux_data_dir = \"$installPath/data\"" >> $installPath/conf/${configFileName}
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
 export RUST_BACKTRACE=1
-conflux --config $installPath/conf/${configFileName} --block-db-dir $installPath/data --log-conf $installPath/conf/log.yaml 2> $installPath/logs/$(date +%Y%m%d%H%M%S)-error.log 1> /dev/null
+conflux --config $installPath/conf/${configFileName} --log-conf $installPath/conf/log.yaml &> $installPath/logs/error.log 1> /dev/null
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
