@@ -119,7 +119,7 @@ installPath="$installPath"
 timestamp=\$(date +%Y%m%d)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 cd \$installPath
-npm run node &> \$installPath/logs/latest.log
+/data/node-10.24.1/bin/npm run node &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
