@@ -18,7 +18,7 @@ installPath="/data/${serviceName}-${version}"
 downloadUrl="https://nodejs.org/download/release/v${version}/node-v${version}-linux-x64.tar.gz"
 
 # check node
-node -v &> /dev/null && YELLOW "node has been installed ..." && return 0
+[[ "$(node -v)" =~ "${version}" ]] && YELLOW "node has been installed ..." && return 0
 
 # check install path
 EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"

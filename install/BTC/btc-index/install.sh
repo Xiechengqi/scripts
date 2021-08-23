@@ -2,14 +2,14 @@
 
 #
 # xiechengqi
-# 2021/08/03
+# 2021/08/23
 # https://github.com/bitpay/bitcore
-# Ubuntu 18.04
-# compile install bitcore
+# Ubuntu 18+
+# compile install BTC Index
+# refer: https://github.com/bitpay/bitcore/blob/master/Dockerfile
 #
 
 source /etc/profile
-
 BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
@@ -24,13 +24,12 @@ chainId="$1" && INFO "chain: $chainId"
 
 # environment
 serviceName="btc-index"
-version="8.25.12"
+version="8.25.17"
 installPath="/data/BTC/${serviceName}-${version}"
 downloadUrl="https://github.com/bitpay/bitcore/archive/refs/tags/v${version}.tar.gz"
-user="btc-index"   # 启动 bitcore 用户
-hostIp="127.0.0.1" # 安装 bitcoin 主机 ip
-[ "$chainId" = "mainnet" ] && rpcPort="8332" || rpcPort="18332"  # 同 bitcoin 配置
-[ "$chainId" = "mainnet" ] && p2pPort="8333" || p2pPort="18333"  # 同 bitcoin 配置
+nodeIp="127.0.0.1" # 安装 bitcoin 主机 ip
+[ "$chainId" = "mainnet" ] && rpcPort="8332" || rpcPort="18332"  # 同 btc-node 配置
+[ "$chainId" = "mainnet" ] && p2pPort="8333" || p2pPort="18333"  # 同 btc-node 配置
 rpcUser="bitcoin"    # 同 bitcoin 配置
 rpcPassword="local321"   # 同 bitcoin 配置
 
@@ -44,11 +43,12 @@ nodeUrl="$BASEURL/install/Node/install.sh"
 # install mongodb
 curl -SsL $mongodbUrl | bash
 
-# install node
-curl -SsL $nodeUrl | bash -s 12.16.0
+# install node10.24.1 and npm6.14.5
+curl -SsL $nodeUrl | bash -s 10.24.1
+EXEC "npm i -g npm@6.14.5"
 
 # install gcc
-gcc --version &> /dev/null || EXEC "apt update && apt install -y build-essential"
+EXEC "apt update && apt install -y build-essential"
 EXEC "gcc --version" && gcc --version
 EXEC "g++ --version" && g++ --version
 
@@ -56,18 +56,16 @@ EXEC "g++ --version" && g++ --version
 EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/logs"
 
-# check user
-! cat /etc/passwd | grep $user &> /dev/null && EXEC "useradd -m $user"
-
 # download tarball
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 
-# chown
-EXEC "chown -R $user:$user $installPath"
+# add key
+EXEC "curl -SsL https://dl-ssl.google.com/linux/linux_signing_key.pub -o /tmp/linux_signing_key.pub"
+EXEC "apt-key add /tmp/linux_signing_key.pub"
 
-# compile and install
-INFO "su $user -c 'cd $installPath && npm install'"
-su $user -c "cd $installPath && npm install"
+# install google-chrome
+EXEC "apt-get update && apt-get install -y google-chrome-stable"
+EXEC "google-chrome --version" && google-chrome --version 
 
 # config
 cat > $installPath/bitcore.config.json << EOF        # 配置文件名不可修改
@@ -79,12 +77,12 @@ cat > $installPath/bitcore.config.json << EOF        # 配置文件名不可修�
           "chainSource": "p2p",
           "trustedPeers": [
             {
-              "host": "$hostIp",
+              "host": "$nodeIp",
               "port": $p2pPort 
             }
           ],
           "rpc": {
-            "host": "$hostIp",
+            "host": "$nodeIp",
             "port": $rpcPort,
             "username": "$rpcUser",
             "password": "$rpcPassword"
@@ -105,27 +103,33 @@ cat > $installPath/bitcore.config.json << EOF        # 配置文件名不可修�
 }
 EOF
 
+# compile and install
+INFO "sudo npm install" && sudo npm install || exit 1
+INFO "sudo npm run bootstrap" && sudo npm run bootstrap || exit 1
+INFO "sudo npm run compile" && sudo npm run compile || exit 1
+
 # create start.sh
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
+source /etc/profile
 export NODE_OPTIONS=--max_old_space_size=3145728
-cd $installPath && npm run node &> $installPath/logs/$(date +%Y%m%d%H%M%S).log
+
+installPath="$installPath"
+timestamp=\$(date +%Y%m%d)
+touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
+cd \$installPath
+npm run node &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
-# chown
-EXEC "chown -R $user:$user $installPath"
-
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > ${installPath}/${serviceName}.service << EOF
 [Unit]
 Description=A full stack for bitcoin and blockchain-based applications
 Documentation=https://github.com/bitpay/bitcore
 After=network.target
 
 [Service]
-User=$user
-Group=$user
 ExecStart=/bin/bash $installPath/start.sh
 ExecStop=/bin/kill -s QUIT \$MAINPID
 Restart=always
@@ -134,6 +138,8 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
@@ -143,15 +149,14 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-YELLOW "version: $version"
-YELLOW "install path: $installPath"
-YELLOW "config path: $installPath/bitcore.config.json"
-YELLOW "log path: $installPath/logs"
+YELLOW "${serviceName} version: $version"
+YELLOW "conf: $installPath/bitcore.config.json"
+YELLOW "log: tail -f $installPath/logs/latest.log"
 YELLOW "rpcUser: $rpcUser"
 YELLOW "rpcPassword: $rpcPassword"
 YELLOW "rpcPort: $rpcPort"
 YELLOW "p2pPort: $p2pPort"
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
