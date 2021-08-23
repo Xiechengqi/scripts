@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/08/16
+# 2021/08/23
 # Ubuntu 20.04
 # install chainx-node
 #
@@ -26,6 +26,8 @@ serviceName="chainx-node"
 version="3.0.0"
 installPath="/data/ChainX/${serviceName}-${version}"
 downloadUrl="https://github.com/chainx-org/ChainX/releases/download/v${version}/chainx-v${version}-ubuntu-20.04-x86_64-unknown-linux-gnu"
+wsPort="8087"
+rpcPort="8086"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0 
@@ -37,9 +39,8 @@ EXEC "mkdir -p $installPath/{bin,conf,data,logs}"
 # download tarball
 EXEC "curl -SsL $downloadUrl -o $installPath/bin/chainx"
 
-
 # register bin
-EXEC "chmod +x $installPath/bin/chainx"
+EXEC "chmod +x $installPath/bin/*"
 EXEC "ln -fs $installPath/bin/* /usr/local/bin"
 EXEC "chainx -V" && chainx -V
 
@@ -54,20 +55,19 @@ cat > $installPath/conf/${serviceName}.json << EOF
   "rpc-cors": "all",
   "log": "info,runtime=info",
   "port": 20222,
-  "ws-port": 8087,
-  "rpc-port": 8086,
+  "ws-port": ${wsPort},
+  "rpc-port": ${rpcPort},
   "pruning": "archive", 
   "execution": "NativeElseWasm",
   "db-cache": 2048, 
   "state-cache-size": 2147483648, 
-  "name": "ChainX-Node",
-  "base-path": "$installPath/data", 
+  "name": "${serviceName}",
+  "base-path": "${installPath}/data", 
   "bootnodes": []
 }
 EOF
 
 # create start.sh
-[ "$chainId" = "mainnet" ] && chainId="mainnet" || chainId="testnet"
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env
 source /etc/profile
@@ -77,9 +77,9 @@ EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > $installPath/${serviceName}.service << EOF
+cat > ${installPath}/${serviceName}.service << EOF
 [Unit]
-Description=Chainx Node
+Description=${serviceName}
 Documentation=https://github.com/chainx-org/ChainX
 After=network.target
 
@@ -107,11 +107,12 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 # info
 YELLOW "${serviceName} version: $version"
 YELLOW "chain: ${chainId}"
-YELLOW "install path: $installPath"
-YELLOW "config path: $installPath/conf"
-YELLOW "data path: $installPath/data"
-YELLOW "log path: $installPath/logs"
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "web socket port: ${wsPort}" 
+YELLOW "rpc port: ${rpcPort}"
+YELLOW "conf: $installPath/conf"
+YELLOW "data: $installPath/data"
+YELLOW "log: $installPath/logs"
+YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@

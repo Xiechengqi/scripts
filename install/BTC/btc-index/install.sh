@@ -6,7 +6,8 @@
 # https://github.com/bitpay/bitcore
 # Ubuntu 18+
 # compile install BTC Index
-# refer: https://github.com/bitpay/bitcore/blob/master/Dockerfile
+# install doc: https://github.com/bitpay/bitcore/blob/master/Dockerfile
+# API: https://github.com/bitpay/bitcore/blob/master/packages/bitcore-node/docs/api-documentation.md
 #
 
 source /etc/profile
@@ -151,12 +152,13 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 
 # info
 YELLOW "${serviceName} version: $version"
+YELLOW "port: 3000"
+YELLOW "rpc port: $rpcPort"
+YELLOW "p2p port: $p2pPort"
+YELLOW "rpc user: $rpcUser"
+YELLOW "rpc password: $rpcPassword"
 YELLOW "conf: $installPath/bitcore.config.json"
 YELLOW "log: tail -f $installPath/logs/latest.log"
-YELLOW "rpcUser: $rpcUser"
-YELLOW "rpcPassword: $rpcPassword"
-YELLOW "rpcPort: $rpcPort"
-YELLOW "p2pPort: $p2pPort"
 YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 

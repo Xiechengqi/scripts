@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # 
+# 2021/08/23
 # xiechengqi
-# OS: Ubuntu 18.04
-# 2021/08.04
+# OS: Ubuntu 18+
 # install Conflux Node
 # 
 
@@ -57,14 +57,17 @@ echo "conflux_data_dir = \"$installPath/data\"" >> $installPath/conf/${configFil
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
-
 export RUST_BACKTRACE=1
-conflux --config $installPath/conf/${configFileName} --log-conf $installPath/conf/log.yaml &> $installPath/logs/error.log 1> /dev/null
+
+installPath="$installPath"
+timestamp=\$(date +%Y%m%d)
+touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
+conflux --config \$installPath/conf/${configFileName} --log-conf \$installPath/conf/log.yaml &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > ${installPath}/${serviceName}.service << EOF
 [Unit]
 Description=A BPoS blockchain that enables cross-chain interoperability through a unified service model
 Documentation=https://github.com/irisnet/irishub
@@ -81,6 +84,8 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/${serviceName}"
@@ -90,13 +95,12 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # INFO
-YELLOW "version: ${version}"
-YELLOW "install path: $installPath"
-YELLOW "config path: $installPath/conf"
-YELLOW "data path: $installPath/data"
-YELLOW "log path: $installPath/logs"
-YELLOW "connection cmd: "
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "${serviceName} version: ${version}"
+YELLOW "conf: $installPath/conf"
+YELLOW "data: $installPath/data"
+YELLOW "log: tail -f $installPath/logs/latest.log"
+YELLOW "check cmd: "
+YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@

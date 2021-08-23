@@ -2,7 +2,7 @@
 
 # 
 # xiechengqi
-# OS: Ubuntu 18.04
+# OS: Ubuntu 18+
 # 2021/08/03
 # install IRIS Node
 # 

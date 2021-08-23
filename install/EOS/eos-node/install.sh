@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 #
+# 2021/08/23
 # xiechengqi
-# 2021/08/03
-# Ubuntu 18.04
-# install eos-node
+# Ubuntu 18+
+# install EOS Node
 #
 
 source /etc/profile
@@ -127,15 +127,16 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
 
-timestamp=\$(date +%Y%m%d%H%M%S)
-touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
-[ \$(ls $installPath/data/\$* | wc -w) = "0" ] && genesisOptions="--genesis-json $installPath/conf/genesis.json --delete-all-blocks" || genesisOptions=""
-nodeos \$genesisOptions --config-dir $installPath/conf --data-dir $installPath/data &> $installPath/logs/latest.log
+installPath="${installPath}"
+timestamp=\$(date +%Y%m%d)
+touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
+[ \$(ls \$installPath/data/\$* | wc -w) = "0" ] && genesisOptions="--genesis-json \$installPath/conf/genesis.json --delete-all-blocks" || genesisOptions=""
+nodeos \$genesisOptions --config-dir \$installPath/conf --data-dir \$installPath/data &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > /lib/systemd/system/${serviceName}.service << EOF
+cat > ${installPath}/${serviceName}.service << EOF
 [Unit]
 Description=EOS
 Documentation=https://github.com/EOSIO/eos
@@ -152,6 +153,8 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
@@ -161,13 +164,14 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-YELLOW "${serviceName} version: $version"
-YELLOW "install path: $installPath"
-YELLOW "config path: $installPath/conf"
-YELLOW "data path: $installPath/data"
-YELLOW "tail log cmd: tail -f $installPath/logs/latest.log"
-YELLOW "blockchain info cmd: cleos get info"
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "${serviceName} version: ${version}"
+YELLOW "http port: ${httpPort}"
+YELLOW "p2p port: ${p2pPort}"
+YELLOW "conf: ${installPath}/conf"
+YELLOW "data: ${installPath}/data"
+YELLOW "log: tail -f ${installPath}/logs/latest.log"
+YELLOW "check cmd: cleos get info"
+YELLOW "control cmd: systemctl [stop|start|restart|reload] ${serviceName}"
 }
 
 main $@

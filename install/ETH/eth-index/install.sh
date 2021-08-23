@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/08/03
+# 2021/08/23
 # github: https://github.com/Adamant-im/ETH-transactions-storage
 # OS: ubuntu 18.04
 # install ETH index
@@ -64,14 +64,15 @@ cat > $installPath/start.sh << EOF
 source /etc/profile
 export LD_LIBRARY_PATH=/data/postgres/lib
 
+installPath="${installPath}"
 timestamp=\$(date +%Y%m%d%H%M%S)
-touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
-postgrest $installPath/conf/postgrest.conf &> $installPath/logs/latest.log
+touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
+postgrest \$installPath/conf/postgrest.conf &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > $installPath/${serviceName}.service << EOF
+cat > ${installPath}/${serviceName}.service << EOF
 [Unit]
 Description=Transaction API with Postgrest
 After=network.target
@@ -205,7 +206,7 @@ EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > $installPath/${serviceName}.service << EOF
+cat > ${installPath}/${serviceName}.service << EOF
 [Unit]
 Description=EthereumTransactionStorage
 After=syslog.target
@@ -233,12 +234,13 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-YELLOW "version: $version"
-YELLOW "install path: $installPath"
-YELLOW "conf path: $installPath/src/config.ini"
-YELLOW "log path: $installPath/logs"
-YELLOW "blockchain info cmd: "
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "${serviceName} version: ${version}"
+YELLOW "port: ${port}"
+YELLOW "install: ${installPath}"
+YELLOW "conf: ${installPath}/src/config.ini"
+YELLOW "log: tail -f ${installPath}/logs/${serviceName}.log"
+YELLOW "check cmd: "
+YELLOW "control cmd: systemctl [stop|start|restart|reload] ${serviceName}"
 }
 
 main $@

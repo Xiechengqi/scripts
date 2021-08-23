@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/08/19
+# 2021/08/23
 # https://devdocs.alaya.network/alaya-devdocs/zh-CN/Run_a_fullnode/
 # install Alaya Node
 #
@@ -87,13 +87,13 @@ alayakey genblskeypair | tee >(grep "PrivateKey" | awk '{print $2}' > $installPa
 ## –db.nogc	开启归档模式
 if [ "$chainId" = "mainnet" ]; then
 
+# create start.sh
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-
-installPath=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
-timestamp=$(date +%Y%m%d)
+installPath="$installPath"
+timestamp=\$(date +%Y%m%d)
 touch \$installPath/logs/${timestamp}.log && ln -fs \$installPath/logs/${timestamp}.log \$installPath/logs/latest.log
 alaya --identity ${serviceName}-${chainId} --datadir \$installPath/data --port $port --rpcaddr 0.0.0.0 --rpcport $rpcPort --rpc --rpcapi "db,platon,net,web3,admin,personal" --nodekey \$installPath/conf/nodekey --cbft.blskey \$installPath/conf/blskey --verbosity 3 --syncmode "fast" &> \$installPath/logs/latest.log
 EOF
@@ -102,15 +102,15 @@ else
 
 # download genesis.json
 EXEC "curl -SsL https://download.alaya.network/alaya/platon/0.15.1/genesis.json -o $installPath/conf/genesis.json"
-
 # init genesis.json 
 EXEC "alaya --datadir $installPath/data init $installPath/conf/genesis.json"
+# create start.sh
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-installPath=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
-timestamp=$(date +%Y%m%d)
+installPath="$installPath"
+timestamp="$(date +%Y%m%d)"
 touch \$installPath/logs/${timestamp}.log && ln -fs \$installPath/logs/${timestamp}.log \$installPath/logs/latest.log
 alaya --identity ${serviceName}-${chainId} --datadir \$installPath/data --port $port --rpcport $rpcPort --rpcapi "db,platon,net,web3,admin,personal" --rpc --nodekey \$installPath/conf/nodekey --cbft.blskey \$installPath/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --bootnodes enode://48f9ebd7559b7849f80e00d89d87fb92604c74a541a7d76fcef9f2bcc67043042dfab0cfbaeb5386f921208ed9192c403f438934a0a39f4cad53c55d8272e5fb@devnetnode1.alaya.network:16789 --syncmode "fast" &> \$installPath/logs/latest.log
 EOF
@@ -147,6 +147,7 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 
 # info
 YELLOW "${serviceName} version: $version"
+YELLOW "chain: ${chainId}"
 YELLOW "rpc port: ${rpcPort}"
 YELLOW "conf: $installPath/conf"
 YELLOW "data: $installPath/data"

@@ -2,10 +2,10 @@
 
 #
 # xiechengqi
-# 2021/08/03
+# 2021/08/23
 # https://github.com/bitcoin/bitcoin
-# Ubuntu 18.04
-# install bitcoin
+# Ubuntu 18+
+# install BTC Node
 #
 
 source /etc/profile
@@ -42,14 +42,10 @@ EXEC "mkdir -p $installPath/{conf,data,logs}"
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 
 # register path
-EXEC "sed -i '/btc-node.*\/bin/d' /etc/profile"
-EXEC "echo 'export PATH=\$PATH:$installPath/bin' >> /etc/profile"
 EXEC "ln -fs $installPath/bin/* /usr/local/bin/"
-EXEC "source /etc/profile"
 EXEC "bitcoin-cli -version" && bitcoin-cli -version
 
 # config
-[ "$1" = "mainnet" ] && ifTestnet="0" || ifTestnet="1"    # get testnet or mainnet
 cat > $installPath/conf/${serviceName}.conf << EOF
 datadir=$installPath/data
 server=1
@@ -63,7 +59,6 @@ zmqpubhashblock=tcp://127.0.0.1:28332
 rpcallowip=127.0.0.1
 rpcuser=${rpcUser}
 rpcpassword=${rpcPassword}
-uacomment=bitcore
 EOF
 
 # create start.sh
@@ -72,9 +67,10 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
 
+installPath="${installPath}"
 timestamp=\$(date +%Y%m%d%H%M%S)
-touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
-bitcoind -conf=$installPath/conf/${serviceName}.conf $options &> $installPath/logs/latest.log
+touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
+bitcoind -conf=\$installPath/conf/${serviceName}.conf $options &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
@@ -107,17 +103,17 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl star
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-YELLOW "version: $version"
-YELLOW "install path: $installPath"
-YELLOW "config path: $installPath/conf"
-YELLOW "tail log cmd: tail -f $installPath/logs/latest.log"
-YELLOW "data path: $installPath/data"
-YELLOW "rpcUser: $rpcUser"
-YELLOW "rpcPassword: $rpcPassword"
-YELLOW "rpcPort: $rpcPort"
-YELLOW "p2pPort: $p2pPort"
-YELLOW "blockchain info cmd: bitcoin-cli -conf=${installPath}/conf/${serviceName}.conf getblockchaininfo"
-YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "${serviceName} version: $version"
+YELLOW "chain: ${chainId}"
+YELLOW "rpc port: $rpcPort"
+YELLOW "p2p port: $p2pPort"
+YELLOW "rpc user: $rpcUser"
+YELLOW "rpc password: $rpcPassword"
+YELLOW "conf: $installPath/conf"
+YELLOW "data: $installPath/data"
+YELLOW "log: tail -f $installPath/logs/latest.log"
+YELLOW "check cmd: bitcoin-cli -conf=${installPath}/conf/${serviceName}.conf getblockchaininfo"
+YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
 main $@
