@@ -60,13 +60,14 @@ EXEC "mkdir -p $installPath/logs"
 # download tarball
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 
-# add key
-# EXEC "curl -SsL https://dl-ssl.google.com/linux/linux_signing_key.pub -o /tmp/linux_signing_key.pub"
-# EXEC "apt-key add /tmp/linux_signing_key.pub"
-
-# install google-chrome
-# EXEC "apt-get update && apt-get install -y google-chrome-stable"
-# EXEC "google-chrome --version" && google-chrome --version 
+# install google-chrome，bitcore require v8 engine
+## add key
+EXEC "echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/chrome.list"
+EXEC "curl -SsL https://dl-ssl.google.com/linux/linux_signing_key.pub -o /tmp/linux_signing_key.pub"
+EXEC "apt-key add /tmp/linux_signing_key.pub"
+## install
+EXEC "apt-get update && apt-get install -y google-chrome-stable"
+EXEC "google-chrome --version" && google-chrome --version 
 
 # config
 cat > $installPath/bitcore.config.json << EOF        # 配置文件名不可修改
