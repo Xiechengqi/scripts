@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/08/19
+# 2021/08/24
 # https://github.com/ethereum/go-ethereum
 # https://geth.ethereum.org/
 # Ubuntu 18+
@@ -24,7 +24,7 @@ chainId="$1" && INFO "chain: $chainId"
 
 # environments
 serviceName="eth-node"
-version="1.10.5-33ca98ec"
+version="1.10.8-26675454"
 installPath="/data/ETH/${serviceName}-${version}"
 downloadUrl="https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-${version}.tar.gz"
 wsPort="8544"
