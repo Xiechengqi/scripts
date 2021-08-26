@@ -62,7 +62,7 @@ installPath=${installPath}
 timestamp=\$(date +%Y%m%d%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 
-thor $options --api-addr 0.0.0.0:$rpcPort --data-dir $installPath/data &> $installPath/logs/latest.log
+thor $options --api-addr 0.0.0.0:$rpcPort --data-dir \$installPath/data &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
