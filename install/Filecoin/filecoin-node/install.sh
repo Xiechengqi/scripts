@@ -47,13 +47,13 @@ EXEC "apt update && apt install -y mesa-opencl-icd ocl-icd-opencl-dev gcc git bz
 EXEC "ln -fs $installPath/data/config.toml $installPath/conf/config.toml"
 
 # create start.sh
-cat > $installPath/start.sh < EOF
+cat > $installPath/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
 
 installPath="${installPath}"
 timestamp=\$(date +%Y%m%d)
-export GOLOG_FILE="\$installPath/logs/${timestamp}.log"
+export GOLOG_FILE="\$installPath/logs/\${timestamp}.log"
 export LOTUS_PATH="\$installPath/data"
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 lotus daemon &> /dev/null
