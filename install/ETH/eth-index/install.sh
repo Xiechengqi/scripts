@@ -41,7 +41,7 @@ EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{conf,logs}"
 
 # download tarball
-EXEC "curl -SsL $downloadUrl | xz -d > /tmp/$$.tarn"
+EXEC "curl -SsL $downloadUrl | xz -d > /tmp/$$.tar"
 EXEC "tar xf /tmp/$$.tar -C $installPath"
 
 # register bin
