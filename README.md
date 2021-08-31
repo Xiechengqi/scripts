@@ -11,6 +11,7 @@
 | [Docker](https://github.com/Xiechengqi/scripts/edit/master/install/Docker/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh \| bash` |
 | [docker-compose](https://github.com/Xiechengqi/scripts/edit/master/install/Docker/docker-compose/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/docker-compose/install.sh \| bash` |
 | [Java](https://github.com/Xiechengqi/scripts/edit/master/install/Java/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Java/install.sh \| bash -s [version]` |
+| [Rust](https://github.com/Xiechengqi/scripts/edit/master/install/Rust/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Rust/install.sh \| sudo bash` |
 | [Node](https://github.com/Xiechengqi/scripts/edit/master/install/Node/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Node/install.sh \| bash -s [version]` |
 | [Golang](https://github.com/Xiechengqi/scripts/edit/master/install/Golang/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Golang/install.sh \| bash -s [version]` |
 | [Ntp](https://github.com/Xiechengqi/scripts/edit/master/install/Ntp/install.sh) | `curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Ntp/install.sh \| bash` |
