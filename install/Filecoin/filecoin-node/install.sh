@@ -35,13 +35,13 @@ EXEC "mkdir -p $installPath/{bin,conf,data,logs}"
 # download tarball
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath/bin"
 
-# register bin
-EXEC "ln -fs $installPath/bin/* /usr/local/bin"
-EXEC "lotus --version" && lotus --version
-
 # install requirements
 EXEC "export DEBIAN_FRONTEND=noninteractive"
 EXEC "apt update && apt install -y mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl clang build-essential hwloc libhwloc-dev wget"
+
+# register bin
+EXEC "ln -fs $installPath/bin/* /usr/local/bin"
+EXEC "lotus --version" && lotus --version
 
 # create config file softlink
 EXEC "ln -fs $installPath/data/config.toml $installPath/conf/config.toml"
