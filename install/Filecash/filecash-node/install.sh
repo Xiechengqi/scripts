@@ -4,6 +4,7 @@
 # xiechengqi
 # 2021/09/01
 # https://github.com/filecash/lotus
+# https://docs.file.cash/get-started/lotus/installation
 # install Filecash node
 #
 
