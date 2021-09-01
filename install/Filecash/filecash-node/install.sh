@@ -4,7 +4,6 @@
 # xiechengqi
 # 2021/09/01
 # https://github.com/filecash/lotus
-# https://docs.file.cash/get-started/lotus/installation
 # install Filecash node
 #
 
@@ -22,9 +21,9 @@ chainId="$1" && INFO "chain: $chainId"
 ! echo "$chainId" | grep -E 'mainnet' &> /dev/null && ERROR "You could only choose chain: mainnet"
 
 # environments
-serviceName="filecoin-node"
+serviceName="filecash-node"
 version="1.5.0"
-installPath="/data/Filecoin/${serviceName}-${version}"
+installPath="/data/Filecash/${serviceName}-${version}"
 downloadUrl="https://github.com/filecash/lotus/releases/download/filecash-v${version}/filecash-v${version}-intel-18.04.tar.gz"
 
 # check service
@@ -35,7 +34,7 @@ EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{bin,conf,data,logs}"
 
 # download tarball
-EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath/bin"
+EXEC "curl -sSL $downloadUrl | tar zx -C $installPath/bin"
 
 # install requirements
 EXEC "export DEBIAN_FRONTEND=noninteractive"
