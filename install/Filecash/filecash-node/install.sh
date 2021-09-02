@@ -86,8 +86,13 @@ EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceNa
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
 # start
-EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
+EXEC "systemctl daemon-reload && systemctl enable $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
+
+# sync from snapshot
+INFO "start by sync snapshot ..."
+EXEC "export LOTUS_PATH=$installPath/data"
+EXEC "nohup lotus daemon --import-snapshot https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car &> $installPath/logs/sync-$(date +%Y%m%d).log &"
 
 # info
 YELLOW "${serviceName} version: $version"
