@@ -1,133 +1,59 @@
 #!/usr/bin/env bash
 
 #
-# 2021/08/04
 # xiechengqi
-# 检查区块链全节点状态和基本信息
+# 2021/09/03
+# get chain latest block number functions
 #
 
-INFO() {
-printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "\033[32m %s \033[0m" "$1"
-printf "\n"
+
+# eth-node
+## API: https://openethereum.github.io/JSONRPC
+function get_eth_node_current_block_height() {
+eth_node_url="http://$1"
+blockNumber=`printf "%d\n" `curl -s --data '{"method":"eth_blockNumber","params":[],"id":1,"jsonrpc":"2.0"}' -H "Content-Type: application/json" -X POST $eth_node_url | grep -Po 'result[" :]+\K[^"]+'``
+echo $blockNumber
 }
 
-INFOF() {
-printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "\033[33m%s\033[0m" "$1"
+# eth-index
+
+# btc-node
+## API: https://developer.bitcoin.org/reference/rpc/index.html
+function get_btc_node_current_block_height() {
+btc_node_url="$1"
+blockNumber=`curl -s --user bitcoin --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockchaininfo", "params": [] }' -H 'content-type: text/plain;' $btc_node_url | awk -F ',"headers' '{print $1}' | awk -F ':' '{print $NF}'`
+echo $blockNumber
 }
 
-YELLOW() {
-printf -- "\033[44;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "\033[33m%s\033[0m" "$1"
-printf "\n"
+# btc-index
+## API: https://github.com/bitpay/bitcore/blob/master/packages/bitcore-node/docs/api-documentation.md
+function get_btc_index_current_block_height() {
+btc_index_url="$1"
+blockNumber=`curl -SsL $btc_index_url/api/BTC/mainnet/block/tip | awk -F ',"merkleRoot' '{print $1}' | awk -F ':' '{print $NF}'`
+echo $tmpBlockNumber | grep not &> /dev/null && blockNumber=`curl -SsL $btc_index_url/api/BTC/testnet/block/tip | awk -F ',"merkleRoot' '{print $1}' | awk -F ':' '{print $NF}'`
+echo $blockNumber
 }
 
-ERROR() {
-printf -- "\033[41;37m%s\033[0m " "[$(date "+%Y-%m-%d %H:%M:%S")]"
-printf -- "%s" "$1"
-printf "\n"
-exit 1
+# platon-node
+## API: https://devdocs.platon.network/docs/zh-CN/Json_Rpc/
+function get_platon_node_current_block_height() {
+platon_node_url="$1"
+blockNumber=`printf "%d\n" `curl -s -H 'content-type: application/json' --data '{"jsonrpc":"2.0","method":"platon_blockNumber","params":[],"id":67}' -X POST $platon_node_url | grep -Po 'result[" :]+\K[^"]+'``
+echo $blockNumber
 }
 
-EXEC() {
-local cmd="$1"
-INFO "${cmd}"
-eval ${cmd} 1> /dev/null
-if [ $? -ne 0 ]; then
-ERROR "Execution command (${cmd}) failed, please check it and try again."
-fi
+# polkadot-node
+## API: https://wiki.polkadot.network/docs/build-node-interaction#polkadot-rpc
+function get_polkadot_node_current_block_height() {
+polkadot_node_url="$1"
+blockNumber=`printf "%d\n" `curl -s -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "chain_getBlock"}' $polkadot_node_url | jq .result.block.header.number | tr \" " "``
+echo $blockNumber
 }
 
-function OK() {
-echo -e "\033[32m [ok] \033[0m"
-return 0
+# conflux-node
+## API: https://developer.confluxnetwork.org/conflux-doc/docs/json_rpc
+function get_conflux_node_current_block_height() {
+conflux_node_url="$1"
+blockNumber=`printf "%d\n" `curl -s --data '{"jsonrpc":"2.0","method":"cfx_epochNumber","params":["latest_mined"],"id":1}' -H "Content-Type: application/json" -X POST $conflux_node_url | grep -Po 'result[" :]+\K[^"]+'``
+echo $blockNumber
 }
-
-function FAIL() {
-echo -e "\033[31m [fail] \033[0m"
-return 1
-}
-
-
-function check_service() {
-INFOF "check $serviceName ... "
-systemctl is-active $serviceName &> /dev/null && OK || FAIL
-}
-
-function check_eth() {
-EXEC "ps aux | grep -v grep | grep geth" && ps aux  | grep -v grep | grep geth
-EXEC "ss -plunt | grep geth" && ss -plunt | grep geth
-EXEC "geth attach http://127.0.0.1:8545 --exec 'eth.getBlock(0).hash'" && geth attach http://127.0.0.1:8545 --exec 'eth.getBlock(0).hash'
-EXEC "geth attach http://127.0.0.1:8545 --exec 'eth.blockNumber'" && geth attach http://127.0.0.1:8545 --exec 'eth.blockNumber'
-EXEC "geth attach http://127.0.0.1:8545 --exec 'eth.syncing'" && geth attach http://127.0.0.1:8545 --exec 'eth.syncing'
-}
-
-function check_btc() {
-EXEC "ps aux | grep -v grep | grep bitcoind" && ps aux | grep -v grep | grep bitcoind
-EXEC "ss -plunt | grep bitcoind" && ss -plunt | grep bitcoind
-EXEC "bitcoin-cli -conf=/data/BTC/btc-node/conf/btc-node.conf -getinfo" && bitcoin-cli -conf=/data/BTC/btc-node/conf/btc-node.conf -getinfo
-EXEC "bitcoin-cli -conf=/data/BTC/btc-node/conf/btc-node.conf getblockcount" && bitcoin-cli -conf=/data/BTC/btc-node/conf/btc-node.conf getblockcount
-EXEC "bitcoin-cli -conf=/data/BTC/btc-node/conf/btc-node.conf getblockchaininfo" && bitcoin-cli -conf=/data/BTC/btc-node/conf/btc-node.conf getblockchaininfo
-}
-
-function check_platon() {
-EXEC "ps axu | grep -v grep | grep platon" && ps axu | grep -v grep | grep platon
-EXEC "ss -plunt | grep platon" && ss -plunt | grep platon
-EXEC "platon attach http://127.0.0.1:6789 -exec 'platon.getBlock(0).hash'" && platon attach http://127.0.0.1:6789 -exec 'platon.getBlock(0).hash'
-EXEC "platon attach http://127.0.0.1:6789 -exec 'platon.blockNumber'" && platon attach http://127.0.0.1:6789 -exec 'platon.blockNumber'
-EXEC "platon attach http://127.0.0.1:6789 -exec 'platon.syncing'" && platon attach http://127.0.0.1:6789 -exec 'platon.syncing'
-}
-
-function check_polkadot() {
-EXEC "ps axu | grep -v grep | grep polkadot" && ps axu | grep -v grep | grep polkadot
-EXEC "ss -plunt | grep polkadot" && ss -plunt | grep polkadot
-INFOF "sync network: " && curl -s -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "system_chain"}' http://localhost:9933/ | jq .result -r
-EXEC "curl -H "Content-Type: application/json" --data '{ "jsonrpc":"2.0", "method":"system_health", "params":[],"id":1 }' localhost:9933 | jq ." && curl -H "Content-Type: application/json" --data '{ "jsonrpc":"2.0", "method":"system_health", "params":[],"id":1 }' localhost:9933  | jq .
-# EXEC "curl -s -H \"Content-Type: application/json\" -d '{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"chain_getBlock\"}' http://localhost:9933/ | grep number" && curl -s -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "chain_getBlock"}' http://localhost:9933/
-}
-
-function check_conflux() {
-EXEC "ps aux | grep -v grep | grep conflux" && ps aux | grep -v grep | grep conflux
-EXEC "ss -plunt | grep conflux" && ss -plunt | grep conflux
-
-}
-
-function check_iris() {
-EXEC "ps aux | grep -v grep | grep iris" && ps aux | grep -v grep | grep iris
-EXEC "ss -plunt | grep iris" && ss -plunt | grep iris
-INFOF "current block height: " && iris status |& awk -F 'latest_block_height":"' '{print $2}' | awk -F '"' '{print $1}'
-INFOF "current block hash: " && iris status |& awk -F 'latest_block_hash":"' '{print $2}' | awk -F '"' '{print $1}'
-}
-
-main() {
-
-clear
-
-! hash jq && EXEC "apt install -y jq"
-
-if [ ".$1" = "." ]
-then
-
-local chainList=("eth" "btc" "platon" "polkadot" "conflux" "iris")
-for nodeName in ${chainList[*]}
-do
-local serviceName="${nodeName}-node"
-check_service $serviceName && check_${nodeName} || continue
-done  
-
-else
-
-while [ $# != 0 ]
-do
-local nodeName="$1"
-local serviceName="$nodeName-node"
-check_service $serviceName && check_${nodeName}
-shift
-done
-
-fi
-
-}
-
-main $@
