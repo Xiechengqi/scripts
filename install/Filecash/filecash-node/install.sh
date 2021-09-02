@@ -87,7 +87,7 @@ EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
 # start
 EXEC "systemctl daemon-reload && systemctl enable $serviceName"
-EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
+INFO "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # sync from snapshot
 INFO "start by sync snapshot ..."
