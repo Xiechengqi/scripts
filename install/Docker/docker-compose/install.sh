@@ -23,7 +23,7 @@ countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_c
 docker-compose version &> /dev/null && YELLOW "docker-compose has been installed ..." && return 0
 
 # download
-EXEC "curl -SsL $downloadUrl > /usr/local/bin/docker-compose"
+EXEC "curl -SsL $downloadUrl > /usr/bin/docker-compose"
 
 # register bin
 EXEC "chmod +x /usr/local/bin/docker-compose"
