@@ -15,11 +15,13 @@ main() {
 osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
+countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
+
 # environment
 serviceName="redis"
 version=${1-"5.0.3"}
 installPath="/data/${serviceName}-${version}"
-downloadUrl="http://download.redis.io/releases/redis-${version}.tar.gz"
+[ "${countryCode}" = "CN" ] && downloadUr="https://mirrors.huaweicloud.com/redis/redis-${version}.tar.gz" || downloadUrl="http://download.redis.io/releases/redis-${version}.tar.gz"
 port="6379"  # redis default port
 
 # check servcie
