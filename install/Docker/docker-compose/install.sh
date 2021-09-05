@@ -26,7 +26,7 @@ docker-compose version &> /dev/null && YELLOW "docker-compose has been installed
 EXEC "curl -SsL $downloadUrl > /usr/bin/docker-compose"
 
 # register bin
-EXEC "chmod +x /usr/local/bin/docker-compose"
+EXEC "chmod +x /usr/bin/docker-compose"
 
 # info
 EXEC "docker-compose version" && docker-compose version
