@@ -21,7 +21,7 @@ countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_c
 serviceName="redis"
 version=${1-"5.0.3"}
 installPath="/data/${serviceName}-${version}"
-[ "${countryCode}" = "CN" ] && downloadUr="https://mirrors.huaweicloud.com/redis/redis-${version}.tar.gz" || downloadUrl="http://download.redis.io/releases/redis-${version}.tar.gz"
+[ "${countryCode}" = "CN" ] && downloadUrl="https://mirrors.huaweicloud.com/redis/redis-${version}.tar.gz" || downloadUrl="http://download.redis.io/releases/redis-${version}.tar.gz"
 port="6379"  # redis default port
 
 # check servcie
