@@ -62,7 +62,7 @@ echo $osInfo | grep ubuntu &> /dev/null && _ubuntu
 echo $osInfo | grep centos &> /dev/null && _centos
 
 # start service
-EXEC "systemctl start docker"
+EXEC "systemctl enable docker && systemctl start docker"
 
 # check docker
 INFO "docker run hello-world" && docker run hello-world
