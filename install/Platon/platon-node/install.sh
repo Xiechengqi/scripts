@@ -46,7 +46,7 @@ install_ntp
 
 # environment
 serviceName="platon-node"
-version="1.0.0"
+version="1.1.0"
 installPath="/data/Platon/${serviceName}-${version}"
 port="16789"
 rpcPort="6789"
