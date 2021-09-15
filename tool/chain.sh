@@ -16,6 +16,16 @@ echo $blockNumber
 }
 
 # eth-index
+## API: https://github.com/Adamant-im/ETH-transactions-storage#make-indexers-api-public
+function get_eth_index_current_block_height() {
+local chain_type="eth-index"
+chain_url="$1"
+local chain_ip=`echo $1 | awk -F ':' '{print $1}'`
+local chain_port=`echo $1 | awk -F ':' '{print $NF}'`
+[ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
+local chain_current_block_height=`curl -SsL http://${chain_url}/max_block | awk -F ':' '{print $NF}' | awk -F '}' '{print $1}'`
+echo $chain_current_block_height
+}
 
 # btc-node
 ## API: https://developer.bitcoin.org/reference/rpc/index.html
