@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-# 
+#
 # xiechengqi
 # OS: Ubuntu 18+
-# 2021/08/03
+# 2021/09/17
+# https://github.com/irisnet/irishub
 # install IRIS Node
-# 
+#
 
 source /etc/profile
 BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
@@ -17,9 +18,9 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
 # get chainId
-chainId="$1" && INFO "chain: $chainId"                                                                                                
+chainId="$1" && INFO "chain: $chainId"
 ! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
-[ "$chainId" = "testnet" ] && ERROR "IRIS testnet is not avaliable，See https://github.com/irisnet/irishub/issues/2644"
+# [ "$chainId" = "testnet" ] && ERROR "IRIS testnet is not avaliable，See https://github.com/irisnet/irishub/issues/2644"
 
 # environments
 serviceName="iris-node"
@@ -57,9 +58,14 @@ EXEC "iris version" && iris version
 # init mainnet node
 EXEC "iris init iris-node --home=${installPath}/data --chain-id=irishub-1"
 
-# download mainnet config.toml and genesis.json
-EXEC "curl https://raw.githubusercontent.com/irisnet/mainnet/master/config/config.toml -o $installPath/data/config/config.toml"
-EXEC "curl https://raw.githubusercontent.com/irisnet/mainnet/master/config/genesis.json -o $installPath/data/config/genesis.json"
+# download config.toml and genesis.json
+if [ "$chainId" = "mainnet" ]; then
+EXEC "curl -SsL https://raw.githubusercontent.com/irisnet/mainnet/master/config/config.toml -o $installPath/data/config/config.toml"
+EXEC "curl -SsL https://raw.githubusercontent.com/irisnet/mainnet/master/config/genesis.json -o $installPath/data/config/genesis.json"
+else
+EXEC "curl -SsL https://raw.githubusercontent.com/irisnet/testnets/master/nyancat/config/config.toml -o $installPath/data/config/config.toml"
+EXEC "curl -SsL https://raw.githubusercontent.com/irisnet/testnets/master/nyancat/config/genesis.json -o $installPath/data/config/genesis.json"
+fi
 
 # create start.sh
 cat > $installPath/start.sh << EOF
