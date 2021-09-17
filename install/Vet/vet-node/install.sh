@@ -59,7 +59,7 @@ cat > $installPath/start.sh << EOF
 source /etc/profile
 
 installPath=${installPath}
-timestamp=\$(date +%Y%m%d%H%M%S)
+timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 
 thor $options --api-addr 0.0.0.0:$rpcPort --data-dir \$installPath/data &> \$installPath/logs/latest.log
@@ -67,10 +67,10 @@ EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > $installPath/${serviceName}.service << EOF
+cat > ${installPath}/${serviceName}.service << EOF
 [Unit]
-Description=Qtum Node
-Documentation=https://github.com/qtumproject/qtum
+Description=${serviceName}
+Documentation=https://github.com/vechain/thor
 After=network.target
 
 [Service]
