@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/08/18
+# 2021/09/17
 # Ubuntu 18+
 # https://github.com/PlatONnetwork/PlatON-Go
 # install platon-node
@@ -89,7 +89,7 @@ then
 options="--identity ${serviceName}-${chainId} --datadir ${installPath}/data --port ${port} --rpcport ${rpcPort} --rpcvhosts \"*\" --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey ${installPath}/conf/nodekey --cbft.blskey ${installPath}/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --syncmode \"fast\" --db.nogc --main"
 else
 # testnet - https://devdocs.platon.network/docs/zh-CN/Become_PlatON_Dev_Verification
-EXEC "curl -SsL https://download.platon.network/platon/devnet/platon/1.0.0/genesis.json -o $installPath/conf/genesis.json"
+EXEC "curl -SsL https://download.platon.network/platon/devnet/platon/${version}/genesis.json -o $installPath/conf/genesis.json"
 EXEC "cd $installPath && platon --datadir ./data init ./conf/genesis.json"
 EXEC "cd -"
 options="--identity ${serviceName}-${chainId} --datadir $installPath/data --port ${port} --rpcport ${rpcPort} --rpcapi \"db,platon,net,web3,admin,personal\" --rpc --nodekey $installPath/conf/nodekey --cbft.blskey $installPath/conf/blskey --verbosity 3 --rpcaddr 0.0.0.0 --bootnodes enode://c72a4d2cb8228ca6f9072daa66566bcafa17bec6a9e53765c85c389434488c393357c5c7c5d18cf9b26ceda46aca4da20755cd01bcc1478fff891a201042ba84@devnetnode1.platon.network:16789 --syncmode \"fast\""
