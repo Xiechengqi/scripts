@@ -20,7 +20,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # get chainId
 chainId="$1" && INFO "chain: $chainId"                                                                                                
-! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
+! echo "$chainId" | grep -E 'mainnet|testnet|malan' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet、malan"
 
 # environments
 serviceName="chainx-node"
