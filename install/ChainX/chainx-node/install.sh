@@ -2,8 +2,9 @@
 
 #
 # xiechengqi
-# 2021/08/23
-# Ubuntu 20.04
+# 2021/09/17
+# Ubuntu 18.04+
+# https://github.com/chainx-org/ChainX
 # install chainx-node
 #
 
@@ -15,7 +16,7 @@ main() {
 
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu20"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
 # get chainId
 chainId="$1" && INFO "chain: $chainId"                                                                                                
