@@ -39,10 +39,12 @@ EXEC "apt-key finger"
 EXEC "echo 'deb https://repos.ripple.com/repos/rippled-deb bionic stable' > /etc/apt/sources.list.d/ripple.list"
 EXEC "apt update && apt install --reinstall -y rippled" 
 EXEC "mv /opt/ripple/bin $installPath/bin"
-EXEC "ln -fs $installPath/bin/* /usr/local/bin"
 
 # uninstall default apt installed rippled
 EXEC "systemctl stop rippled && apt remove -y rippled && apt purge -y rippled"
+
+# register bin
+EXEC "ln -fs $installPath/bin/* /usr/local/bin"
 
 # conf
 ## https://xrpl.org/connect-your-rippled-to-the-xrp-test-net.html
