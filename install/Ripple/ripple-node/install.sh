@@ -121,10 +121,10 @@ Wants=network-online.target
 
 [Service]
 Type=simple
+User=root
+Group=root
 ExecStart=/usr/local/bin/rippled --net --silent --conf /data/Ripple/ripple-node/conf/rippled.cfg
 Restart=on-failure
-User=rippled
-Group=rippled
 LimitNOFILE=65536
 
 [Install]
