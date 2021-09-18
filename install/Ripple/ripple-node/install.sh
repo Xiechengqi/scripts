@@ -2,8 +2,8 @@
 
 #
 # xiechengqi
-# 2021/08/09
-# Ubuntu 18.04
+# 2021/09/18
+# Ubuntu 18+
 # https://github.com/ripple/rippled
 # apt install ripple-node
 #
@@ -22,8 +22,8 @@ chainId="$1" && INFO "chain: $chainId"
 ! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 # environments
-serviceName="rippled"
-installPath="/data/Ripple/${serviceName}-${net}"
+serviceName="ripple-node"
+installPath="/data/Ripple/${serviceName}-stable"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -39,16 +39,17 @@ EXEC "apt-key finger"
 EXEC "echo 'deb https://repos.ripple.com/repos/rippled-deb bionic stable' | tee -a /etc/apt/sources.list.d/ripple.list"
 EXEC "apt update && apt install -y rippled"
 
-# ln conf bin data logs
-EXEC "ln -fs /opt/ripple/bin $installPath/bin"
-EXEC "ln -fs /opt/ripple/etc $installPath/conf"
-EXEC "ln -fs /var/lib/rippled/db $installPath/data"
-EXEC "ln -fs /var/log/rippled $installPath/logs"
+# mv and ln conf bin data logs
+EXEC "mv /opt/ripple/bin $installPath/bin && ln -fs $installPath/bin /opt/ripple/bin"
+EXEC "mv /opt/ripple/etc $installPath/conf && ln -fs $installPath/conf /opt/ripple/etc"
+EXEC "mv /var/lib/rippled/db $installPath/data && ln -fs $installPath/data /var/lib/rippled/db"
+EXEC "mv /var/log/rippled $installPath/logs && ln -fs $installPath/logs /var/log/rippled"
 
 # register bin
 EXEC "ln -fs $installPath/bin/* /usr/local/bin"
 
 # conf
+## https://xrpl.org/connect-your-rippled-to-the-xrp-test-net.html
 if [ "$chainId" = "mainnet" ]
 then
 
@@ -75,6 +76,27 @@ EOF
 
 fi
 
+# register service
+cat > ${installPath}/${serviceName}.service << EOF
+[Unit]
+Description=Ripple Daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/rippled --net --silent --conf /data/Ripple/ripple-node/conf/rippled.cfg
+Restart=on-failure
+User=rippled
+Group=rippled
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
+
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
@@ -83,11 +105,11 @@ EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl rest
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
-YELLOW "install path: $installPath"
-YELLOW "config path: $installPath/conf"
-YELLOW "log path: $installPath/logs"
-YELLOW "db path: $installPath/data"
-YELLOW "connection cmd: "
+YELLOW "${serviceName} chain: ${chainId}"
+YELLOW "install: $installPath"
+YELLOW "config: $installPath/conf"
+YELLOW "log: $installPath/logs"
+YELLOW "data: $installPath/data"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 
 }
