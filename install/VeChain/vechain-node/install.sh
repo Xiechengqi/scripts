@@ -2,9 +2,9 @@
 
 #
 # xiechengqi
-# 2021/08/17
+# 2021/09/18
 # Ubuntu 18+
-# install vet-node
+# install vechain-node
 #
 
 source /etc/profile
@@ -21,10 +21,11 @@ chainId="$1" && INFO "chain: $chainId"
 ! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 # environments
-serviceName="vet-node"
+serviceName="vechain-node"
 version="2.0.0-stage.0"
 installPath="/data/Vet/${serviceName}-${version}"
 downloadUrl="https://github.com/vechain/thor/archive/refs/tags/v${version}.tar.gz"
+rpcPort="8669"
 goUrl="$BASEURL/install/Golang/install.sh"
 
 # check service
