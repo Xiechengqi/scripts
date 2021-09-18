@@ -55,7 +55,7 @@ port_peer
 port_ws_admin_local
 [port_rpc_admin_local]
 port = 5005
-ip = 127.0.0.1
+ip = 0.0.0.0
 admin = 127.0.0.1
 protocol = http
 [port_peer]
