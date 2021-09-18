@@ -213,3 +213,16 @@ chain_current_block_height=`cat $block_height_path | grep result | tail -1 | awk
 echo $chain_current_block_height
 }
 
+# ripple-node
+## API: 
+function get_ripple_node_current_block_height() {
+chain_type="ripple-node"
+chain_url="$1"
+chain_ip=`echo $chain_url | awk -F ':' '{print $1}'`
+chain_port=`echo $chain_url | awk -F ':' '{print $NF}'`
+[ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
+chain_current_block_height=`curl -s -X POST -H "Content-Type: application/json" -d '{ "method": "server_info", "params": [ { "api_version": 1 } ] }' ${chain_url} | awk -F '","hostid' '{print $1}' | awk -F '-' '{print $NF}' | grep -oE '[0-9]+'`
+
+echo $chain_current_block_height
+}
+
