@@ -101,6 +101,7 @@ EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceNa
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
 # start
+EXEC "systemctl disable --now rippled"
 EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl restart $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
