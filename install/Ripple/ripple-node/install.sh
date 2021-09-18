@@ -38,7 +38,8 @@ EXEC "wget -q -O - 'https://repos.ripple.com/repos/api/gpg/key/public' |  apt-ke
 EXEC "apt-key finger"
 EXEC "echo 'deb https://repos.ripple.com/repos/rippled-deb bionic stable' > /etc/apt/sources.list.d/ripple.list"
 EXEC "apt update && apt install --reinstall -y rippled" 
-EXEC "cp -rf /opt/ripple/bin $installPath/bin && ln -fs $installPath/bin/* /usr/local/bin"
+EXEC "mv /opt/ripple/bin $installPath/bin"
+EXEC "ln -fs $installPath/bin/* /usr/local/bin"
 
 # uninstall default apt installed rippled
 EXEC "systemctl stop rippled && apt remove -y rippled && apt purge -y rippled"
