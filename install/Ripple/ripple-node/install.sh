@@ -64,7 +64,7 @@ ip = 0.0.0.0
 protocol = peer
 [port_ws_admin_local]
 port = 6006
-ip = 127.0.0.1
+ip = 0.0.0.0
 admin = 127.0.0.1
 protocol = ws
 [node_size]
