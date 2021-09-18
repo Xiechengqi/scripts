@@ -39,11 +39,12 @@ EXEC "apt-key finger"
 EXEC "echo 'deb https://repos.ripple.com/repos/rippled-deb bionic stable' | tee -a /etc/apt/sources.list.d/ripple.list"
 EXEC "apt update && apt install -y rippled"
 
-# mv and ln conf bin data logs
+# mv and ln conf bin data logs service
 EXEC "mv /opt/ripple/bin $installPath/bin && ln -fs $installPath/bin /opt/ripple/bin"
 EXEC "mv /opt/ripple/etc $installPath/conf && ln -fs $installPath/conf /opt/ripple/etc"
 EXEC "mv /var/lib/rippled/db $installPath/data && ln -fs $installPath/data /var/lib/rippled/db"
 EXEC "mv /var/log/rippled $installPath/logs && ln -fs $installPath/logs /var/log/rippled"
+EXEC "systemctl disable --now rippled && rm -f /lib/systemd/system/rippled.service"
 
 # register bin
 EXEC "ln -fs $installPath/bin/* /usr/local/bin"
@@ -101,7 +102,6 @@ EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceNa
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
 # start
-EXEC "systemctl disable --now rippled"
 EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl restart $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
