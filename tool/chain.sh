@@ -157,3 +157,59 @@ chain_current_block_height=`cat $block_height_path | grep result | tail -1 | awk
 echo $chain_current_block_height
 }
 
+# vechain-node
+## API: http://127.0.0.1:8669/doc/swagger-ui/#/Blocks/get_blocks__revision_
+function get_vechain_node_current_block_height() {
+chain_type="vechain-node"
+chain_url="$1"
+chain_ip=`echo $chain_url | awk -F ':' '{print $1}'`
+chain_port=`echo $chain_url | awk -F ':' '{print $NF}'`
+[ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
+chain_current_block_height=`curl -s -X GET http://${chain_url}/blocks/best | awk -F ',"id' '{print $1}' | awk -F ':' '{print $NF}'`
+
+echo $chain_current_block_height
+}
+
+# eos-node
+## API: https://developers.eos.io/manuals/eos/latest/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_info
+function get_eos_node_current_block_height() {
+chain_type="eos-node"
+chain_url="$1"
+chain_ip=`echo $chain_url | awk -F ':' '{print $1}'`
+chain_port=`echo $chain_url | awk -F ':' '{print $NF}'`
+[ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
+chain_current_block_height=`curl -s -X POST   -H "Content-Type: application/json" http://${chain_url}/v1/chain/get_info | awk -F ',"last_irreversible_block_id' '{print $1}' | awk -F ':' '{print $NF}'`
+
+echo $chain_current_block_height
+}
+
+# litecoin-node
+## API(the same as btc-node API): https://litecoin.info/index.php/Litecoin_API、https://github.com/litecoin-project/litecoin/blob/master/doc/REST-interface.md 
+## config: https://litecoin.info/index.php/Litecoin.conf
+function get_litecoin_node_current_block_height() {
+chain_type="litecoin-node"
+chain_url="$1"
+chain_ip=`echo $chain_url | awk -F ':' '{print $1}'`
+chain_port=`echo $chain_url | awk -F ':' '{print $NF}'`
+[ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
+rpcUser="$3"
+rpcPassword="$4"
+json_path="/tmp/$$_litecoin_node.json"
+block_height_path="/tmp/$$_litecoin_node_block_height"
+echo '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockchaininfo", "params": [] }' > $json_path
+cmd="curl -s --user $rpcUser --data-binary @$json_path -H 'content-type: text/plain\;' $chain_url"
+# echo $cmd
+# echo $rpcPassword
+
+expect << EOF > $block_height_path
+spawn $cmd
+expect "*"
+send $rpcPassword\r
+expect eof
+EOF
+
+chain_current_block_height=`cat $block_height_path | grep result | tail -1 | awk -F ',"headers' '{print $1}' | awk -F ':' '{print $NF}'`
+
+echo $chain_current_block_height
+}
+
