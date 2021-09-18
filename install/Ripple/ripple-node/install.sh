@@ -37,7 +37,7 @@ EXEC "apt update && apt install -y apt-transport-https ca-certificates wget gnup
 EXEC "wget -q -O - 'https://repos.ripple.com/repos/api/gpg/key/public' |  apt-key add -"
 EXEC "apt-key finger"
 EXEC "echo 'deb https://repos.ripple.com/repos/rippled-deb bionic stable' | tee -a /etc/apt/sources.list.d/ripple.list"
-EXEC "apt update && apt install -y rippled"
+EXEC "apt update && apt install --reinstall -y rippled"
 
 # mv and ln conf bin data logs service
 EXEC "mv /opt/ripple/bin $installPath/bin && ln -fs $installPath/bin /opt/ripple/bin"
