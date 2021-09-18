@@ -41,7 +41,7 @@ EXEC "apt update && apt install --reinstall -y rippled"
 EXEC "mv /opt/ripple/bin $installPath/bin"
 
 # uninstall default apt installed rippled
-EXEC "systemctl stop rippled && apt remove -y rippled && apt purge -y rippled"
+EXEC "systemctl stop rippled && apt purge -y rippled"
 
 # register bin
 EXEC "ln -fs $installPath/bin/* /usr/local/bin"
