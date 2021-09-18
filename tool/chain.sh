@@ -114,3 +114,46 @@ local chain_current_block_height=`printf "%d\n" $(curl -s --data '{"jsonrpc":"2.
 
 echo $chain_current_block_height
 }
+
+# chainx-node
+## API: 
+function get_chainx_node_current_block_height() {
+local chain_type="chainx-node"
+local chain_url="$1"
+local chain_ip=`echo $chain_url | awk -F ':' '{print $1}'`
+local chain_port=`echo $chain_url | awk -F ':' '{print $NF}'`
+[ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
+local chain_current_block_height=`printf "%d\n" $(curl -X POST   -H "Content-Type: application/json"   --data '{"jsonrpc":"2.0","method":"chain_getHeader","params":[],"id":1}'   http://${chain_url} | jq .result.number | tr \" " ")`
+
+echo $chain_current_block_height
+}
+
+# qtum-node
+## API: https://docs.qtum.site/en/Qtum-RPC-API/
+function get_qtum_node_current_block_height() {
+chain_type="qtum-node"
+chain_url="$1"
+chain_ip=`echo $chain_url | awk -F ':' '{print $1}'`
+chain_port=`echo $chain_url | awk -F ':' '{print $NF}'`
+[ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
+rpcUser="$3"
+rpcPassword="$4"
+json_path="/tmp/$$_qtum_node.json"
+block_height_path="/tmp/$$_qtum_node_block_height"
+echo '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockchaininfo", "params": [] }' > $json_path
+cmd="curl -s --user $rpcUser --data-binary @$json_path -H 'content-type: text/plain\;' $chain_url"
+# echo $cmd
+# echo $rpcPassword
+
+expect << EOF > $block_height_path
+spawn $cmd
+expect "*"
+send $rpcPassword\r
+expect eof
+EOF
+
+chain_current_block_height=`cat $block_height_path | grep result | tail -1 | awk -F ',"headers' '{print $1}' | awk -F ':' '{print $NF}'`
+
+echo $chain_current_block_height
+}
+
