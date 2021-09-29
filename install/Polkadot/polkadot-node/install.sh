@@ -22,7 +22,7 @@ chainId="$1" && INFO "chain: $chainId"
 
 # environments
 serviceName="polkadot-node"
-version="0.9.8"
+version="0.9.10"
 downloadUrl="https://github.com/paritytech/polkadot/releases/download/v${version}/polkadot"
 installPath="/data/Polkadot/${serviceName}-${version}"
 
