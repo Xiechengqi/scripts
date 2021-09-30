@@ -157,6 +157,19 @@ chain_current_block_height=`cat $block_height_path | grep result | tail -1 | awk
 echo $chain_current_block_height
 }
 
+# qtum-index
+## API: 
+function get_qtum_index_current_block_height() {
+chain_type="qtum-index"
+chain_url="$1"
+chain_ip=`echo $chain_url | awk -F ':' '{print $1}'`
+chain_port=`echo $chain_url | awk -F ':' '{print $NF}'`
+[ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
+chain_current_block_height=`curl -s -X GET ${chain_url}/info | awk -F ',"supply"' '{print $1}' | awk -F ':' '{print $NF}'`
+
+echo $chain_current_block_height
+}
+
 # vechain-node
 ## API: http://127.0.0.1:8669/doc/swagger-ui/#/Blocks/get_blocks__revision_
 function get_vechain_node_current_block_height() {
