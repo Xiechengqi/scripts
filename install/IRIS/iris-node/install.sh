@@ -80,7 +80,7 @@ cat > $installPath/start.sh << EOF
 source /etc/profile
 
 installPath=$installPath
-timestamp=$(date +%Y%m%d-%H%M%S)
+timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 iris start --home=\$installPath/data &> \$installPath/logs/latest.log
 EOF
