@@ -22,7 +22,7 @@ chainId="$1" && INFO "chain: $chainId"
 
 # environments
 serviceName="conflux-node"
-version="1.1.4"
+version="1.1.5"
 installPath="/data/Conflux/${serviceName}-${version}"
 [ "$chainId" = "mainnet" ] && downloadUrl="https://github.com/Conflux-Chain/conflux-rust/releases/download/v${version}/conflux_linux_v${version}.zip" || downloadUrl="https://github.com/Conflux-Chain/conflux-rust/releases/download/v${version}-testnet/conflux_linux_v${version}-testnet.zip"
 
