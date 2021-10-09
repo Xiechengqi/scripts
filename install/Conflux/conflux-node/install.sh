@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # 
-# 2021/08/23
+# 2021/10/09
 # xiechengqi
 # OS: Ubuntu 18+
 # install Conflux Node
+# https://github.com/Conflux-Chain/conflux-rust
 # 
 
 source /etc/profile
