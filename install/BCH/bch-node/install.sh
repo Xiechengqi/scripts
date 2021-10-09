@@ -36,7 +36,7 @@ systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running
 
 # check install path
 EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
-EXEC "mkdir -p $installPath/{data,logs}"
+EXEC "mkdir -p $installPath/{conf,data,logs}"
 
 # download tarball 
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
