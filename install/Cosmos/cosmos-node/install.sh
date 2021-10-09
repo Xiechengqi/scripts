@@ -46,10 +46,10 @@ EXEC "gaiad version --long" && gaiad version --long
 EXEC "gaiad init ${serviceName}-${chainId} --home $installPath"
 
 # conf
-EXEC "ln -fs $installPath/conf ~/.gaia/config"
-EXEC "cd $installPath/conf"
+EXEC "cd $installPath/config"
 EXEC "curl -SsL $genesisUrl -o genesis.cosmoshub-4.json.gz"
 EXEC "gzip -d genesis.cosmoshub-4.json.gz"
+EXEC "mv genesis.cosmoshub-4.json genesis.json"
 EXEC "cd -"
 
 # create start.sh
@@ -61,7 +61,7 @@ installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 
-gaiad start --p2p.seeds bf8328b66dceb4987e5cd94430af66045e59899f@public-seed.cosmos.vitwit.com:26656,cfd785a4224c7940e9a10f6c1ab24c343e923bec@164.68.107.188:26656,d72b3011ed46d783e369fdf8ae2055b99a1e5074@173.249.50.25:26656,ba3bacc714817218562f743178228f23678b2873@public-seed-node.cosmoshub.certus.one:26656,3c7cad4154967a294b3ba1cc752e40e8779640ad@84.201.128.115:26656,366ac852255c3ac8de17e11ae9ec814b8c68bddb@51.15.94.196:26656 --x-crisis-skip-assert-invariants &> \$installPath/logs/latest.log
+gaiad start --p2p.seeds bf8328b66dceb4987e5cd94430af66045e59899f@public-seed.cosmos.vitwit.com:26656,cfd785a4224c7940e9a10f6c1ab24c343e923bec@164.68.107.188:26656,d72b3011ed46d783e369fdf8ae2055b99a1e5074@173.249.50.25:26656,ba3bacc714817218562f743178228f23678b2873@public-seed-node.cosmoshub.certus.one:26656,3c7cad4154967a294b3ba1cc752e40e8779640ad@84.201.128.115:26656,366ac852255c3ac8de17e11ae9ec814b8c68bddb@51.15.94.196:26656 --x-crisis-skip-assert-invariants --home $installPath &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
