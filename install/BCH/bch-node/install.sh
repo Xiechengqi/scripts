@@ -19,7 +19,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # get chainId
 chainId="$1" && INFO "chain: $chainId"                                                                                                
-! echo "$chainId" | grep -E 'mainnet' &> /dev/null && ERROR "You could only choose chain: mainnet"
+! echo "$chainId" | grep -E 'mainnet|testnet' &> /dev/null && ERROR "You could only choose chain: mainnet、testnet"
 
 serviceName="bch-node"
 version="23.1.0"
