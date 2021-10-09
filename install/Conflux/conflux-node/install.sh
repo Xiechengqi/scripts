@@ -46,6 +46,7 @@ EXEC "cd /tmp && rm -rf ${serviceName} && cd -"
 
 # register bin
 EXEC "ln -fs $installPath/bin/* /usr/local/bin"
+EXEC "conflux -V" && conflux -V
 
 # config
 INFO "sed -i \"s#log\/#$installPath\/logs\/#g\" $installPath/conf/log.yaml"
