@@ -46,7 +46,7 @@ EXEC "ln -fs $installPath/bin/* /usr/local/bin"
 EXEC "bitcoin-cli -version" && bitcoin-cli -version
 
 # conf
-cat > $installPath/conf/bitcoin.conf << EOF
+cat > $installPath/conf/${serviceName}.conf << EOF
 datadir=$installPath/data
 server=1
 txindex=1
