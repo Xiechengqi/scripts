@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/09/15
+# 2021/10/09
 # get chain latest block number functions
 #
 
@@ -235,6 +235,19 @@ chain_ip=`echo $chain_url | awk -F ':' '{print $1}'`
 chain_port=`echo $chain_url | awk -F ':' '{print $NF}'`
 [ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
 chain_current_block_height=`curl -s -X POST -H "Content-Type: application/json" -d '{ "method": "server_info", "params": [ { "api_version": 1 } ] }' ${chain_url} | awk -F '","hostid' '{print $1}' | awk -F '-' '{print $NF}' | grep -oE '[0-9]+'`
+
+echo $chain_current_block_height
+}
+
+# Iris-node
+## API: https://www.irisnet.org/docs/endpoints/legacy-rest.html#legacy-rest-endpoint
+function get_iris_node_current_block_height() {
+chain_type="iris-node"
+chain_url="$1"
+chain_ip=`echo $chain_url | awk -F ':' '{print $1}'`
+chain_port=`echo $chain_url | awk -F ':' '{print $NF}'`
+[ "$2" = "." ] && local chain_network="mainnet" || local chain_network="$2"
+chain_current_block_height=`curl -s -X GET http://${chain_url}/blocks/latest  | jq -r .block.header.height`
 
 echo $chain_current_block_height
 }
