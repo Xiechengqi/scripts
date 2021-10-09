@@ -37,8 +37,8 @@ EXEC "mkdir -p $installPath/{bin,conf,data,logs}"
 EXEC "curl -sSL $downloadUrl | tar zx -C $installPath/bin"
 
 # install requirements
-EXEC "export DEBIAN_FRONTEND=noninteractive"
-EXEC "apt update && apt install -y mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl clang build-essential hwloc libhwloc-dev wget"
+# EXEC "export DEBIAN_FRONTEND=noninteractive"
+# EXEC "apt update && apt install -y mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl clang build-essential hwloc libhwloc-dev wget"
 
 # register bin
 EXEC "ln -fs $installPath/bin/* /usr/local/bin"
