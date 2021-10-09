@@ -50,9 +50,6 @@ cat > $installPath/conf/${serviceName}.conf << EOF
 datadir=$installPath/data
 server=1
 txindex=1
-addressindex=1
-timestampindex=1
-spentindex=1
 zmqpubrawtx=tcp://127.0.0.1:28332
 zmqpubhashblock=tcp://127.0.0.1:28332
 rpcbind=0.0.0.0
