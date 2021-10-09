@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/09/01
+# 2021/10/09
 # https://github.com/filecash/lotus
 # install Filecash node
 #
@@ -53,10 +53,12 @@ cat > $installPath/start.sh << EOF
 source /etc/profile
 
 installPath="${installPath}"
-timestamp=\$(date +%Y%m%d)
-export GOLOG_FILE="\$installPath/logs/\${timestamp}.log"
-export LOTUS_PATH="\$installPath/data"
+timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
+
+export GOLOG_FILE="\$installPath/logs/latest.log"
+export LOTUS_PATH="\$installPath/data"
+
 lotus daemon &> /dev/null
 EOF
 EXEC "chmod +x $installPath/start.sh"
@@ -86,13 +88,8 @@ EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceNa
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
 # start
-EXEC "systemctl daemon-reload && systemctl enable $serviceName"
-INFO "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
-
-# sync from snapshot
-INFO "start by sync snapshot ..."
-EXEC "export LOTUS_PATH=$installPath/data"
-EXEC "nohup lotus daemon --import-snapshot https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car &> $installPath/logs/sync-$(date +%Y%m%d).log &"
+EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
+EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
 # info
 YELLOW "${serviceName} version: $version"
@@ -101,7 +98,6 @@ YELLOW "rpc port: 1234"
 YELLOW "conf: $installPath/conf"
 YELLOW "data: $installPath/data"
 YELLOW "log: tail -f $installPath/logs/latest.log"
-YELLOW "check cmd: "
 YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
