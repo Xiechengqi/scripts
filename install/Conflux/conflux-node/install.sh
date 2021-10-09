@@ -60,8 +60,9 @@ source /etc/profile
 export RUST_BACKTRACE=1
 
 installPath="$installPath"
-timestamp=\$(date +%Y%m%d)
+timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
+
 conflux --config \$installPath/conf/${configFileName} --log-conf \$installPath/conf/log.yaml &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
