@@ -46,7 +46,7 @@ EXEC "gaiad version --long" && gaiad version --long
 EXEC "gaiad init ${serviceName}-${chainId} --home $installPath"
 
 # conf
-EXEC "ln -f $installPath/conf ~/.gaia/config"
+EXEC "ln -fs $installPath/conf ~/.gaia/config"
 EXEC "cd $installPath/conf"
 EXEC "curl -SsL $genesisUrl -o genesis.cosmoshub-4.json.gz"
 EXEC "gzip -d genesis.cosmoshub-4.json.gz"
