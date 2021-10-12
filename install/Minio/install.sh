@@ -23,7 +23,8 @@ serviceName="minio"
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 downloadUrl="http://dl.minio.org.cn/server/minio/release/linux-amd64/minio"
-EXEC "curl -SsL $downloadUrl -o /tmp/minio && chmod +x /tmp/minio && version=`/tmp/minio -v | awk '{print $NF}'`"
+EXEC "curl -SsL $downloadUrl -o /tmp/minio && sleep 2"
+EXEC "chmod +x /tmp/minio && version=`/tmp/minio -v | awk '{print $NF}'`"
 installPath="/data/${serviceName}-${version}"
 
 # check install path
