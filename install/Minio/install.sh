@@ -11,6 +11,12 @@ source /etc/profile
 BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
+trap _clean "EXIT"
+
+_clean() {
+rm -f /data/$$_minio
+}
+
 main() {
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
@@ -23,8 +29,8 @@ serviceName="minio"
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
 
 downloadUrl="http://dl.minio.org.cn/server/minio/release/linux-amd64/minio"
-EXEC "curl -SsL $downloadUrl -o /tmp/minio && sleep 2"
-EXEC "chmod +x /tmp/minio && version=`/tmp/minio -v | awk '{print $NF}'`"
+EXEC "curl -SsL $downloadUrl -o /data/$$_minio && sleep 2"
+EXEC "chmod +x /data/$$_minio && version=`/data/$$_minio -v | awk '{print $NF}'`"
 installPath="/data/${serviceName}-${version}"
 
 # check install path
@@ -32,7 +38,7 @@ EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{bin,data,logs}"
 
 # install minio server and client
-EXEC "mv /tmp/minio $installPath/bin"
+EXEC "mv /data/$$_minio $installPath/bin"
 EXEC "curl -SsL http://dl.minio.org.cn/client/mc/release/linux-amd64/mc -o $installPath/bin/mc && chmod +x $installPath/bin/mc"
 
 # register bin
