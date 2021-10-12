@@ -53,6 +53,7 @@ EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
 cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=Minio
@@ -70,8 +71,6 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
-EXEC "rm -f /lib/systemd/system/${serviceName}.service"
-EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
