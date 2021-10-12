@@ -25,6 +25,8 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 # environments
 serviceName="minio"
 webPort="9001"
+minio_root_user_="admin"
+minio_root_password="password"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -83,6 +85,12 @@ EOF
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
 
+# set root_user and root_password
+cat > /etc/profile << EOF
+export MINIO_ROOT_USER=$minio_root_user
+export MINIO_ROOT_PASSWORD=$minio_root_password
+EOF
+
 # start
 EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
@@ -92,6 +100,8 @@ YELLOW "${serviceName} version: $version"
 YELLOW "data: $installPath/data"
 YELLOW "log: $installPath/logs"
 YELLOW "web port: $webPort"
+YELLOW "web user: $minio_root_user"
+YELLOW "web password: $minio_root_password"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
