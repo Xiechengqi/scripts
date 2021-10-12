@@ -55,7 +55,7 @@ installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \${installPath}/logs/\${timestamp}.log && ln -fs \${installPath}/logs/\${timestamp}.log \${installPath}/logs/latest.log
 
-minio server \${installPath} &> \${installPath}/logs/latest.log
+minio server \${installPath}/data &> \${installPath}/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
