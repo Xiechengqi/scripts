@@ -24,6 +24,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # environments
 serviceName="minio"
+webPort="9001"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -55,7 +56,7 @@ installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \${installPath}/logs/\${timestamp}.log && ln -fs \${installPath}/logs/\${timestamp}.log \${installPath}/logs/latest.log
 
-minio server \${installPath}/data &> \${installPath}/logs/latest.log
+minio server \${installPath}/data --console-address ":$webPort" &> \${installPath}/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
@@ -90,6 +91,7 @@ EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName
 YELLOW "${serviceName} version: $version"
 YELLOW "data: $installPath/data"
 YELLOW "log: $installPath/logs"
+YELLOW "web port: $webPort"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] $serviceName"
 }
 
