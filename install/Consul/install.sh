@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/08/13
+# 2021/10/13
 # install consul
 #
 
@@ -13,7 +13,7 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 main() {
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
+! echo "$osInfo" | grep -E 'centos7|ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: centos7、ubuntu18、ubuntu20"
 
 # environments
 serviceName="consul"
@@ -29,7 +29,12 @@ EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/{bin,conf,data,logs}"
 
 # install unzip
+if [[ "$osInfo" =~ "ubuntu" ]]
+then
 EXEC "apt update && apt install -y unzip"
+else
+EXEC "yum install -y unzip"
+fi
 
 # download
 EXEC "rm -rf /tmp/${serviceName} && mkdir /tmp/${serviceName}"
@@ -44,14 +49,16 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-timestamp=\$(date +%Y%m%d%H%M%S)
+timestamp=\$(date +%Y%m%d-%H%M%S)
 touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
+
 consul agent -server -bootstrap-expect=1 -data-dir=$installPath/data -node=master -bind=127.0.0.1 -config-dir=$installPath/conf -client 0.0.0.0 -ui &> $installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
 # register service
-cat > $installPath/${serviceName}.service << EOF
+EXEC "rm -f /lib/systemd/system/${serviceName}.service"
+cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=Consul
 Documentation=https://github.com/hashicorp/consul
@@ -68,8 +75,6 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
-EXEC "rm -f /lib/systemd/system/${serviceName}.service"
-EXEC "ln -fs $installPath/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs $installPath $(dirname $installPath)/$serviceName"
