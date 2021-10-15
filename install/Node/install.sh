@@ -30,6 +30,7 @@ EXEC "mkdir -p $installPath"
 
 # download tarball
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
+EXEC "chown -R root.root $installPath"
 
 # register path
 EXEC "sed -i '/node\/bin/d' /etc/profile"
