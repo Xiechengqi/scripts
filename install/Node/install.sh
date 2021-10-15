@@ -18,7 +18,8 @@ countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_c
 serviceName="node"
 version=${1-"12.16.0"}
 installPath="/data/${serviceName}-${version}"
-[ "${countryCode}" = "CN" ] && downloadUrl="https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/v${version}/node-v${version}-linux-x64.tar.gz" || downloadUrl="https://nodejs.org/download/release/v${version}/node-v${version}-linux-x64.tar.gz"
+# [ "${countryCode}" = "CN" ] && downloadUrl="https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/v${version}/node-v${version}-linux-x64.tar.gz" || downloadUrl="https://nodejs.org/download/release/v${version}/node-v${version}-linux-x64.tar.gz"
+downloadUrl="https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/v${version}/node-v${version}-linux-x64.tar.gz"
 
 # check node
 [[ "$(node -v)" =~ "${version}" ]] && YELLOW "node has been installed ..." && return 0
