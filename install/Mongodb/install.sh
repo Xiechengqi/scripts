@@ -46,6 +46,7 @@ logpath = $installPath/logs/${serviceName}.log #日志文件存放目录
 port = $port  #端口
 # fork = true  #以守护程序的方式启用，即在后台运行
 bind_ip = 0.0.0.0    #允许所有的连接
+wiredTigerCacheSizeGB = 10  # WT最大使用cache（根据服务器实际情况调节）
 EOF
 
 # register service
