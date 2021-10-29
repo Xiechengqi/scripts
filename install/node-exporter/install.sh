@@ -34,7 +34,7 @@ EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 EXEC "chown -R root.root $installPath"
 
 # register bin
-EXEC "ln -fs $installPath/node-exporter /usr/bin/node-exporter"
+EXEC "ln -fs /usr/bin/node-exporter $installPath/node-exporter"
 EXEC "node-exporter --version" && node-exporter --version
 
 # creat start.sh
