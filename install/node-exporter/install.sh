@@ -27,7 +27,7 @@ node_exporter --version &> /dev/null && YELLOW "${serviceName} has been installe
 
 # check install path
 EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
-EXEC "mkdir -p $installPath"
+EXEC "mkdir -p $installPath/logs"
 
 # download tarball
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
