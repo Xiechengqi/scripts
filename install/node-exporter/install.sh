@@ -23,7 +23,7 @@ downloadUrl="https://github.com/prometheus/node_exporter/releases/download/v${ve
 port=${1-"9009"}
 
 # check node
-node-exporter --version &> /dev/null && YELLOW "${serviceName} has been installed ..." && return 0
+node_exporter --version &> /dev/null && YELLOW "${serviceName} has been installed ..." && return 0
 
 # check install path
 EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
@@ -34,8 +34,8 @@ EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 EXEC "chown -R root.root $installPath"
 
 # register bin
-EXEC "ln -fs $installPath/node-exporter /usr/bin/node-exporter"
-EXEC "node-exporter --version" && node-exporter --version
+EXEC "ln -fs $installPath/node_exporter /usr/bin/node_exporter"
+EXEC "node_exporter --version" && node_exporter --version
 
 # creat start.sh
 cat > $installPath/start.sh << EOF
