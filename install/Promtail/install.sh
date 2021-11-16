@@ -20,7 +20,6 @@ serviceName="promtail"
 version=${1-"2.4.1"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://github.com/grafana/loki/releases/download/v${version}/promtail-linux-amd64.zip"
-lokiUrl="10.0.26.40:3100"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
@@ -56,22 +55,25 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://${lokiUrl}/loki/api/v1/push
+  - url: http://\${LOKI_URL}/loki/api/v1/push
 
 scrape_configs:
-- job_name: system
+- job_name: \${DEFAULT_JOB_NAME}
   static_configs:
   - targets:
       - localhost
     labels:
-      job: test
-      __path__: /var/log/containers/window-post-miner-32g-mainnet-*.log
+      __path__: \${DEFAULT_LOG_PATH}
 EOF
 
 # create start.sh
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
+
+export LOKI_URL="10.0.26.40:3100"
+export DEFAULT_JOB_NAME="system"
+export DEFAULT_LOG_PATH="/var/log/*.log"
 
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
