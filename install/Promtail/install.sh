@@ -65,7 +65,7 @@ scrape_configs:
       - localhost
     labels:
       job: test
-      __path__: /var/log/*log
+      __path__: /var/log/containers/window-post-miner-32g-mainnet-*.log
 EOF
 
 # create start.sh
