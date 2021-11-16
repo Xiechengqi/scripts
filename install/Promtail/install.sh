@@ -27,7 +27,7 @@ systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName has been i
 
 # check install path
 EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
-EXEC "mkdir -p $installPath/{bin,conf,data,logs}"
+EXEC "mkdir -p $installPath/{bin,conf,logs}"
 
 # install unzip
 if [[ "$osInfo" =~ "centos" ]]
