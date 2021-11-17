@@ -72,7 +72,7 @@ EOF
 # create start.sh
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
-source /etc/profile
+# source /etc/profile
 
 timestamp=\$(date +%Y%m%d-%H%M%S)
 installPath="${installPath}"
