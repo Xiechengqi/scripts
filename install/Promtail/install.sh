@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/11/16
+# 2021/11/17
 # install promtail
 #
 
@@ -17,9 +17,11 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # environments
 serviceName="promtail"
-version=${1-"2.4.1"}
+version="2.4.1"
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://github.com/grafana/loki/releases/download/v${version}/promtail-linux-amd64.zip"
+ip=`hostname -I | awk '{print $1}'`
+LOKI_URL="$1"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
@@ -55,15 +57,16 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://\${LOKI_URL}/loki/api/v1/push
+  - url: http://${LOKI_URL}/loki/api/v1/push
 
 scrape_configs:
-- job_name: \${DEFAULT_JOB_NAME}
+- job_name: system
   static_configs:
   - targets:
       - localhost
     labels:
-      __path__: \${DEFAULT_LOG_PATH}
+      ip: ${ip}
+      __path__: /data/log/*
 EOF
 
 # create start.sh
@@ -71,14 +74,11 @@ cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-export LOKI_URL="10.0.26.40:3100"
-export DEFAULT_JOB_NAME="system"
-export DEFAULT_LOG_PATH="/var/log/*.log"
-
 timestamp=\$(date +%Y%m%d-%H%M%S)
-touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
+installPath="${installPath}"
+touch \${installPath}/logs/\${timestamp}.log && ln -fs \${installPath}/logs/\${timestamp}.log \${installPath}/logs/latest.log
 
-promtail -config.file=$installPath/conf/config.yaml  &> $installPath/logs/latest.log
+promtail -config.file=\${installPath}/conf/config.yaml  &> \${installPath}/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
