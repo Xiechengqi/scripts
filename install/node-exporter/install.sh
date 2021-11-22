@@ -28,7 +28,7 @@ node_exporter --version &> /dev/null && YELLOW "${serviceName} has been installe
 # check install path
 EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/logs"
-EXEC "mkdir -p /data/metrics"
+EXEC "mkdir -p /data/metric"
 
 # download tarball
 EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
@@ -47,7 +47,7 @@ installPath="${installPath}"
 
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 
-node_exporter --collector.textfile.directory=/data/metrics --web.listen-address=":$port" &> \$installPath/logs/latest.log
+node_exporter --collector.textfile.directory=/data/metric --web.listen-address=":$port" &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
