@@ -17,7 +17,7 @@ function secondsTotime() {
   echo "${hours}:${minutes}:${seconds}"
 }
 
-function productMp4File() {
+function produceMp4File() {
 
 # 输入视频文件名
 inputMp4FileName=$1
@@ -57,7 +57,7 @@ end_time_seonds=`expr ${start_time_seonds} + ${interval}`
 end_time=`secondsTotime ${end_time_seonds}`
 [ "$n" -gt "$num" ] && break
 outputMp4FileName="${outputMp4FileNameNum}.mp4"
-echo "start product ${start_time} - ${end_time} -> ${outputMp4FileName} ..."
+echo "produce ${start_time} - ${end_time} -> ${outputMp4FileName} ..."
 ffmpeg -ss ${start_time} -t ${end_time} -y -i ${inputMp4FilePath}/${inputMp4FileName} -vcodec copy -acodec copy ${outputMp4FilePath}/${outputMp4FileName} &> /var/log/ffmpeg.log || exit 1
 start_time_seonds=${end_time_seonds}
 start_time=${end_time}
@@ -92,7 +92,7 @@ mkdir -p ${outputMp4FilePath}
 for i in `ls ${inputMp4FilePath} | grep -E '*.mp4'`
 do
 echo "ffmpeg ${i} ... "
-productMp4File ${i}
+produceMp4File ${i}
 done
 
 }
