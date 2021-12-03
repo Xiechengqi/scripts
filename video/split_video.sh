@@ -63,7 +63,7 @@ start_time_seonds=${end_time_seonds}
 start_time=${end_time}
 done
 
-echo "end product ${start_time} - ${end_time} -> ${outputMp4FileName} ..."
+echo "end produce ${start_time} - ${end_time} -> ${outputMp4FileName} ..."
 
 }
 
