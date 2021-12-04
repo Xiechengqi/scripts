@@ -44,7 +44,7 @@ curl -SsL 'https://api.bilibili.com/x/web-interface/search/type?page='"${pageNum
 
 while read url
 do
-annie -m --output-name $(date +%s) --output-path ${videoPath} ${url}
+annie -m -O $(date +%s) -o ${videoPath} ${url}
 # 计算视频目录当前大小，单位G
 videoNowSize=`expr $(du -sm ${videoPath} | awk '{print $1}') / 1024`
 echo "${videoPath} size: ${videoNowSize}G"
