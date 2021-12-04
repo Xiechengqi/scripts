@@ -3,6 +3,7 @@
 #
 # 2021/12/03
 # 根据关键词下载 Bilibili 视频
+# curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/video/download_video.sh | sudo bash -s [关键词] [保存视频目录路径] [下载视频总量大小(G)]
 # bash download_bilibili_video.sh [关键词] [保存视频目录路径] [下载视频总量大小(G)]
 #
 
