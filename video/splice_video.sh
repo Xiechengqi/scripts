@@ -44,13 +44,13 @@ echo "${outputMp4FilePath} size: ${mp4NowSize}G"
 # ffmpeg 拼接视频，随机从视频素材库取 n 个视频拼接，确保最终生成视频大小大于 17G
 echo > ${inputMp4List}
 
-outputfFileSize="0"
+outputFileSize="0"
 while :
 do
-[ ${outputfFileSize} -ge 17408 ] && break
+[ "${outputFileSize}" -ge "17408" ] && break
 fileName="$(rand 1 ${max}).mp4"
-tmpOutputfFileSize=`expr $(du -sm ${fileName} | awk '{print $1}')`
-outputfFileSize=`expr ${outputfFileSize} + ${tmpOutputfFileSize}`
+tmpOutputFileSize=`expr $(du -sm ${fileName} | awk '{print $1}')`
+outputFileSize=`expr ${outputFileSize} + ${tmpOutputFileSize}`
 echo "file '${fileName}'" >> ${inputMp4List}
 done
 
