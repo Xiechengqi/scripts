@@ -45,9 +45,11 @@ echo "${outputMp4FilePath} size: ${mp4NowSize}G"
 echo > ${inputMp4List}
 
 outputFileSize="0"
+echo "${outputFileSize}"
 while :
 do
 [ "${outputFileSize}" -ge "17408" ] && break
+echo "${outputFileSize}"
 fileName="$(rand 1 ${max}).mp4"
 tmpOutputFileSize=`expr $(du -sm ${fileName} | awk '{print $1}')`
 outputFileSize=`expr ${outputFileSize} + ${tmpOutputFileSize}`
