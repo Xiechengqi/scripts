@@ -82,12 +82,8 @@ outputMp4FilePath=$2
 mkdir -p ${outputMp4FilePath}
 
 # 拆分视频文件输出路径
-sourceMp4FilePath="${outputMp4FilePath}/source"
+sourceMp4FilePath="${outputMp4FilePath}"
 mkdir -p ${sourceMp4FilePath}
-
-# 输出视频文件路径
-outputMp4FilePath="${outputMp4FilePath}/output-$(date +%Y%m%d)"
-mkdir -p ${outputMp4FilePath}
 
 # 开始循环制造视频文件
 for i in `ls ${inputMp4FilePath} | grep -E '*.mp4'`
