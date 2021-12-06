@@ -2,6 +2,7 @@
 
 #
 # 2021/12/03
+# curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/video/split_video.sh | sudo bash -s $(pwd)/mp4 $(pwd)/source
 # bash split_video.sh [源视频目录路径] [拆分后视频目录路径]
 # 拆分视频
 #
