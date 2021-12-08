@@ -40,7 +40,7 @@ echo "${videoPath} size: ${videoNowSize}G"
 [ "${videoNowSize}" -ge "${videoSize}" ] && break
 
 # 获取视频下载链接列表
-curl -SsL 'https://api.bilibili.com/x/web-interface/search/type?page='"${pageNum}"'&order=totalrank&duration=4&keyword='"${keyword}"'&search_type=video' | jq -r .data.result[].arcurl > /tmp/$$_downloadUrl
+curl -SsL 'https://api.bilibili.com/x/web-interface/search/type?page='"${pageNum}"'&order=totalrank&duration=2&keyword='"${keyword}"'&search_type=video' | jq -r .data.result[].arcurl > /tmp/$$_downloadUrl
 
 while read url
 do
