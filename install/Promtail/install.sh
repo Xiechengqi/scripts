@@ -66,7 +66,7 @@ scrape_configs:
       - localhost
     labels:
       ip: ${ip}
-      __path__: /data/log/*
+      __path__: /var/log/containers/*
 EOF
 
 # create start.sh
