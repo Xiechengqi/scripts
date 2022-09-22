@@ -17,9 +17,9 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # environments
 serviceName="mongodb-exporter"
-version="1.0.0"
+version="0.34.0"
 installPath="/data/${serviceName}-${version}"
-downloadUrl="https://github.com/dcu/mongodb_exporter/releases/download/v${version}/mongodb_exporter-linux-amd64"
+downloadUrl="https://github.com/percona/mongodb_exporter/releases/download/v${version}/mongodb_exporter-${version}.linux-amd64.tar.gz"
 port=${1-"9216"}
 mongodb_uri=${2-"127.0.0.1:27017"}
 
@@ -31,7 +31,7 @@ EXEC "rm -rf $installPath $(dirname $installPath)/${serviceName}"
 EXEC "mkdir -p $installPath/logs"
 
 # download tarball
-EXEC "wget -O $installPath/mongodb_exporter $downloadUrl && chmod +x $installPath/mongodb_exporter"
+EXEC "curl -sSL $downloadUrl | tar zx --strip-components 1 -C $installPath"
 EXEC "chown -R root.root $installPath"
 
 # register bin
@@ -44,7 +44,7 @@ cat > $installPath/start.sh << EOF
 timestamp=\$(date +%Y%m%d-%H%M%S)
 installPath="${installPath}"
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
-mongodb_exporter -web.listen-address=":$port" -mongodb.uri=mongodb://$mongodb_uri &> \$installPath/logs/latest.log
+mongodb_exporter --web.listen-address=":$port" --mongodb.uri=mongodb://$mongodb_uri &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
@@ -53,7 +53,7 @@ EXEC "rm -f /lib/systemd/system/${serviceName}.service"
 cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=mongodb-exporter
-Documentation=https://github.com/dcu/mongodb_exporter
+Documentation=https://github.com/percona/mongodb_exporter
 After=network.target
 [Service]
 User=root
