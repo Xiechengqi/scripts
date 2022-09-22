@@ -44,7 +44,7 @@ cat > $installPath/start.sh << EOF
 timestamp=\$(date +%Y%m%d-%H%M%S)
 installPath="${installPath}"
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
-mongodb_exporter --web.listen-address=":$port" --mongodb.uri=mongodb://$mongodb_uri &> \$installPath/logs/latest.log
+mongodb_exporter --web.listen-address=":$port" --mongodb.uri=mongodb://$mongodb_uri --collect-all --compatible-mode &> \$installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
