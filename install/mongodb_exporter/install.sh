@@ -53,7 +53,7 @@ EXEC "rm -f /lib/systemd/system/${serviceName}.service"
 cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=mongodb-exporter
-Documentation=https://github.com/percona/mongodb_exporter
+Documentation=https://github.com/dcu/mongodb_exporter
 After=network.target
 [Service]
 User=root
