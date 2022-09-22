@@ -52,7 +52,7 @@ EXEC "chmod +x $installPath/start.sh"
 EXEC "rm -f /lib/systemd/system/${serviceName}.service"
 cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
-Description=node-exporter
+Description=mongodb-exporter
 Documentation=https://github.com/percona/mongodb_exporter
 After=network.target
 [Service]
