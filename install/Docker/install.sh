@@ -61,8 +61,20 @@ systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running
 echo $osInfo | grep ubuntu &> /dev/null && _ubuntu
 echo $osInfo | grep centos &> /dev/null && _centos
 
+# add log config
+cat > /etc/docker/daemon.json << EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
 # start service
-EXEC "systemctl enable docker && systemctl start docker"
+EXEC "systemctl enable docker && systemctl restart docker"
 
 # check docker
 INFO "docker run hello-world" && docker run hello-world
