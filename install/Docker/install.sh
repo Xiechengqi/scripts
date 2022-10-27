@@ -74,7 +74,21 @@ systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running
 echo $osInfo | grep ubuntu &> /dev/null && _ubuntu
 echo $osInfo | grep centos &> /dev/null && _centos
 
-# add log config
+# modify config
+if [ "$countryCode" = "CN" ]
+then
+cat > /etc/docker/daemon.json << EOF
+{
+  "registry-mirrors": ["https://ykawlvjt.mirror.aliyuncs.com"],
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+else
 cat > /etc/docker/daemon.json << EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -85,6 +99,7 @@ cat > /etc/docker/daemon.json << EOF
   "storage-driver": "overlay2"
 }
 EOF
+fi
 
 # start service
 EXEC "systemctl enable docker && systemctl restart docker"
