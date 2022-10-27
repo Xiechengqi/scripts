@@ -14,18 +14,21 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 _ubuntu() {
 # remove old apps
-apt-get remove docker docker-engine docker.io containerd runc &> /dev/null
+INFO "apt-get remove docker docker-engine docker.io containerd runc"
+apt-get remove docker docker-engine docker.io containerd runc
 
 # install requirements
 EXEC "export DEBIAN_FRONTEND=noninteractive"
-EXEC "apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release"
+EXEC "apt-get update"
+EXEC "apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common"
 
 # add app source
-EXEC "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
+EXEC "mkdir -p /etc/apt/keyrings"
+EXEC "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
 if [ "$countryCode" = "CN" ]
 then
 cat > /etc/apt/sources.list.d/docker.list << EOF
-deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable
+deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable
 EOF
 else
 cat > /etc/apt/sources.list.d/docker.list << EOF
@@ -34,15 +37,20 @@ EOF
 fi
 
 # install
-EXEC "apt-get update && apt-get -y install docker-ce docker-ce-cli containerd.io"
+EXEC "apt-get update && apt-get -y install docker-ce"
 }
 
 _centos() {
-INFO "yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine" && yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
+INFO "yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine"
+yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
 EXEC "yum install -y yum-utils device-mapper-persistent-data lvm2"
 EXEC "yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
-[ "${countryCode}" = "CN" ] && EXEC "sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo" && EXEC "yum makecache fast"
-EXEC "yum install -y docker-ce docker-ce-cli containerd.io"
+if [ "${countryCode}" = "CN" ]
+then
+EXEC "sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo"
+EXEC "yum makecache fast"
+fi
+EXEC "yum install -y docker-ce"
 }
 
 main() {
