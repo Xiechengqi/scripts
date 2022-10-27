@@ -15,24 +15,26 @@ _ubuntu() {
 
 if [ "$countryCode" = "CN" ]
 then
-curl -SsL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - 
-cat >/etc/apt/sources.list.d/kubernetes.list << EOF
+EXEC "curl -SsL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -"
+cat > /etc/apt/sources.list.d/kubernetes.list << EOF
 deb https://mirrors.ustc.edu.cn/kubernetes/apt/ kubernetes-xenial main
 EOF
 else
-curl -SsL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-cat >/etc/apt/sources.list.d/kubernetes.list << EOF
+EXEC "curl -SsL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -"
+cat > /etc/apt/sources.list.d/kubernetes.list << EOF
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 fi
+INFO "cat /etc/apt/sources.list.d/kubernetes.list"
+cat /etc/apt/sources.list.d/kubernetes.list
 
 # install
 INFO "apt-get update"
 apt-get update || exit 1
 EXEC "apt-get -y install curl apt-transport-https"
 EXEC "apt-mark unhold kubelet kubeadm kubectl"
-INFO "apt-get install -y kubectl=1.23.13-00 kubelet=1.23.13-00 kubeadm=1.23.13-00"
-apt-get install -y kubectl=1.23.13-00 kubelet=1.23.13-00 kubeadm=1.23.13-00 || exit 1
+INFO "apt-get install -y kubectl=${version}-00 kubelet=${version}-00 kubeadm=${version}-00"
+apt-get install -y kubectl=${version}-00 kubelet=${version}-00 kubeadm=${version}-00 || exit 1
 EXEC "apt-mark hold kubelet kubeadm kubectl"
 
 }
@@ -49,11 +51,12 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # environments
 serviceName="kubelet"
+version="1.23.13"
 # countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
 curl -SsL cip.cc | grep -E '^地址' | head -1 | grep '中国' &> /dev/null && countryCode="CN" || countryCode="Other"
 
 # check if installed
-kubectl version --client && kubeadm version && YELLOW "kubectl and kubeadm have installed ..." && return 0
+kubectl version --client &> /dev/null && kubeadm version &> /dev/null && YELLOW "kubectl and kubeadm have installed ..." && return 0
 
 echo $osInfo | grep ubuntu &> /dev/null && _ubuntu
 # echo $osInfo | grep centos &> /dev/null && _centos
