@@ -37,7 +37,9 @@ EOF
 fi
 
 # install
-EXEC "apt-get update && apt-get -y install docker-ce"
+EXEC "apt-get update"
+INFO "apt-get -y install docker-ce"
+apt-get -y install docker-ce || exit 1
 }
 
 _centos() {
@@ -50,7 +52,8 @@ then
 EXEC "sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo"
 EXEC "yum makecache fast"
 fi
-EXEC "yum install -y docker-ce"
+INFO "yum install -y docker-ce"
+yum install -y docker-ce || exit 1
 }
 
 main() {
