@@ -37,7 +37,8 @@ EOF
 fi
 
 # install
-EXEC "apt-get update"
+INFO "apt-get update"
+apt-get update || exit 1
 INFO "apt-get -y install docker-ce"
 apt-get -y install docker-ce || exit 1
 }
