@@ -31,6 +31,7 @@ docker run --name saturn-node -it -d \
   -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL \
   --network host \
   --ulimit nofile=1000000 \
-  ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK
+  fullnode/filecoin-saturn-l1-node:$SATURN_NETWORK
+#  ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK
 INFO "docker ps | grep saturn-node"
 docker ps | grep saturn-node
