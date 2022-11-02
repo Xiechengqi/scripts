@@ -14,7 +14,7 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 # install docker
 curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | sudo bash -s verison
 
-export FIL_WALLET_ADDRESS="f1b7kiglcp6sl67lsttw6oxjyge3tfueybdcsaefy"
+export FIL_WALLET_ADDRESS=${1-"f1b7kiglcp6sl67lsttw6oxjyge3tfueybdcsaefy"}
 export NODE_OPERATOR_EMAIL="xiechengqi01@gmail.com"
 export SATURN_NETWORK="main"
 export SATURN_HOME="/data/filecoin-saturn-l1-node"
