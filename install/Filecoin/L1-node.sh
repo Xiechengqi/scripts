@@ -12,17 +12,31 @@ BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 # install docker
-curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | sudo bash -s verison
+docker images || curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | sudo bash -s verison
 
-export FIL_WALLET_ADDRESS=${1-"f1b7kiglcp6sl67lsttw6oxjyge3tfueybdcsaefy"}
-export NODE_OPERATOR_EMAIL="xiechengqi01@gmail.com"
+# install ooklaserver
+systemctl is-active ooklaserver || curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ooklaserver/install.sh | sudo bash
+
+export FIL_WALLET_ADDRESS=${2-"f1yzy2ug6ahepl6ni7iq7pdnnw2y7fxeunsfwqtyy"}
+export NODE_OPERATOR_EMAIL="79834539@qq.com"
 export SATURN_NETWORK="main"
 export SATURN_HOME="/data/filecoin-saturn-l1-node"
 EXEC "mkdir -p ${SATURN_HOME}"
-# : "${SATURN_NETWORK:=test}"
+region=${1}
+[ ".${region}" = "." ] && echo "Empty region code, choose Singapore|VA|Mumbai" && exit 1
+image="fullnode/filecoin-saturn-l1-node:${region}"
 
 INFO "Running Saturn $SATURN_NETWORK network L1 Node on $SATURN_HOME"
 EXEC "docker rm -f saturn-node || true"
+INFO "Add hosts"
+cat >> /etc/hosts << EOF
+# Server: StarHub Ltd - Singapore (id: 4235)
+127.0.0.1 co2dsvr03.speedtest.starhub.com co2dsvr03.speedtest.starhub.com.prod.hosts.ooklaserver.net
+# Server: Jeebr Internet Services - Mumbai (id: 26493)
+127.0.0.1 speedtest.jeebr.net
+# Server: Windstream - Ashburn, VA (id: 17383)
+127.0.0.1 ashburn02.speedtest.windstream.net ashburn02.speedtest.windstream.net
+EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
   --restart=unless-stopped \
@@ -31,7 +45,6 @@ docker run --name saturn-node -it -d \
   -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL \
   --network host \
   --ulimit nofile=1000000 \
-  fullnode/filecoin-saturn-l1-node:$SATURN_NETWORK-1
-  # ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK
+  ${image}
 INFO "docker ps | grep saturn-node"
 docker ps | grep saturn-node
