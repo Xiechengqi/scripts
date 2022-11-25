@@ -39,6 +39,7 @@ EXEC "tar xvf OoklaServer-linux64.tgz"
 EXEC "ln -fs ${installPath}/OoklaServer /usr/local/bin/OoklaServer"
 
 # install limit process io tool - trickle
+EXEC "apt update"
 INFO "apt install trickle -y"
 apt install trickle -y
 
