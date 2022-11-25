@@ -42,6 +42,12 @@ EXEC "ln -fs ${installPath}/OoklaServer /usr/local/bin/OoklaServer"
 INFO "apt install trickle -y"
 apt install trickle -y
 
+# install speedtest
+INFO "curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash"
+curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
+INFO "apt install speedtest -y"
+apt install speedtest -y
+
 # create start.sh
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
