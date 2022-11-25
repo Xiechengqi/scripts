@@ -13,7 +13,7 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 main() {
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'centos7|ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: centos7、ubuntu18、ubuntu20"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
 # environments
 serviceName="ooklaserver"
@@ -38,6 +38,10 @@ EXEC "tar xvf OoklaServer-linux64.tgz"
 # register bin
 EXEC "ln -fs ${installPath}/OoklaServer /usr/local/bin/OoklaServer"
 
+# install limit process io tool - trickle
+INFO "apt install trickle -y"
+apt install trickle -y
+
 # create start.sh
 cat > $installPath/start.sh << EOF
 #!/usr/bin/env bash
@@ -47,7 +51,7 @@ timestamp=\$(date +%Y%m%d-%H%M%S)
 touch $installPath/logs/\${timestamp}.log && ln -fs $installPath/logs/\${timestamp}.log $installPath/logs/latest.log
 
 cd ${installPath}
-OoklaServer &> $installPath/logs/latest.log
+trickle -u 8000000 -d 80000000 OoklaServer &> $installPath/logs/latest.log
 EOF
 EXEC "chmod +x $installPath/start.sh"
 
