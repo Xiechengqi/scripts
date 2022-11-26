@@ -23,7 +23,7 @@ export SATURN_NETWORK="main"
 export SATURN_HOME="/data/filecoin-saturn-l1-node"
 EXEC "mkdir -p ${SATURN_HOME}"
 region=${1}
-[ ".${region}" = "." ] && echo "Empty region code, choose Singapore|VA|OH|Mumbai" && exit 1
+[ ".${region}" = "." ] && echo "Empty region code, choose Singapore|VA|OH|Mumbai|Stockholm" && exit 1
 image="fullnode/filecoin-saturn-l1-node:${region}"
 
 INFO "Running Saturn $SATURN_NETWORK network L1 Node on $SATURN_HOME"
