@@ -23,7 +23,7 @@ export SATURN_NETWORK="main"
 export SATURN_HOME="/data/filecoin-saturn-l1-node"
 EXEC "mkdir -p ${SATURN_HOME}"
 region=${1}
-[ ".${region}" = "." ] && echo "Empty region code, choose Singapore|VA|OH|OR|Mumbai|Stockholm|Seoul|Dublin" && exit 1
+[ ".${region}" = "." ] && echo "Empty region code, choose Singapore|VA|OH|OR|Mumbai|Stockholm|Seoul|Dublin|Tokyo" && exit 1
 image="fullnode/filecoin-saturn-l1-node:${region}"
 
 INFO "Running Saturn $SATURN_NETWORK network L1 Node on $SATURN_HOME"
@@ -44,6 +44,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 speedtest.kdatacenter.com speedtest.kdatacenter.com.prod.hosts.ooklaserver.net
 # Server: Blacknight - Dublin (id: 4604)
 127.0.0.1 speedtest1.blacknight.ie speedtest1.blacknight.ie.prod.hosts.ooklaserver.net
+# Server: GSL Networks - Tokyo (id: 50686)
+127.0.0.1 ty8.speedtest.gslnetworks.com ty8.speedtest.gslnetworks.com.prod.hosts.ooklaserver.net
 EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
