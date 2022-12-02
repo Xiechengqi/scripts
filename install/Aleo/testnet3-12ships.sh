@@ -84,7 +84,7 @@ installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \${installPath}/logs/\${timestamp}-aleo-client.log && ln -fs \${installPath}/logs/\${timestamp}-aleo-client.log \${installPath}/logs/latest-aleo-client.log
 
-/usr/local/bin/snarkos start --nodisplay --client ${PROVER_PRIVATE_KEY} &> \${installPath}/logs/latest-aleo-client.log
+/usr/local/bin/snarkos start --nodisplay --prover ${PROVER_PRIVATE_KEY} &> \${installPath}/logs/latest-aleo-client.log
 EOF
 
 # register aleo-client.service
