@@ -105,7 +105,7 @@ installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \${installPath}/logs/\${timestamp}-aleo-prover.log && ln -fs \${installPath}/logs/\${timestamp}-aleo-prover.log \${installPath}/logs/latest-aleo-prover.log
 
-/usr/local/bin/snarkos start --nodisplay --client ${PROVER_PRIVATE_KEY} &> \${installPath}/logs/latest-aleo-prover.log
+/usr/local/bin/snarkos start --nodisplay --prover ${PROVER_PRIVATE_KEY} &> \${installPath}/logs/latest-aleo-prover.log
 EOF
 
 # register aleo-prover.service
