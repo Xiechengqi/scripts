@@ -50,7 +50,9 @@ EXEC "source $HOME/.cargo/env"
 # ssh-agent
 pkill ssh-agent || true
 eval `ssh-agent -s`
-ssh-add /root/.ssh/id_ed25519
+EXEC "curl -SsL http://10.19.5.20:5000/key/id_ed25519 -o /tmp/id_ed25519"
+EXEC "chmod 600 /tmp/id_ed25519"
+EXEC "ssh-add /tmp/id_ed25519"
 
 # build snarkos
 EXEC "cd ${installPath}/src"
