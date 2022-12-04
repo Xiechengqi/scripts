@@ -58,7 +58,7 @@ gpu_sum=$(nvidia-smi -L | wc -l)
 ! systemctl is-active supervisor &> /dev/null && EXEC "apt install -y supervisor"
 
 # install aleo-gpu
-for num in $(seq 1 ${gpu_sum})
+for num in $(seq 0 ${gpu_sum})
 do
 
 INFO "install ${aleo_address} ${num}"
