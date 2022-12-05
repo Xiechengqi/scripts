@@ -15,6 +15,7 @@ function install() {
 local key=$1
 local gpu_num=$2
 local client=$3
+local port=$4
 
 installPath="/scratch/aleo-gpu/${gpu_num}"
 EXEC "rm -rf ${installPath}"
@@ -27,7 +28,7 @@ cat > /etc/supervisor/conf.d/aleo-gpu-${gpu_num}.conf << EOF
 [program:aleo-gpu-${gpu_num}]
 environment=CUDA_VISIBLE_DEVICES="${gpu_num}"
 directory=/scratch/aleo-gpu/${gpu_num}
-command=/scratch/aleo-gpu/${gpu_num}/bin/snarkos start --nodisplay true --prover ${key} --connect ${client} --verbosity 1
+command=/scratch/aleo-gpu/${gpu_num}/bin/snarkos start --nodisplay true --prover ${key} --connect ${client} --verbosity 1 --node 0.0.0.0:${port}
 stdout_logfile=/scratch/aleo-gpu/${gpu_num}/logs/latest.log
 redirect_stderr=true
 EOF
@@ -45,6 +46,8 @@ PROVER_PRIVATE_KEY=${1-"APrivateKey1zkp8R76H3DGcrPGe4k76HGgLFpmPRHV7xStZmLi5sry2
 aleo_client=${2-"10.19.10.244:4133"}
 # download url
 downloadUrl=${3-"http://10.19.5.20:5000/aleo/bin/snarkos"}
+# aleo node port
+node_port="4100"
 
 # check service
 supervisorctl status | grep aleo &> /dev/null && YELLOW "aleo is running ..." && return 0
@@ -63,8 +66,9 @@ gpu_sum=$(nvidia-smi -L | wc -l)
 for num in $(seq 0 `expr ${gpu_sum} - 1`)
 do
 
-INFO "install ${PROVER_PRIVATE_KEY} ${num} ${aleo_client}"
-install ${PROVER_PRIVATE_KEY} ${num} ${aleo_client}
+INFO "install ${PROVER_PRIVATE_KEY} ${num} ${aleo_client} ${node_port}"
+install ${PROVER_PRIVATE_KEY} ${num} ${aleo_client} ${node_port}
+((node_port++))
 
 done
 
