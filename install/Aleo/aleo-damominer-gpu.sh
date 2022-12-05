@@ -55,7 +55,7 @@ gpu_sum=$(nvidia-smi -L | wc -l)
 ! ls /usr/local | grep cuda &> /dev/null && ERROR "No Cuda ..."
 
 # install supervisor
-! systemctl is-active supervisor &> /dev/null && EXEC "apt install -y supervisor"
+! systemctl is-active supervisor &> /dev/null && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Supervisor/install.sh | sudo bash
 
 # install aleo-gpu
 for num in $(seq 0 `expr ${gpu_sum} - 1`)
