@@ -18,14 +18,11 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 # service name
 serviceName="aleo-client"
 installPath="/data/${serviceName}"
-# s-file.prd.com host ip
-filePrdComHost="$1"
-[ ".${filePrdComHost}" = "." ] && ERROR "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Aleo/aleo-client.sh | sudo bash -s [s-file.prd.com host] [PROVER_PRIVATE_KEY]"
 # aleo address PROVER_PRIVATE_KEY
-PROVER_PRIVATE_KEY="$2"
-[ ".${PROVER_PRIVATE_KEY}" = "." ] && ERROR "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Aleo/aleo-client.sh | sudo bash -s [s-file.prd.com host] [PROVER_PRIVATE_KEY]"
+PROVER_PRIVATE_KEY="$1"
+[ ".${PROVER_PRIVATE_KEY}" = "." ] && ERROR "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Aleo/aleo-client.sh | sudo bash -s [PROVER_PRIVATE_KEY]"
 # download url
-binaryDownloadUrl="http://s-file.prd.com/aleo/bin/snarkos"
+binaryDownloadUrl="https://install.xiechengqi.top/aleo/bin/snarkos"
 
 # check
 [[ ! "$@" =~ "force" ]] && systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
