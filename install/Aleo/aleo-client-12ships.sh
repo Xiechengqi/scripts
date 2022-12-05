@@ -58,6 +58,10 @@ EXEC "ssh-add /tmp/id_ed25519"
 
 # build snarkos
 EXEC "cd ${installPath}/src"
+EXEC "cp -f Cargo.toml_gpu Cargo.toml"
+EXEC "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64"
+EXEC "export CUDA_HOME=/usr/local/cuda"
+EXEC "export PATH=$PATH:/usr/local/cuda/bin"
 INFO "cargo install --path ."
 cargo install --path . || ERROR "Build snarkos error ..."
 
