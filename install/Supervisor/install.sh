@@ -21,7 +21,7 @@ EXEC "apt install -y supervisor"
 _centos() {
 
 EXEC "yum install -y epel-release"
-EXEC "yum update"
+EXEC "yum update -y"
 EXEC "yum install -y supervisor"
 
 }
