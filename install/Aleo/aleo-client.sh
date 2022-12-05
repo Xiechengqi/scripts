@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 #
-# 2022/12/04
+# 2022/12/05
 # xiechengqi
-# install aleo pool
+# install aleo client
 #
 
 source /etc/profile
