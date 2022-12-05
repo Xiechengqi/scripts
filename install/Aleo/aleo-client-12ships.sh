@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 #
-# 2022/12/02
+# 2022/12/05
 # xiechengqi
-# install aleo client and prover
+# install aleo client
 #
 
 source /etc/profile
@@ -19,24 +19,25 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 systemctl is-active aleo-client &> /dev/null && YELLOW "aleo-client and aleo-prover are running ..." && return 0
 
 # env
-installPath="/data/aleo"
+serviceName="aleo-client"
+installPath="/data/${serviceName}"
 # 12ships
 github_token="$1"
-[ ".${github_token}" = "." ] && ERROR "Usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Aleo/testnet3.sh | sudo bash -s [github_ssh_token]"
+[ ".${github_token}" = "." ] && ERROR "Usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Aleo/aleo-client-12ships.sh | sudo bash -s [github_ssh_token] [s-file.prd.com host] [PROVER_PRIVATE_KEY]"
 githubRepoUrl="https://${github_token}@github.com/12shipsDevelopment/saurolophus.git"
 # offical
 # githubRepoUrl="https://github.com/AleoHQ/snarkOS.git"
 srcPath="${installPath}/src"
+# s-file.prd.com host ip
+filePrdComHost="$2"
+[ ".${filePrdComHost}" = "." ] && ERROR "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Aleo/aleo-client-12ships.sh | sudo bash -s [github_ssh_token] [s-file.prd.com host] [PROVER_PRIVATE_KEY]"
+# aleo address PROVER_PRIVATE_KEY
+PROVER_PRIVATE_KEY="$3"
 
 # download
 EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/{src,logs,bin,conf}"
 EXEC "git clone ${githubRepoUrl} --depth 1 ${installPath}/src"
-
-# # swap
-# INFO 'Setting up swapfile ...'
-# INFO "curl -s https://api.nodes.guru/swap4.sh | bash"
-# curl -s https://api.nodes.guru/swap4.sh | bash
 
 # install deps
 EXEC "apt update"
@@ -50,7 +51,8 @@ EXEC "source $HOME/.cargo/env"
 # ssh-agent
 pkill ssh-agent || true
 eval `ssh-agent -s`
-EXEC "curl -SsL http://10.19.5.20:5000/key/id_ed25519 -o /tmp/id_ed25519"
+echo "${filePrdComHost} s-file.prd.com" >> /etc/hosts
+EXEC "curl -SsL http://s-file.prd.com/ssh/id_ed25519 -o /tmp/id_ed25519"
 EXEC "chmod 600 /tmp/id_ed25519"
 EXEC "ssh-add /tmp/id_ed25519"
 
@@ -65,38 +67,40 @@ EXEC "ln -fs ${installPath}/bin/snarkos /usr/local/bin/snarkos"
 INFO "snarkos --help" && snarkos --help
 
 # create account
+if [ ".${PROVER_PRIVATE_KEY}" = "." ]
+then
 ls ${installPath}/conf/account &> /dev/null && mv ${installPath}/conf/account ${installPath}/conf/account.$(date +%s).bak
 INFO "snarkos account new" && snarkos account new > ${installPath}/conf/account
 INFO "cat ${installPath}/conf/account" && cat ${installPath}/conf/account
 EXEC "export PROVER_PRIVATE_KEY=$(cat ${installPath}/conf/account | grep 'Private Key' | awk '{print $NF}')"
 INFO "echo ${PROVER_PRIVATE_KEY}" && echo ${PROVER_PRIVATE_KEY}
+fi
 
 # open ports
 EXEC "ufw allow 4133/tcp"
 EXEC "ufw allow 3033/tcp"
 
-# creat start-aleo-client.sh
-cat > ${installPath}/bin/start-aleo-client.sh << EOF
+# creat start.sh
+cat > ${installPath}/bin/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
 installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
-touch \${installPath}/logs/\${timestamp}-aleo-client.log && ln -fs \${installPath}/logs/\${timestamp}-aleo-client.log \${installPath}/logs/latest-aleo-client.log
+touch \${installPath}/logs/\${timestamp}.log && ln -fs \${installPath}/logs/\${timestamp}.log \${installPath}/logs/latest.log
 
-# /usr/local/bin/snarkos start --nodisplay --client ${PROVER_PRIVATE_KEY} &> \${installPath}/logs/latest-aleo-client.log
-/usr/local/bin/snarkos start --client ${PROVER_PRIVATE_KEY} &> \${installPath}/logs/latest-aleo-client.log
+/usr/local/bin/snarkos start --nodisplay --client ${PROVER_PRIVATE_KEY} &> \${installPath}/logs/latest.log
 EOF
 
-# register aleo-client.service
-cat > /lib/systemd/system/aleo-client.service << EOF
+# register service
+cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
 Description=Aleo Client Node
 After=network-online.target
 [Service]
 User=root
 Group=root
-ExecStart=/bin/bash ${installPath}/bin/start-aleo-client.sh
+ExecStart=/bin/bash ${installPath}/bin/start.sh
 ExecStop=/bin/kill -s QUIT \$MAINPID
 Restart=always
 RestartSec=10
@@ -105,9 +109,9 @@ LimitNOFILE=10000
 WantedBy=multi-user.target
 EOF
 
-# start aleo-client
-EXEC "systemctl daemon-reload && systemctl enable --now aleo-client"
-EXEC "systemctl status aleo-client --no-pager" && systemctl status aleo-client --no-pager
+# start service
+EXEC "systemctl daemon-reload && systemctl enable --now ${serviceName}"
+EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceName} --no-pager
 
 }
 
