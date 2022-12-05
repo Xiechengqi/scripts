@@ -27,7 +27,7 @@ cat > /etc/supervisor/conf.d/aleo-gpu-${gpu_num}.conf << EOF
 [program:aleo-gpu-${gpu_num}]
 environment=CUDA_VISIBLE_DEVICES="${gpu_num}"
 directory=/scratch/aleo-gpu/${gpu_num}
-command=/scratch/aleo-gpu/${gpu_num}/bin/snarkos start --nodisplay true --prover ${key} --connect ${client}
+command=/scratch/aleo-gpu/${gpu_num}/bin/snarkos start --nodisplay true --prover ${key} --connect ${client} --verbosity 1
 stdout_logfile=/scratch/aleo-gpu/${gpu_num}/logs/latest.log
 redirect_stderr=true
 EOF
