@@ -53,7 +53,7 @@ EOF
 # register service
 cat > /lib/systemd/system/${serviceName}.service << EOF
 [Unit]
-Description=Aleo Pool
+Description=Aleo Client
 After=network-online.target
 [Service]
 User=root
