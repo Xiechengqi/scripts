@@ -33,7 +33,14 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20|centos' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20、centos7、centos8"
 
 # env
-echo $osInfo | grep ubuntu &> /dev/null && serviceName="supervisor" || serviceName="supervisord"
+if echo $osInfo | grep ubuntu &> /dev/null
+then
+serviceName="supervisor"
+configFilePath="/etc/supervisor/supervisord.conf"
+else
+serviceName="supervisord"
+configFilePath="/etc/supervisord.conf"
+fi
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
@@ -43,7 +50,7 @@ echo $osInfo | grep centos &> /dev/null && _centos
 INFO "supervisord -v" && supervisord -v
 
 # config
-cat >> /etc/supervisor/supervisord.conf << EOF
+cat >> ${configFilePath} << EOF
 [inet_http_server]
 port=*:9001
 EOF
