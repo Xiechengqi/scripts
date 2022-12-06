@@ -14,7 +14,7 @@ function install() {
 
 local account=$1
 local gpu_num=$2
-local miner_name="$(hostname -I | awk '{print $1}')-${gpu_num}"
+local miner_name="$(hostname -I | awk '{print $1}')_${gpu_num}"
 
 installPath="/scratch/aleo-gpu/${gpu_num}"
 EXEC "rm -rf ${installPath}"
