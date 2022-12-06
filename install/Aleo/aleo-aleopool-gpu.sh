@@ -14,6 +14,7 @@ function install() {
 
 local account=$1
 local gpu_num=$2
+local miner_name="$(hostname -I | awk '{print $1}')-${gpu_num}"
 
 installPath="/scratch/aleo-gpu/${gpu_num}"
 EXEC "rm -rf ${installPath}"
@@ -40,8 +41,6 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # aleo address
 account_name=${1-"ca_aleopool"}
-# miner name
-miner_name=$(hostname -I | awk '{print $1}')
 # BASEURL="https://nd-valid-data-bintest1.oss-cn-hangzhou.aliyuncs.com/aleo"
 BASEURL="http://10.19.5.20:5000/aleo/bin"
 # download url
@@ -50,7 +49,10 @@ echo "$osInfo" | grep -E 'ubuntu18' &> /dev/null && downloadUrl="${BASEURL}/aleo
 echo "$osInfo" | grep -E 'ubuntu18' &> /dev/null && binaryName="aleo-pool-prover_ubuntu_1804_gpu" || binaryName="aleo-pool-prover_ubuntu_2004_gpu"
 
 # check service
-supervisorctl status | grep aleo &> /dev/null && YELLOW "aleo is running ..." && return 0
+[[ ! "$@" =~ "force" ]] && supervisorctl status | grep aleo &> /dev/null && YELLOW "aleo is running ..." && return 0
+
+# clean service
+cd /etc/supervisor/conf.d && EXEC "pwd" && EXEC "rm -f ./*" && EXEC "supervisorctl update" && EXEC "cd -"
 
 # check nvidia gpu
 ! nvidia-smi -L &> /dev/null && ERROR "No Nvidia GPU ..."
