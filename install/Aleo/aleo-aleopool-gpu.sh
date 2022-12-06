@@ -49,10 +49,7 @@ echo "$osInfo" | grep -E 'ubuntu18' &> /dev/null && downloadUrl="${BASEURL}/aleo
 echo "$osInfo" | grep -E 'ubuntu18' &> /dev/null && binaryName="aleo-pool-prover_ubuntu_1804_gpu" || binaryName="aleo-pool-prover_ubuntu_2004_gpu"
 
 # check service
-[[ ! "$@" =~ "force" ]] && supervisorctl status | grep aleo &> /dev/null && YELLOW "aleo is running ..." && return 0
-
-# clean service
-cd /etc/supervisor/conf.d && EXEC "pwd" && EXEC "rm -f ./*" && EXEC "supervisorctl update" && EXEC "cd -"
+supervisorctl status | grep aleo &> /dev/null && YELLOW "aleo is running ..." && return 0
 
 # check nvidia gpu
 ! nvidia-smi -L &> /dev/null && ERROR "No Nvidia GPU ..."
