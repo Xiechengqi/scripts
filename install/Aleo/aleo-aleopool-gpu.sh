@@ -53,7 +53,7 @@ supervisorctl status | grep aleo &> /dev/null && YELLOW "aleo is running ..." &&
 
 # check nvidia gpu
 ! nvidia-smi -L &> /dev/null && ERROR "No Nvidia GPU ..."
-gpu_sum=$(nvidia-smi -L | wc -l)
+gpu_sum=$(nvidia-smi -L | grep -E '^GPU' | wc -l)
 
 # check cuda
 ! ls /usr/local | grep cuda &> /dev/null && ERROR "No Cuda ..."
