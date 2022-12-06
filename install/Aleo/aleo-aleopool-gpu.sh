@@ -40,7 +40,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
 # aleo address
-account_name=${1-"ca_aleopool"}
+account_name=${1-"aleopool_ca"}
 # BASEURL="https://nd-valid-data-bintest1.oss-cn-hangzhou.aliyuncs.com/aleo"
 BASEURL="http://10.19.5.20:5000/aleo/bin"
 # download url
