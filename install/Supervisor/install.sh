@@ -52,7 +52,7 @@ INFO "supervisord -v" && supervisord -v
 # config
 cat >> ${configFilePath} << EOF
 [inet_http_server]
-port=*:9001
+port=0.0.0.0:9001
 EOF
 
 # start
