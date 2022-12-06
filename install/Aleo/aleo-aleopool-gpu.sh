@@ -42,8 +42,10 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 account_name=${1-"ca_aleopool"}
 # miner name
 miner_name=$(hostname -I | awk '{print $1}')
+# BASEURL="https://nd-valid-data-bintest1.oss-cn-hangzhou.aliyuncs.com/aleo"
+BASEURL="http://10.19.5.20:5000/aleo/bin"
 # download url
-echo "$osInfo" | grep -E 'ubuntu18' &> /dev/null && downloadUrl="https://nd-valid-data-bintest1.oss-cn-hangzhou.aliyuncs.com/aleo/aleo-pool-prover_ubuntu_1804_gpu" || downloadUrl="https://nd-valid-data-bintest1.oss-cn-hangzhou.aliyuncs.com/aleo/aleo-pool-prover_ubuntu_2004_gpu"
+echo "$osInfo" | grep -E 'ubuntu18' &> /dev/null && downloadUrl="${BASEURL}/aleo-pool-prover_ubuntu_1804_gpu" || downloadUrl="${BASEURL}/aleo-pool-prover_ubuntu_2004_gpu"
 # binary name
 echo "$osInfo" | grep -E 'ubuntu18' &> /dev/null && binaryName="aleo-pool-prover_ubuntu_1804_gpu" || binaryName="aleo-pool-prover_ubuntu_2004_gpu"
 
