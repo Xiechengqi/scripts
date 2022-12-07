@@ -70,3 +70,13 @@ osType=$1
 osVersion=$2
 curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/tool/os.sh | bash -s ${osType} ${osVersion} || exit 1
 }
+
+if_hyper_threading() {
+
+physical_cpu_num=$(grep "physical id" /proc/cpuinfo | sort | uniq | wc -l)
+single_logical_cpu_num=$(cat /proc/cpuinfo | grep "cpu cores" | uniq | wc -l)
+logical_cpu_num=$(expr ${physical_cpu_num} \* ${single_logical_cpu_num})
+real_logical_cpu_num=$(cat /proc/cpuinfo | grep "processor" | wc -l)
+[ "${real_logical_cpu_num}" -gt "${logical_cpu_num}" ] && echo "true" || echo "false"
+
+}
