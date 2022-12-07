@@ -67,6 +67,7 @@ install ${aleo_address} ${num}
 done
 
 # start
+EXEC "cd /etc/supervisor"
 EXEC "supervisorctl update"
 
 # sleep
