@@ -49,7 +49,7 @@ binaryName="aleo-prover-cuda-133"
 downloadUrl="${BASEURL}/${binaryName}"
 
 # check service
-supervisorctl status | grep aleo &> /dev/null && YELLOW "aleo is running ..." && return 0
+cd /etc/supervisor &> /dev/null && supervisorctl status | grep aleo &> /dev/null && YELLOW "aleo is running ..." && return 0
 
 # check nvidia gpu
 ! nvidia-smi -L &> /dev/null && ERROR "No Nvidia GPU ..."
@@ -71,6 +71,7 @@ install ${f2pool_username} ${num}
 done
 
 # start
+EXEC "cd /etc/supervisor"
 EXEC "supervisorctl update"
 
 # sleep
