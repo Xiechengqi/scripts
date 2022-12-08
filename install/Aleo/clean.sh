@@ -7,7 +7,7 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 main() {
 
 # clean service
-cd /etc/supervisor/conf.d && EXEC "pwd" && EXEC "rm -f ./*" && EXEC "supervisorctl update" && EXEC "cd -"
+cd /etc/supervisor && EXEC "pwd" && EXEC "rm -f ./conf.d/*" && EXEC "supervisorctl update" && EXEC "cd -"
 
 }
 
