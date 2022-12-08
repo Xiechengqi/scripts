@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# 2021/12/06
+# 2021/12/08
 # xiechengqi
 # https://blog.f2pool.com/zh/mining-tutorial/how-to-mine-aleo-guide-mine-aleo
 #
@@ -14,6 +14,7 @@ function install() {
 
 local userName=$1
 local gpu_num=$2
+local cpu_list=$3
 
 installPath="/scratch/aleo-gpu/${gpu_num}"
 EXEC "rm -rf ${installPath}"
@@ -25,7 +26,7 @@ INFO "create /etc/supervisor/conf.d/aleo-gpu-${gpu_num}.conf ..."
 cat > /etc/supervisor/conf.d/aleo-gpu-${gpu_num}.conf << EOF
 [program:aleo-gpu-${gpu_num}]
 directory=/scratch/aleo-gpu/${gpu_num}
-command=/scratch/aleo-gpu/${gpu_num}/bin/${binaryName} -a ${userName} -g ${gpu_num} -p ${f2pool_proxy}
+command=taskset -c ${cpu_list} /scratch/aleo-gpu/${gpu_num}/bin/${binaryName} -a ${userName} -g ${gpu_num} -p ${f2pool_proxy}
 stdout_logfile=/scratch/aleo-gpu/${gpu_num}/logs/latest.log
 redirect_stderr=true
 EOF
@@ -53,7 +54,6 @@ cd /etc/supervisor &> /dev/null && supervisorctl status | grep aleo &> /dev/null
 
 # check nvidia gpu
 ! nvidia-smi -L &> /dev/null && ERROR "No Nvidia GPU ..."
-gpu_sum=$(nvidia-smi -L | grep -E '^GPU' | wc -l)
 
 # check cuda
 ! ls /usr/local | grep cuda &> /dev/null && ERROR "No Cuda ..."
@@ -61,12 +61,25 @@ gpu_sum=$(nvidia-smi -L | grep -E '^GPU' | wc -l)
 # install supervisor
 ! systemctl is-active supervisor &> /dev/null && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Supervisor/install.sh | sudo bash
 
+# bind cpu
+gpu_sum=$(nvidia-smi -L | grep -E '^GPU' | wc -l)
+cpu_cores=$(lscpu | grep '^CPU(s):' | awk '{print $2}')
+physical_cores=$(( cpu_cores / 2 ))
+append=$(( physical_cores % gpu_sum ))
+span=$(( physical_cores / gpu_sum ))
+
 # install aleo-gpu
 for num in $(seq 0 `expr ${gpu_sum} - 1`)
 do
 
-INFO "install ${f2pool_username} ${num}"
-install ${f2pool_username} ${num}
+cpu_list="$((num * span))-$(((num+1) * span - 1)),$((num * span + physical_cores))-$(((num+1) * span + physical_cores - 1))"
+if [[ $append -gt 0 ]]; then
+cpu_list+=",$(( physical_cores - append )),$(( cpu_cores - append ))"
+append=$(( append - 1 ))
+fi
+
+INFO "install ${f2pool_username} ${num} ${cpu_list}"
+install ${f2pool_username} ${num} ${cpu_list}
 
 done
 
