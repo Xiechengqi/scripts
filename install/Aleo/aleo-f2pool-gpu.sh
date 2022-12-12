@@ -59,7 +59,11 @@ cd /etc/supervisor &> /dev/null && supervisorctl status | grep aleo &> /dev/null
 ! ls /usr/local | grep cuda &> /dev/null && ERROR "No Cuda ..."
 
 # install supervisor
-! systemctl is-active supervisor &> /dev/null && curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Supervisor/install.sh | sudo bash || exit 1
+systemctl is-active supervisor &> /dev/null
+if [ "$?" != "0" ]
+then
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Supervisor/install.sh | sudo bash || exit 1
+fi
 
 # bind cpu
 gpu_sum=$(nvidia-smi -L | grep -E '^GPU' | wc -l)
