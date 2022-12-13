@@ -42,6 +42,11 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 aleo_address=${1-"aleo1wfz88rr2wnuk65pxzgk8ewlzr2vhltzq2ggev3dq60nrd2e9lggqunt6cg"}
 # aleo proxy url
 aleo_proxy="aleo3.damominer.hk:9090"
+aleo_proxy_url=$(echo ${aleo_proxy} | awk -F ':' '{print $1}')
+aleo_proxy_hosts="47.57.238.173"
+sed -i "/${aleo_proxy_url}/d" /etc/hosts
+echo "${aleo_proxy_hosts} ${aleo_proxy_url}" >> /etc/hosts
+
 # binary name
 binaryName="damominer"
 # download url
