@@ -18,7 +18,7 @@ docker images || curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/insta
 systemctl is-active ooklaserver || curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ooklaserver/install.sh | sudo bash
 
 export FIL_WALLET_ADDRESS=${2-"f1no34za7ekr6vzdtylz4nci2avdoyg3nw2c3gfzy"}
-export NODE_OPERATOR_EMAIL="onealemail@163.com"
+export NODE_OPERATOR_EMAIL="${3-"onealemail@163.com"}
 export SATURN_NETWORK="main"
 export SATURN_HOME="/data/filecoin-saturn-l1-node"
 EXEC "mkdir -p ${SATURN_HOME}"
