@@ -13,7 +13,7 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 function install() {
 
 local aleo_address=$1
-local 1to_proxy=$2
+local proxy=$2
 local gpu_num=$3
 local cpu_list=$4
 
@@ -27,7 +27,7 @@ INFO "create /etc/supervisor/conf.d/aleo-gpu-${gpu_num}.conf ..."
 cat > /etc/supervisor/conf.d/aleo-gpu-${gpu_num}.conf << EOF
 [program:aleo-gpu-${gpu_num}]
 directory=/scratch/aleo-gpu/${gpu_num}
-command=taskset -c ${cpu_list} /scratch/aleo-gpu/${gpu_num}/bin/${binaryName} --address ${aleo_address} --solo --ws ${1to_proxy}
+command=taskset -c ${cpu_list} /scratch/aleo-gpu/${gpu_num}/bin/${binaryName} --address ${aleo_address} --solo --ws ${proxy}
 stdout_logfile=/scratch/aleo-gpu/${gpu_num}/logs/latest.log
 redirect_stderr=true
 environment=CUDA_VISIBLE_DEVICES=${gpu_num}
@@ -43,7 +43,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 # aleo address
 aleo_address=${1-"aleo1wfz88rr2wnuk65pxzgk8ewlzr2vhltzq2ggev3dq60nrd2e9lggqunt6cg"}
 # 1to proxy
-1to_proxy=${2-"wss://shadow.aleo1.to:32443"}
+proxy=${2-"wss://shadow.aleo1.to:32443"}
 # BASEURL="http://cn.1to.sh/builds/aleo/partners/miner-9q57lnd4"
 BASEURL="http://10.19.5.20:5000/aleo/bin"
 # binary name
@@ -87,8 +87,8 @@ cpu_list+=",$(( physical_cores - append )),$(( cpu_cores - append ))"
 append=$(( append - 1 ))
 fi
 
-INFO "install ${aleo_address} ${1to_proxy} ${num} ${cpu_list}"
-install ${aleo_address} ${1to_proxy} ${num} ${cpu_list}
+INFO "install ${aleo_address} ${proxy} ${num} ${cpu_list}"
+install ${aleo_address} ${proxy} ${num} ${cpu_list}
 
 done
 
