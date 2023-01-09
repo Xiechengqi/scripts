@@ -42,10 +42,10 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 f2pool_username=${1-"xiechengqi"}
 # f2pool proxy
 f2pool_proxy=${2-"aleo-asia.f2pool.com:4400"}
-# BASEURL="https://aleo-resource.oss-cn-shenzhen.aliyuncs.com/aleo-prover-cuda-133"
+# BASEURL="https://aleo-resource.oss-cn-shenzhen.aliyuncs.com/aleo-prover-cuda"
 BASEURL="http://10.19.5.20:5000/aleo/bin"
 # binary name
-binaryName="aleo-prover-cuda-133"
+binaryName="aleo-prover-cuda"
 # download url
 downloadUrl="${BASEURL}/${binaryName}"
 
