@@ -40,8 +40,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 ue2a.ookla-speedtests.e2ro.com ue2a.ookla-speedtests.e2ro.com.prod.hosts.ooklaserver.net
 # Server: eero - Hermiston, OR (id: 41819)
 127.0.0.1 uw2a.ookla-speedtests.e2ro.com uw2a.ookla-speedtests.e2ro.com.prod.hosts.ooklaserver.net
-# Server: kdatacenter.com - Seoul (id: 6527)
-127.0.0.1 speedtest.kdatacenter.com speedtest.kdatacenter.com.prod.hosts.ooklaserver.net
+# Server: kdatacenter.com - Seoul (id: 3805)
+127.0.0.1 speedtest.inetvl.ru speedtest.inetvl.ru.prod.hosts.ooklaserver.net
 # Server: Blacknight - Dublin (id: 4604)
 127.0.0.1 speedtest1.blacknight.ie speedtest1.blacknight.ie.prod.hosts.ooklaserver.net
 # Server: GSL Networks - Tokyo (id: 50686)
