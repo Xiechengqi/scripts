@@ -14,10 +14,10 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 # install docker
 docker images || curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | sudo bash -s verison
 
-export FIL_WALLET_ADDRESS=${2-"f1no34za7ekr6vzdtylz4nci2avdoyg3nw2c3gfzy"}
+export FIL_WALLET_ADDRESS=${1-"f1no34za7ekr6vzdtylz4nci2avdoyg3nw2c3gfzy"}
 EXEC "sed -i /FIL_WALLET_ADDRESS/d /etc/profile"
 EXEC "echo FIL_WALLET_ADDRESS=${FIL_WALLET_ADDRESS} >> /etc/profile"
-export NODE_OPERATOR_EMAIL=${3-"onealemail@163.com"}
+export NODE_OPERATOR_EMAIL=${2-"onealemail@163.com"}
 EXEC "sed -i /NODE_OPERATOR_EMAIL/d /etc/profile"
 EXEC "echo =${NODE_OPERATOR_EMAIL} >> /etc/profile"
 export SATURN_NETWORK="main"
