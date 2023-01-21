@@ -46,6 +46,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 speedtest1.blacknight.ie speedtest1.blacknight.ie.prod.hosts.ooklaserver.net
 # Server: GSL Networks - Tokyo (id: 50686)
 127.0.0.1 ty8.speedtest.gslnetworks.com ty8.speedtest.gslnetworks.com.prod.hosts.ooklaserver.net
+# Server: Melbicom - Lagos (id: 46960)
+127.0.0.1 speedtest-los.melbicom.net
 EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
