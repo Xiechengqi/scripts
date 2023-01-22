@@ -48,6 +48,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 ty8.speedtest.gslnetworks.com ty8.speedtest.gslnetworks.com.prod.hosts.ooklaserver.net
 # Server: Melbicom - Lagos (id: 46960)
 127.0.0.1 speedtest-los.melbicom.net
+# Server: China Mobile Hong Kong Boardband - HK (id: 37639)
+127.0.0.1 speedtestbb.hk.chinamobile.com
 EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
