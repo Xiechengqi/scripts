@@ -8,11 +8,12 @@
 #
 
 source /etc/profile
-BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+# BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 # install docker
-docker images || curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | sudo bash -s verison
+docker images || curl -SsL ${BASEURL}/install/Docker/install.sh | sudo bash -s verison
 
 # install ooklaserver
 systemctl is-active ooklaserver || curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/ooklaserver/install.sh | sudo bash
