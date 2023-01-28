@@ -34,6 +34,7 @@ EXEC "curl -SsL ${downloadUrl} | tar zx --strip-components 1 -C ${installPath}"
 EXEC "cd ${installPath}"
 EXEC "./app service install"
 EXEC "./app service start"
+EXEC "sleep 10"
 EXEC "./apps/gaganode/gaganode config set --token=${TOKEN}"
 EXEC "./app restart"
 
