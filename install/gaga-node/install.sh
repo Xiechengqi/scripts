@@ -20,6 +20,9 @@ serviceName="gaganode"
 installPath="/data/${serviceName}"
 downloadUrl="https://assets.coreservice.io/public/package/22/app/1.0.3/app-1_0_3.tar.gz"
 
+# check node
+ss -plunt | grep 29091 && INFO "gaga-node is running ..." && exit 0
+
 # check install path
 EXEC "rm -rf ${installPath} $(dirname ${installPath})/${serviceName}"
 EXEC "mkdir -p ${installPath}/logs"
