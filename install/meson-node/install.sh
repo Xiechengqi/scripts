@@ -24,6 +24,9 @@ installPath="/data/${serviceName}"
 downloadUrl="https://staticassets.meson.network/public/meson_cdn/v${version}/meson_cdn-linux-amd64.tar.gz"
 binaryName="meson_cdn"
 
+# check node
+ss -plunt | grep ${HTTPS_PORT} && INFO "gaga-node is running ..." && exit 0
+
 # install vnstat
 EXEC "apt update && apt install -y vnstat"
 
