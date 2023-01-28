@@ -24,6 +24,9 @@ downloadUrl="https://assets.coreservice.io/public/package/22/app/1.0.3/app-1_0_3
 EXEC "rm -rf ${installPath} $(dirname ${installPath})/${serviceName}"
 EXEC "mkdir -p ${installPath}/logs"
 
+# install vnstat
+EXEC "apt update && apt install -y vnstat"
+
 # download tarball
 EXEC "curl -SsL ${downloadUrl} | tar zx --strip-components 1 -C ${installPath}"
 
