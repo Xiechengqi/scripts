@@ -35,6 +35,7 @@ EXEC "cd ${installPath}"
 EXEC "./app service install"
 EXEC "./app service start"
 EXEC "sleep 10"
+INFO "ls -alht ./apps/gaganode/gaganode" && ls -alht ./apps/gaganode/gaganode
 EXEC "./apps/gaganode/gaganode config set --token=${TOKEN}"
 EXEC "./app restart"
 
