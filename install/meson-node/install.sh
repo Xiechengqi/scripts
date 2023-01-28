@@ -27,9 +27,6 @@ binaryName="meson_cdn"
 # install vnstat
 EXEC "apt update && apt install -y vnstat"
 
-# check node
-which ${binaryName} &> /dev/null && YELLOW "${serviceName} has been installed ..." && return 0
-
 # check install path
 EXEC "rm -rf ${installPath} $(dirname ${installPath})/${serviceName}"
 EXEC "mkdir -p ${installPath}/logs"
