@@ -14,7 +14,7 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 main() {
 
 export MESON_TOKEN="ndofiwxlyoaqyiaicyydvtqh"
-export HTTPS_PORT="54321"
+export HTTPS_PORT="29092"
 export CACHE_SIZE="30"
 
 # environment
