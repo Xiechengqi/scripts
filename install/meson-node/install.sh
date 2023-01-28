@@ -24,6 +24,9 @@ installPath="/data/${serviceName}_${version}"
 downloadUrl="https://staticassets.meson.network/public/meson_cdn/v${version}/meson_cdn-linux-amd64.tar.gz"
 binaryName="meson_cdn"
 
+# install vnstat
+EXEC "apt update && apt install -y vnstat"
+
 # check node
 which ${binaryName} &> /dev/null && YELLOW "${serviceName} has been installed ..." && return 0
 
