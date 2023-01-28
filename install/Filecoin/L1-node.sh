@@ -53,6 +53,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 speedtestbb.hk.chinamobile.com
 # Server: KamaTera, Inc. - IL (id: 11616)
 127.0.0.1 speedtest.il-rh.kamatera.com speedtest.il-rh.kamatera.com.prod.hosts.ooklaserver.net
+# Server: Melita - Milan (id: 25609)
+127.0.0.1 speedtest.melita.it speedtest.melita.it.prod.hosts.ooklaserver.net
 EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
