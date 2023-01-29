@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/08/23
+# 2023/01/29
 # https://github.com/bitcoin/bitcoin
 # Ubuntu 18+
 # install BTC Node
@@ -23,7 +23,7 @@ chainId="$1" && INFO "chain: $chainId"
 
 # environments
 serviceName="btc-node"
-version="0.21.1"
+version="23.1"
 installPath="/data/BTC/${serviceName}-${version}"
 downloadUrl="https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz"
 rpcUser="bitcoin"
