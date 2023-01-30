@@ -36,7 +36,7 @@ EXEC "chmod +x ${installPath}/bin/${binaryName}"
 EXEC "ln -fs ${installPath}/bin/${binaryName} /usr/local/bin/${binaryName}"
 
 # download github repo
-EXEC "git clone -b testnet ${downloadUrl} ${installPath}/src"
+EXEC "git clone -b testnet ${githubUrl} ${installPath}/src"
 
 # config
 EXEC "cp -f ${installPath}/src/crates/sui-config/data/fullnode-template.yaml ${installPath}/conf/fullnode.yaml"
