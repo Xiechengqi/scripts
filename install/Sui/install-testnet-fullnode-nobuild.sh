@@ -56,6 +56,7 @@ timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 sui-node --config-path \$installPath/conf/fullnode.yaml &> \$installPath/logs/latest.log
 EOF
+EXEC "chmod +x $installPath/start.sh"
 
 # register serivce
 cat > ${installPath}/${serviceName}.service << EOF
