@@ -51,7 +51,9 @@ EXEC "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/inst
 EXEC "source $HOME/.cargo/env"
 
 # build binary
+EXEC "cd ${installPath}/src"
 INFO "cargo build --release -p sui-node" && cargo build --release -p sui-node
+EXEC "cd ${installPath}"
 EXEC "cp -f ${installPath}/src/target/release/sui-node ${installPath}/bin/"
 EXEC "chmod +x ${installPath}/bin/sui-node"
 EXEC "ln -fs ${installPath}/bin/sui-node /usr/local/bin/sui-node"
