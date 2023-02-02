@@ -13,3 +13,4 @@ for i in $disks; do
         # flag=True
     fi
     # echo "$i" "tyep: $type" "scheduler: $scheduler"
+done
