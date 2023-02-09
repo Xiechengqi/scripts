@@ -44,7 +44,7 @@ docker run --name saturn-node -it -d \
   --ulimit nofile=1000000 \
   ${image}
   
-EXEC "curl -SsL https://install.xiechengqi.top/update.sh -o /root/update.sh"
+EXEC "curl -SsL -k https://install.xiechengqi.top/update.sh -o /root/update.sh"
 EXEC "chmod +x /root/update.sh"
 (crontab -l;echo "*/5 * * * * /root/update.sh >> /var/log/l1-cron.log 2>&1 ") | crontab
 INFO "crontab -l" && crontab -l
