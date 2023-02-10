@@ -61,7 +61,9 @@ EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
   --restart=unless-stopped \
-  -v /var/lib/lxcfs/proc/meminfo:/proc/meminfo:rw \
+  -v /proc/meminfo:/proc/meminfo:rw \
+  -v /root/df-gb:/root/df-gb:rw \
+  -v /root/df-mb:/root/df-mb:rw \
   -v $SATURN_HOME/shared:/usr/src/app/shared \
   -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS \
   -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL \
