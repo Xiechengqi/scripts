@@ -20,6 +20,13 @@ EXEC "echo FIL_WALLET_ADDRESS=${FIL_WALLET_ADDRESS} >> /etc/profile"
 export NODE_OPERATOR_EMAIL=${2-"onealemail@163.com"}
 EXEC "sed -i /NODE_OPERATOR_EMAIL/d /etc/profile"
 EXEC "echo NODE_OPERATOR_EMAIL=${NODE_OPERATOR_EMAIL} >> /etc/profile"
+export SPEEDTEST_SERVER_ID=${3-""}
+if [ ".${SPEEDTEST_SERVER_ID}" != "." ]
+then
+export SPEEDTEST_SERVER_CONFIG="--server-id=${SPEEDTEST_SERVER_ID}"
+EXEC "sed -i /SPEEDTEST_SERVER_CONFIG/d /etc/profile"
+EXEC "echo SPEEDTEST_SERVER_CONFIG=${SPEEDTEST_SERVER_CONFIG} >> /etc/profile"
+fi
 export SATURN_NETWORK="main"
 EXEC "sed -i /SATURN_NETWORK/d /etc/profile"
 EXEC "echo SATURN_NETWORK=${SATURN_NETWORK} >> /etc/profile"
