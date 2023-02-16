@@ -18,7 +18,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # environments
 address=${1-"XQX6B-V_chp-wO5tNTajaZEhUivCOyt5oOE6YPK_QSA"}
-version=${2-"2.6.0"}
+version=${2-"2.6.0.0"}
 serviceName="arweaved"
 installPath="/scratch/${serviceName}-${version}"
 echo "${osInfo}" | grep -E 'ubuntu20' &>/dev/null && downloadUrl="https://github.com/ArweaveTeam/arweave/releases/download/N.${version}/arweave-${version}.linux-x86_64.tar.gz" || downloadUrl="https://github.com/ArweaveTeam/arweave/releases/download/N.${version}/arweave-${version}.ubuntu18-x86_64.tar.gz"
