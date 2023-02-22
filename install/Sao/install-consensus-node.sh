@@ -24,9 +24,9 @@ EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/{bin,home,data,logs}"
 
 # download binary
-EXEC "curl -SsL ${binaryDownloadUrl} -o ${installPath}/bin/${binaryname}"
-EXEC "chmod +x ${installPath}/bin/${binaryname}"
-EXEC "ln -fs ${installPath}/bin/${binaryname} /usr/local/bin/${binaryname}"
+EXEC "curl -SsL ${binaryDownloadUrl} -o ${installPath}/bin/${binaryName}"
+EXEC "chmod +x ${installPath}/bin/${binaryName}"
+EXEC "ln -fs ${installPath}/bin/${binaryName} /usr/local/bin/${binaryName}"
 INFO "saod version" && saod version
 
 # download config
@@ -42,7 +42,7 @@ installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 
-\${installPath}/bin/saod start --db_dir \${installPath}/data --home \${installPath}/home --moniker \${monikerName} &> \${installPath}/logs/latest.log
+\${installPath}/bin/${binaryName} start --db_dir \${installPath}/data --home \${installPath}/home --moniker \${monikerName} &> \${installPath}/logs/latest.log
 EOF
 EXEC "chmod +x ${installPath}/start.sh"
 
