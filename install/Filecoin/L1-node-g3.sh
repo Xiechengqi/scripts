@@ -8,11 +8,12 @@
 #
 
 source /etc/profile
-BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+# BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 # install docker
-docker images || curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | sudo bash -s verison
+docker images || curl -SsL ${BASEURL}/install/Docker/install.sh | sudo bash
 
 export FIL_WALLET_ADDRESS=${1-"f1no34za7ekr6vzdtylz4nci2avdoyg3nw2c3gfzy"}
 EXEC "sed -i /FIL_WALLET_ADDRESS/d /etc/profile"
