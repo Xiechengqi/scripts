@@ -13,8 +13,8 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 serviceName="saod"
 installPath="/data/${serviceName}"
 binaryName="saod"
-binaryDownloadUrl="http://10.19.10.244:5000/sao/${binaryName}"
-configDownloadUrl="http://10.19.10.244:5000/sao/config.tar.gz"
+binaryDownloadUrl="http://205.204.75.250:5000/sao/${binaryName}"
+configDownloadUrl="http://205.204.75.250:5000/sao/config.tar.gz"
 
 # check service
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
