@@ -86,8 +86,11 @@ YELLOW "log: tail -f ${installPath}/logs/latest.log"
 YELLOW "control cmd: systemctl [stop|start|restart|reload] ${serviceName}"
 YELLOW "Init Cmd:"
 INFO "  Load environment: source /etc/profile"
-INFO "  Create a address: saonode account create"
+INFO "  Create a address: saonode account create --key-name [account_name]"
+INFO "  Send token to new address: saod tx bank send [from_address] [new_address] 9999999999sao"
+INFO "  Check new address: saonode account list"
 INFO "  Init node to join network: saonode init --creator [address]"
+INFO "  [Option] Modify storage config: vim ${installPath}/storage/config.toml"
 INOF "  Start service: systemctl start ${serviceName}"
 
 }
