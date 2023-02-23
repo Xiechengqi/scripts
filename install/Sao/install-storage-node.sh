@@ -35,7 +35,7 @@ INFO "${binaryName} -v" && ${binaryName} -v
 EXEC "sed -i /SAO_CHAIN_API/d /etc/profile"
 EXEC "sed -i /SAO_NODE_PATH/d /etc/profile"
 EXEC "sed -i /SAO_KEYRING_HOME/d /etc/profile"
-cat >> /etc/porfile << EOF
+cat >> /etc/profile << EOF
 SAO_CHAIN_API=http://127.0.0.1:26657
 SAO_NODE_PATH=${installPath}/storage
 SAO_KEYRING_HOME=${installPath}/home
