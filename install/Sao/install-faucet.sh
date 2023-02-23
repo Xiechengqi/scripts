@@ -15,6 +15,19 @@ installPath="/data/${serviceName}"
 binaryName="faucet-api"
 binaryDownloadUrl="http://205.204.75.250:5000/sao/${binaryName}"
 
+FAUCET_SECRET_KEY="$1"
+[ ".${FAUCET_SECRET_KEY}" = "." ] && ERROR "First parm FAUCET_SECRET_KEY is empty"
+EXEC "sed -i /FAUCET_SECRET_KEY/d /etc/profile"
+FAUCET_FROM="$2"
+[ ".${FAUCET_FROM}" = "." ] && ERROR "Second parm FAUCET_FROM is empty"
+EXEC "sed -i /FAUCET_FROM/d /etc/profile"
+
+cat >> /etc/profile << EOF
+export FAUCET_SECRET_KEY=${FAUCET_SECRET_KEY}
+export FAUCET_FROM=${FAUCET_FROM}
+EOF
+INFO "tail -2 /etc/profile" && tail -2 /etc/profile
+
 # check service
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
 
@@ -34,9 +47,6 @@ cat > ${installPath}/start.sh << EOF
 source /etc/profile
 
 export chainAddress="http://127.0.0.1:26657"
-export FAUCET_SECRET_KEY="${FAUCET_SECRET_KEY}"
-export FAUCET_FROM="${FAUCET_FROM}"
-
 installPath="/data/sao-faucet"
 
 timestamp=\$(date +%Y%m%d%H%M%S)
