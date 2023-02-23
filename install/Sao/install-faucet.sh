@@ -47,6 +47,7 @@ cat > ${installPath}/start.sh << EOF
 source /etc/profile
 
 export chainAddress="http://127.0.0.1:26657"
+export SAO_HOME="/data/saod/home"
 installPath="${installPath}"
 
 timestamp=\$(date +%Y%m%d%H%M%S)
