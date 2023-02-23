@@ -78,7 +78,7 @@ EXEC "ln -fs ${installPath}/${serviceName}.service /lib/systemd/system/${service
 
 # start
 EXEC "systemctl daemon-reload && systemctl enable ${serviceName}"
-EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceName} --no-pager
+INFO "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceName} --no-pager
 
 # INFO
 YELLOW "You need init first, then start service!"
