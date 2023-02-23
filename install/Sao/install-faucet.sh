@@ -47,7 +47,7 @@ cat > ${installPath}/start.sh << EOF
 source /etc/profile
 
 export chainAddress="http://127.0.0.1:26657"
-installPath="/data/sao-faucet"
+installPath="${installPath}"
 
 timestamp=\$(date +%Y%m%d%H%M%S)
 touch \${installPath}/logs/\${timestamp}.log && ln -fs \${installPath}/logs/\${timestamp}.log \${installPath}/logs/latest.log
