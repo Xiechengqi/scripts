@@ -33,9 +33,9 @@ cat > ${installPath}/start.sh << EOF
 #!/usr/bin/env /bash
 source /etc/profile
 
-export FAUCET_FROM="xxx"
-export chainAddress="http://127.0.0.1:26656"
-export FAUCET_SECRET_KEY="xxx"
+export FAUCET_FROM="${FAUCET_FROM}"
+export chainAddress="${chainAddress}"
+export FAUCET_SECRET_KEY="${FAUCET_SECRET_KEY}"
 
 installPath="/data/sao-faucet"
 
