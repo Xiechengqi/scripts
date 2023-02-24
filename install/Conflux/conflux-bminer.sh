@@ -7,7 +7,7 @@
 #
 
 source /etc/profile
-BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 function install() {
