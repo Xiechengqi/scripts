@@ -15,6 +15,9 @@ installPath="/data/${serviceName}"
 binaryName="saonode"
 binaryDownloadUrl="http://205.204.75.250:5000/sao/${binaryName}"
 
+# increase udp maximum buffer
+EXEC "sysctl -w net.core.rmem_max=2500000"
+
 # check saod service
 EXEC "systemctl is-active saod && ss -plunt | grep 26657"
 
