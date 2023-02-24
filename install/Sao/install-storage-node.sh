@@ -14,6 +14,7 @@ serviceName="sao-node"
 installPath="/data/${serviceName}"
 binaryName="saonode"
 binaryDownloadUrl="http://205.204.75.250:5000/sao/${binaryName}"
+SAO_CHAIN_API="http://127.0.0.1:26657"
 
 # increase udp maximum buffer
 EXEC "sysctl -w net.core.rmem_max=2500000"
@@ -39,7 +40,7 @@ EXEC "sed -i /SAO_CHAIN_API/d /etc/profile"
 EXEC "sed -i /SAO_NODE_PATH/d /etc/profile"
 EXEC "sed -i /SAO_KEYRING_HOME/d /etc/profile"
 cat >> /etc/profile << EOF
-export SAO_CHAIN_API=http://127.0.0.1:26657
+export SAO_CHAIN_API=${SAO_CHAIN_API}
 export SAO_NODE_PATH=${installPath}/storage
 export SAO_KEYRING_HOME=${installPath}/home
 EOF
@@ -92,7 +93,7 @@ YELLOW "  Load environment: source /etc/profile"
 YELLOW "  Create a address: saonode account create --key-name [account_name]"
 YELLOW "  Get some token: https://faucet.testnet.sao.network/"
 YELLOW "  Check new address: saonode account list"
-YELLOW "  Init node to join network: saonode init --creator [address]"
+YELLOW "  Init node to join network: saonode --chain-address ${SAO_CHAIN_API} init --creator [address]"
 YELLOW "  [Option] Modify storage config: vim ${installPath}/storage/config.toml"
 YELLOW "  Start service: systemctl start ${serviceName}"
 
