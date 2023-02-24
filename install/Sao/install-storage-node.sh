@@ -96,6 +96,8 @@ YELLOW "  Check new address: saonode account list"
 YELLOW "  Init node to join network: saonode --chain-address ${SAO_CHAIN_API} init --creator [address]"
 YELLOW "  [Option] Modify storage config: vim ${installPath}/storage/config.toml"
 YELLOW "  Start service: systemctl start ${serviceName}"
+YELLOW "  Modify storage p2p public ip: grep Node ${installPath}/logs/latest.log"
+YELLOW "  Restart service: systemctl restart ${serviceName}"
 
 }
 
