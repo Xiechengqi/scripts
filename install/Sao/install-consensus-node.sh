@@ -32,6 +32,9 @@ INFO "saod version" && saod version
 # download config
 EXEC "curl -SsL ${configDownloadUrl} | tar zx -C ${installPath}/home"
 
+# prometheus metrics
+sed -i 's/prometheus = false/prometheus = true/g' ${installPath}/home/config/config.toml
+
 # create start.sh
 cat > ${installPath}/start.sh << EOF
 #!/usr/bin/env bash
