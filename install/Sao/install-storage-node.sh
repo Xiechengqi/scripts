@@ -13,7 +13,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 serviceName="sao-node"
 installPath="/data/${serviceName}"
 binaryName="saonode"
-binaryDownloadUrl="http://205.204.75.250:5000/sao/${binaryName}"
+binaryDownloadUrl="http://203.23.128.181:5000/sao/${binaryName}"
 
 export SAO_CHAIN_API="http://203.23.128.181:26657"
 
