@@ -7,7 +7,7 @@ main() {
 
 serviceName="saod"
 installPath="/data/saod"
-binaryName="saonode"
+binaryName="saod"
 binaryDownloadUrl="http://203.23.128.181:5000/sao/${binaryName}"
 
 EXEC "systemctl stop ${serviceName}"
