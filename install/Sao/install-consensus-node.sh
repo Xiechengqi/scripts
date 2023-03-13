@@ -74,6 +74,12 @@ EXEC "ln -fs ${installPath}/${serviceName}.service /lib/systemd/system/${service
 EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
 EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
 
+# alias
+sed -i '/alias saod/d' /etc/profile
+cat >> /etc/profile << EOF
+alias saod="saod --home ${installPath}/home"
+EOF
+
 # INFO
 YELLOW "${serviceName} version: ${version}"
 YELLOW "log: tail -f $installPath/logs/latest.log"
