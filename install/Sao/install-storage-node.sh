@@ -36,6 +36,7 @@ EXEC "ln -fs ${installPath}/bin/${binaryName} /usr/local/bin/${binaryName}"
 INFO "${binaryName} -v" && ${binaryName} -v
 
 # config
+EXEC "sed -i /sao-node/d /etc/profile"
 EXEC "sed -i /SAO_CHAIN_API/d /etc/profile"
 cat >> /etc/profile << EOF
 export SAO_CHAIN_API=${SAO_CHAIN_API}
