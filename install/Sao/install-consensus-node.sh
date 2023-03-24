@@ -7,21 +7,25 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 main() {
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'centos7|ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: centos7、ubuntu18、ubuntu20"
+! echo "$osInfo" | grep -E 'centos|ubuntu' &> /dev/null && ERROR "You could only install on os: centos、ubuntu"
 
 # environments
 serviceName="saod"
 installPath="/data/${serviceName}"
 binaryName="saod"
-binaryDownloadUrl="http://205.204.75.250:5000/sao/${binaryName}"
-configDownloadUrl="http://205.204.75.250:5000/sao/config.tar.gz"
+version=${1-"v0.1.3"}
+binaryDownloadUrl="https://github.com/SAONetwork/sao-node/releases/download/${version}/saonode-linux"
+genesisDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/genesis.json"
+configDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/config.toml"
+appDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/app.toml"
+# configDownloadUrl="http://205.204.75.250:5000/sao/config.tar.gz"
 
 # check service
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
 
 # check install path
 EXEC "rm -rf ${installPath}"
-EXEC "mkdir -p ${installPath}/{bin,home,data,logs}"
+EXEC "mkdir -p ${installPath}/{bin,home,logs}"
 
 # download binary
 EXEC "curl -SsL ${binaryDownloadUrl} -o ${installPath}/bin/${binaryName}"
@@ -30,7 +34,11 @@ EXEC "ln -fs ${installPath}/bin/${binaryName} /usr/local/bin/${binaryName}"
 INFO "saod version" && saod version
 
 # download config
-EXEC "curl -SsL ${configDownloadUrl} | tar zx -C ${installPath}/home"
+# EXEC "curl -SsL ${configDownloadUrl} | tar zx -C ${installPath}/home"
+EXEC "mkdir ${installPath}/home/config"
+EXEC "curl -SsL ${genesisDownloadUrl} -o ${installPath}/home/config/genesis.json"
+EXEC "curl -SsL ${configDownloadUrl} -o ${installPath}/home/config/config.toml"
+EXEC "curl -SsL ${appDownloadUrl} -o ${installPath}/home/config/app.toml"
 
 # prometheus metrics
 sed -i 's/prometheus = false/prometheus = true/g' ${installPath}/home/config/config.toml
@@ -45,7 +53,7 @@ installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
 
-\${installPath}/bin/${binaryName} start --db_dir \${installPath}/data --home \${installPath}/home --moniker \${monikerName} &> \${installPath}/logs/latest.log
+\${installPath}/bin/${binaryName} start --home \${installPath}/home --moniker \${monikerName} &> \${installPath}/logs/latest.log
 EOF
 EXEC "chmod +x ${installPath}/start.sh"
 
