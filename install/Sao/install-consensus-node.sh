@@ -15,10 +15,10 @@ installPath="/data/${serviceName}"
 binaryName="saod"
 version=${1-"v0.1.3"}
 binaryDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/saod-linux"
-genesisDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/genesis.json"
-configDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/config.toml"
-appDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/app.toml"
-# configDownloadUrl="http://205.204.75.250:5000/sao/config.tar.gz"
+# genesisDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/genesis.json"
+# configDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/config.toml"
+# appDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/app.toml"
+configDownloadUrl="http://205.204.75.250:5000/sao/config.tar.gz"
 
 # check service
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
@@ -34,11 +34,11 @@ EXEC "ln -fs ${installPath}/bin/${binaryName} /usr/local/bin/${binaryName}"
 INFO "saod version" && saod version
 
 # download config
-# EXEC "curl -SsL ${configDownloadUrl} | tar zx -C ${installPath}/home"
-EXEC "mkdir ${installPath}/home/config"
-EXEC "curl -SsL ${genesisDownloadUrl} -o ${installPath}/home/config/genesis.json"
-EXEC "curl -SsL ${configDownloadUrl} -o ${installPath}/home/config/config.toml"
-EXEC "curl -SsL ${appDownloadUrl} -o ${installPath}/home/config/app.toml"
+EXEC "curl -SsL ${configDownloadUrl} | tar zx -C ${installPath}/home"
+# EXEC "mkdir ${installPath}/home/config"
+# EXEC "curl -SsL ${genesisDownloadUrl} -o ${installPath}/home/config/genesis.json"
+# EXEC "curl -SsL ${configDownloadUrl} -o ${installPath}/home/config/config.toml"
+# EXEC "curl -SsL ${appDownloadUrl} -o ${installPath}/home/config/app.toml"
 
 # prometheus metrics
 sed -i 's/prometheus = false/prometheus = true/g' ${installPath}/home/config/config.toml
