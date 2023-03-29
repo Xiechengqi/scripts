@@ -64,6 +64,7 @@ INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_H
 docker run --name saturn-node -it -d \
   --restart=unless-stopped \
   -v /root/meminfo:/proc/meminfo:rw \
+  -v /root/cpuinfo:/root/cpuinfo:rw \
   -v /root/df-gb:/root/df-gb:rw \
   -v /root/df-mb:/root/df-mb:rw \
   -v $SATURN_HOME/shared:/usr/src/app/shared \
