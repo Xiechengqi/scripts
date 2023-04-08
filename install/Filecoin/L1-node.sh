@@ -61,6 +61,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 montsouris3.speedtest.orange.fr montsouris3.speedtest.orange.fr.prod.hosts.ooklaserver.net
 # Server: Swish Fibre - London(id: 34948)
 127.0.0.1 speedtest.swishfibre.com speedtest.swishfibre.com.prod.hosts.ooklaserver.net
+# Server: Vodafone Portugal - Lisboa(id: 46985)
+127.0.0.1 speedtest-alfr.vodafone.pt speedtest-alfr.vodafone.pt.prod.hosts.ooklaserver.net
 EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
