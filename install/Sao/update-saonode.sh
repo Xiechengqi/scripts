@@ -8,7 +8,7 @@ main() {
 serviceName="sao-node"
 installPath="/data/sao-node"
 binaryName="saonode"
-binaryDownloadUrl="http://203.23.128.181:5000/sao/${binaryName}"
+binaryDownloadUrl="http://203.23.128.181:50000/${binaryName}"
 
 EXEC "systemctl stop ${serviceName}"
 EXEC "rm -f ${installPath}/bin/${binaryName}"
