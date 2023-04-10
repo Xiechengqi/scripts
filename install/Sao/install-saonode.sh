@@ -13,9 +13,8 @@ main() {
 serviceName="sao-node"
 installPath="/data/${serviceName}"
 binaryName="saonode"
-binaryDownloadUrl="https://github.com/SAONetwork/sao-node/releases/download/v0.1.0/saonode-linux"
-
 export SAO_CHAIN_API=${1-"http://203.23.128.181:26657"}
+export binaryDownloadUrl=${2-"https://github.com/SAONetwork/sao-node/releases/download/v0.1.0/saonode-linux"}
 
 # increase udp maximum buffer
 EXEC "sysctl -w net.core.rmem_max=2500000"
