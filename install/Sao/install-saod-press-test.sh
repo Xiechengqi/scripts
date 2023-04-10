@@ -71,7 +71,7 @@ monikerName="\$(hostname)"
 installPath="\${HOME}/.sao"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
-saod start --moniker \${monikerName} &> \${installPath}/logs/latest.log
+cosmovisor run start --moniker \${monikerName} &> \${installPath}/logs/latest.log
 EOF
 chmod +x ~/.sao/start.sh
 cat > /lib/systemd/system/saod.service << EOF
