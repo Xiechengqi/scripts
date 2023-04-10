@@ -27,7 +27,6 @@ systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is run
 EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/{bin,logs,keyring,repo}"
 EXEC "! ls -alht $HOME/.sao-node"
-EXEC "! ls -alht $HOME/.sao"
 
 # download binary
 EXEC "curl -SsL ${binaryDownloadUrl} -o ${installPath}/bin/${binaryName}"
