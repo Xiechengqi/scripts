@@ -6,8 +6,8 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 # check os
-osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'centos7|ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: centos7、ubuntu18、ubuntu20"
+# osInfo=`get_os` && INFO "current os: $osInfo"
+# ! echo "$osInfo" | grep -E 'centos7|ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: centos7、ubuntu18、ubuntu20"
 
 # environments
 serviceName="sao-node"
