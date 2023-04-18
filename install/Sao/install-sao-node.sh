@@ -5,16 +5,17 @@ BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
-# check os
-# osInfo=`get_os` && INFO "current os: $osInfo"
-# ! echo "$osInfo" | grep -E 'centos7|ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: centos7、ubuntu18、ubuntu20"
 
 # environments
 serviceName="sao-node"
-installPath="/data/${serviceName}"
+installPath="/root/.sao-node"
 binaryName="saonode"
-export SAO_CHAIN_API=${1-"http://203.23.128.181:26657"}
-export binaryDownloadUrl=${2-"https://github.com/SAONetwork/sao-node/releases/download/v0.1.0/saonode-linux"}
+export BRANCH=${1}
+[ ".${BRANCH}" = "." ] && ERROR "Less Params BRANCH"
+export SAO_CHAIN_API=${2}
+[ ".${SAO_CHAIN_API}" = "." ] && ERROR "Less Params BRSAO_CHAIN_API"
+
+binaryDownloadUrl="http://8.222.210.19:5000/sao-node/${BRANCH}/saonode"
 
 # increase udp maximum buffer
 EXEC "sysctl -w net.core.rmem_max=2500000"
@@ -24,8 +25,7 @@ systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is run
 
 # check install path
 EXEC "rm -rf ${installPath}"
-EXEC "mkdir -p ${installPath}/{bin,logs,keyring,repo}"
-EXEC "! ls -alht $HOME/.sao-node"
+EXEC "mkdir -p ${installPath}/{bin,logs}"
 
 # download binary
 EXEC "curl -SsL ${binaryDownloadUrl} -o ${installPath}/bin/${binaryName}"
@@ -34,11 +34,11 @@ EXEC "ln -fs ${installPath}/bin/${binaryName} /usr/local/bin/${binaryName}"
 INFO "${binaryName} -v" && ${binaryName} -v
 
 # config
-EXEC "sed -i /sao-node/d /etc/profile"
 EXEC "sed -i /SAO_CHAIN_API/d /etc/profile"
 cat >> /etc/profile << EOF
 export SAO_CHAIN_API=${SAO_CHAIN_API}
 EOF
+source /etc/profile
 
 # create start.sh
 cat > ${installPath}/start.sh << EOF
