@@ -6,6 +6,8 @@
 # sao stake
 #
 
+source /etc/profile
+
 saod tx staking create-validator \
   --amount=1000000000sao \
   --pubkey=$(saod tendermint show-validator) \
