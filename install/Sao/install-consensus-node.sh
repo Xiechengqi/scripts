@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+#
+# 2023/04/18
+# xiechengqi
+# deploy saod
+#
+
 source /etc/profile
 BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
@@ -7,92 +13,131 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 main() {
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'centos|ubuntu' &> /dev/null && ERROR "You could only install on os: centos、ubuntu"
+! echo "$osInfo" | grep -E 'ubuntu' &> /dev/null && ERROR "You could only install on os: ubuntu"
 
-# environments
+### ENV
+export BASE_URL="http://8.222.210.19:5000"
+export BRANCH=${1}
+[ ".${BRANCH}" = "." ] && ERROR "Less Params BRANCH"
+echo "BRANCH: ${BRANCH}"
+# export PUBLIC_RPC="8.214.46.204:26657" # sao-testnet1
+# export PUBLIC_RPC="205.204.75.250:36657" # 压测环境
+export PUBLIC_RPC=${2}
+[ ".${PUBLIC_RPC}" = "." ] && ERROR "Less Params PUBLIC_RPC"
+echo "PUBLIC RPC: ${PUBLIC_RPC}"
+export CHAIN_ID=${3-""}
+[ "${CHAIN_ID}." != "." ] && chainIdOption="--chain-id=${CHAIN_ID}" || chainIdOption=""
+
 serviceName="saod"
-installPath="/data/${serviceName}"
-binaryName="saod"
-version=${1-"v0.1.3"}
-binaryDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/saod-linux"
-# genesisDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/genesis.json"
-# configDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/config.toml"
-# appDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/${version}/app.toml"
-configDownloadUrl="http://205.204.75.250:5000/sao/config.tar.gz"
+installPath="/root/.sao"
+
+### 下载依赖
+EXEC "apt install -y jq"
 
 # check service
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
 
 # check install path
 EXEC "rm -rf ${installPath}"
-EXEC "mkdir -p ${installPath}/{bin,home,logs}"
+EXEC "mkdir -p ${installPath}/logs"
 
-# download binary
-EXEC "curl -SsL ${binaryDownloadUrl} -o ${installPath}/bin/${binaryName}"
-EXEC "chmod +x ${installPath}/bin/${binaryName}"
-EXEC "ln -fs ${installPath}/bin/${binaryName} /usr/local/bin/${binaryName}"
-INFO "saod version" && saod version
+### 下载 cosmovisor
+if ! which cosmovisor
+then
+EXEC "curl -SsL ${BASE_URL}/cosmovisor/v1.3.0/cosmovisor -o /usr/local/bin/cosmovisor"
+fi
+EXEC "chmod +x /usr/local/bin/cosmovisor"
 
-# download config
-EXEC "curl -SsL ${configDownloadUrl} | tar zx -C ${installPath}/home"
-# EXEC "mkdir ${installPath}/home/config"
-# EXEC "curl -SsL ${genesisDownloadUrl} -o ${installPath}/home/config/genesis.json"
-# EXEC "curl -SsL ${configDownloadUrl} -o ${installPath}/home/config/config.toml"
-# EXEC "curl -SsL ${appDownloadUrl} -o ${installPath}/home/config/app.toml"
+### 创建 cosmovisor 目录和环境变量文件
+EXEC "rm -rf /data/cosmovisor"
+EXEC "mkdir -p /data/cosmovisor/{data,cosmovisor,backup}"
+cat >> /etc/profile << EOF
+export DAEMON_NAME=saod
+export DAEMON_HOME=/data/cosmovisor
+export DAEMON_DATA_BACKUP_DIR=/data/cosmovisor/backup
+export PATH=\$DAEMON_HOME/cosmovisor/current/bin:\$PATH
+EOF
+INFO "cat /etc/profile" && cat /etc/profile
+source /etc/profile
+
+### 下载二进制文件
+export SAOD_VERSION="v0.1.3"
+EXEC "rm -rf $(which saod)"
+EXEC "curl -SsL ${BASE_URL}/sao-consensus/${BRANCH}/saod -o /tmp/saod"
+EXEC "chmod +x /tmp/saod"
+
+### 初始化 cosmovisor
+INFO "cosmovisor init /tmp/saod" && cosmovisor init /tmp/saod || exit 1
+INFO "cosmovisor version" && cosmovisor version
+
+### 初始化网络
+export NODE_NAME="$(hostname)"
+INFO "cosmovisor run init ${NODE_NAME} ${chainIdOption}" && cosmovisor run init ${NODE_NAME} ${chainIdOption} || exit 1
+
+### 修改 keyring-backend 为 test
+EXEC "cosmovisor run config keyring-backend test"
+
+### 下载创世区块文件 genesis.json
+curl -SsL "${PUBLIC_RPC}/genesis" | jq '.result.genesis' > ${installPath}/config/genesis.json
+
+### 设置种子节点、p2p 节点和当前安装的是否为种子节点
+export SEEDS=""
+export PEERS="$(saod status -n tcp://${PUBLIC_RPC} | jq -r .NodeInfo.id)@$(echo ${PUBLIC_RPC} | awk -F ':' '{print $1}'):$(saod status -n tcp://${PUBLIC_RPC} | jq -r .NodeInfo.listen_addr | awk -F ':' '{print $NF}')" && echo "PEERS: $PEERS"
+export SEED_MODE="false"
+sed -i -e 's|^seeds *=.*|seeds = "'$SEEDS'"|;' ${installPath}/config/config.toml
+sed -i -e 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' ${installPath}/config/config.toml
+sed -i -e "s/^seed_mode *=.*/seed_mode = \"$SEED_MODE\"/" ${installPath}/config/config.toml
+
+### 为了降低磁盘空间使用率，可以使用以下配置设置修剪
+export PRUNING="custom"
+export PRUNING_KEEP_RECENT="10"
+export PRUNING_INTERVAL="10"
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" ${installPath}/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$PRUNING_KEEP_RECENT\"/" ${installPath}/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$PRUNING_INTERVAL\"/" ${installPath}/config/app.toml
 
 # prometheus metrics
-sed -i 's/prometheus = false/prometheus = true/g' ${installPath}/home/config/config.toml
+sed -i 's/prometheus = false/prometheus = true/g' ${installPath}/config/config.toml
 
-# create start.sh
 cat > ${installPath}/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-monikerName="\$(hostname)"
-installPath="${installPath}"
+monikerName="${NODE_NAME}"
+installPath="/root/.sao"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
-
-\${installPath}/bin/${binaryName} start --home \${installPath}/home --moniker \${monikerName} &> \${installPath}/logs/latest.log
+cosmovisor run start --moniker \${monikerName} &> \${installPath}/logs/latest.log
 EOF
-EXEC "chmod +x ${installPath}/start.sh"
 
-# register service
-cat > ${installPath}/${serviceName}.service << EOF
+EXEC "chmod +x ${installPath}/start.sh"
+cat > ${installPath}/saod.service << EOF
 [Unit]
 Description=SAO Consensus Node
 Documentation=https://github.com/SaoNetwork/sao-consensus
 After=network.target
-
 [Service]
 User=root
 Group=root
-ExecStart=/bin/bash $installPath/start.sh
+ExecStart=bash /root/.sao/start.sh
 ExecStop=/bin/kill -s QUIT \$MAINPID
 Restart=always
 RestartSec=2
-
+LimitNOFILE=4096
 [Install]
 WantedBy=multi-user.target
 EOF
-EXEC "rm -f /lib/systemd/system/${serviceName}.service"
-EXEC "ln -fs ${installPath}/${serviceName}.service /lib/systemd/system/${serviceName}.service"
+EXEC "ln -fs ${installPath}/${serviceName} /lib/systemd/system/${serviceName}"
 
 # start
-EXEC "systemctl daemon-reload && systemctl enable $serviceName && systemctl start $serviceName"
-EXEC "systemctl status $serviceName --no-pager" && systemctl status $serviceName --no-pager
-
-# alias
-sed -i '/alias saod/d' /etc/profile
-cat >> /etc/profile << EOF
-alias saod="saod --home ${installPath}/home"
-EOF
+EXEC "systemctl daemon-reload && systemctl enable ${serviceName} && systemctl start ${serviceName}"
+EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceName} --no-pager
 
 # INFO
-YELLOW "${serviceName} version: ${version}"
+YELLOW "${serviceName} version: ${SAOD_VERSION}"
 YELLOW "log: tail -f $installPath/logs/latest.log"
 YELLOW "check cmd: saod status"
-YELLOW "control cmd: systemctl [stop|start|restart|reload] $serviceName"
+YELLOW "control cmd: systemctl [stop|start|restart|reload] ${serviceName}"
 }
 
 main $@
