@@ -127,7 +127,7 @@ LimitNOFILE=4096
 [Install]
 WantedBy=multi-user.target
 EOF
-EXEC "ln -fs ${installPath}/${serviceName} /lib/systemd/system/${serviceName}"
+EXEC "ln -fs ${installPath}/${serviceName}.service /lib/systemd/system/${serviceName}.service"
 
 # start
 EXEC "systemctl daemon-reload && systemctl enable ${serviceName} && systemctl start ${serviceName}"
