@@ -31,13 +31,13 @@ EXEC "! ls ${installPath}"
 EXEC "mkdir -p ${installPath}/{bin,config,logs}"
 
 ### 下载依赖
-apt install -y jq
+which jq &> /dev/null || EXEC "apt install -y jq"
 
 ### 下载二进制文件
 EXEC "curl -SsL ${BASE_URL}/greenfield/${VERSION}/${BIN} -o ${installPath}/bin/${BIN}"
 EXEC "chmod +x ${installPath}/bin/${BIN}"
 EXEC "ln -fs ${installPath}/bin/${BIN} /usr/local/bin/${BIN}"
-INFO "${BIN} -v" && ${BIN} -v
+INFO "${BIN} version" && ${BIN} version
 
 ### 下载配置文件 app.toml、config.toml、client.toml
 EXEC "curl -SsL ${BASE_URL}/greenfield/${VERSION}/config/app.toml -o ${installPath}/config/app.toml"
@@ -47,7 +47,7 @@ EXEC "curl -SsL ${BASE_URL}/greenfield/${VERSION}/config/client.toml -o ${instal
 ### 下载创世区块文件 genesis.json
 # rpc 26657: https://gnfd-testnet-fullnode-tendermint-us.bnbchain.org or https://gnfd-testnet-fullnode-tendermint-us.nodereal.io
 export PUBLIC_RPC="https://gnfd-testnet-fullnode-tendermint-us.bnbchain.org"
-curl -SsL "${PUBLIC_RPC}/genesis" | jq '.result.genesis' > ${installPath}/config/genesis.json
+EXEC "curl -SsL ${PUBLIC_RPC}/genesis | jq .result.genesis > ${installPath}/config/genesis.json"
 
 ### 设置 p2p 节点
 # export PEERS="$(saod status -n tcp://${PUBLIC_RPC} | jq -r .NodeInfo.id)@$(echo ${PUBLIC_RPC} | awk -F ':' '{print $1}'):$(saod status -n tcp://${PUBLIC_RPC} | jq -r .NodeInfo.listen_addr | awk -F ':' '{print $NF}')" && echo "PEERS: $PEERS"
