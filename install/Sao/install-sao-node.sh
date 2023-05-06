@@ -12,7 +12,7 @@ installPath="/root/.sao-node"
 binaryName="saonode"
 export BRANCH=${1}
 [ ".${BRANCH}" = "." ] && ERROR "Less Params BRANCH"
-export SAO_CHAIN_API=${2}
+export SAO_CHAIN_API=${2-"http://127.0.0.1:26657"}
 [ ".${SAO_CHAIN_API}" = "." ] && ERROR "Less Params SAO_CHAIN_API"
 
 binaryDownloadUrl="http://8.222.210.19:5000/sao-node/${BRANCH}/saonode"
