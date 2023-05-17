@@ -17,7 +17,7 @@ export SERVICE_NAME="saod"
 export BINARY_URL="https://github.com/SAONetwork/sao-consensus/releases/download/${SAOD_VERSION}/saod-linux"
 export INSTALL_PATH="${HOME}/.sao"
 export PUBLIC_RPC=${2-"180.97.70.214:26657"}
-export PEERS=${3-"099fae8829071292f6b1cfaa2b5d637da4aac1b9@203.23.128.181:26655,9d919ab4d1692d857814a889e3c0890d32fc1d29@180.97.70.214:26656"}
+export PEERS=$(curl -SsL ${PUBLIC_RPC}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')
 ### 检查 PUBLIC_PRC
 curl -SsL ${PUBLIC_RPC}/status | jq -r .result.sync_info.catching_up | grep 'false' &> /dev/null || ERROR "The block height of ${PUBLIC_RPC} has not been synchronized, please check"
 export CHAIN_ID=$(curl -SsL ${PUBLIC_RPC}/status | jq -r .result.node_info.network)
@@ -84,17 +84,6 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$PRUNING_INTERVAL\"/" $
 [ -f ${INSTALL_PATH}/data/priv_validator_state.json ] && EXEC "cp -f ${INSTALL_PATH}/data/priv_validator_state.json ${INSTALL_PATH}/priv_validator_state.json.backup"
 EXEC "rm -rf ${INSTALL_PATH}/data"
 EXEC "${BINARY} tendermint unsafe-reset-all --home ${INSTALL_PATH} --keep-addr-book"
-
-### 设置从 state_sync 同步块高
-# export LATEST_HEIGHT=$(curl -SsL ${PUBLIC_RPC}/block | jq -r .result.block.header.height)
-# export BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000))
-# export TRUST_HASH=$(curl -SsL "${PUBLIC_RPC}/block?height=${BLOCK_HEIGHT}" | jq -r .result.block_id.hash)
-# INFO "LATEST_HEIGHT: $LATEST_HEIGHT BLOCK_HEIGHT: $BLOCK_HEIGHT TRUST_HASH: $TRUST_HASH"
-# sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-# s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$PUBLIC_RPC,$PUBLIC_RPC\"| ; \
-# s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-# s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
-# s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" ${INSTALL_PATH}/config/config.toml
 
 ### 设置从 snapshot 同步块高
 INFO "Sync from snapshot ..."
