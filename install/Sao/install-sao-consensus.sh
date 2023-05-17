@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# 2023/04/18
+# 2023/05/08
 # xiechengqi
 # deploy saod
 #
@@ -10,108 +10,118 @@ source /etc/profile
 BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
-main() {
-# check os
-osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'ubuntu' &> /dev/null && ERROR "You could only install on os: ubuntu"
-
-### ENV
-export BASE_URL="http://8.222.210.19:5000"
-export BRANCH=${1}
-[ ".${BRANCH}" = "." ] && ERROR "Less Params BRANCH"
-echo "BRANCH: ${BRANCH}"
-# export PUBLIC_RPC="8.214.46.204:26657" # sao-testnet1
-# export PUBLIC_RPC="205.204.75.250:36657" # 压测环境
-export PUBLIC_RPC=${2}
-[ ".${PUBLIC_RPC}" = "." ] && ERROR "Less Params PUBLIC_RPC"
-echo "PUBLIC RPC: ${PUBLIC_RPC}"
-export CHAIN_ID=${3-""}
-[ "${CHAIN_ID}." != "." ] && chainIdOption="--chain-id=${CHAIN_ID}" || chainIdOption=""
-
-serviceName="saod"
-installPath="/root/.sao"
-
-### 下载依赖
-EXEC "apt install -y jq"
-
-# check service
-systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
-
-# check install path
-EXEC "rm -rf ${installPath}"
-EXEC "mkdir -p ${installPath}/logs"
-
-### 下载 cosmovisor
-if ! which cosmovisor
-then
-EXEC "curl -SsL ${BASE_URL}/cosmovisor/v1.3.0/cosmovisor -o /usr/local/bin/cosmovisor"
-fi
-EXEC "chmod +x /usr/local/bin/cosmovisor"
-
-### 创建 cosmovisor 目录和环境变量文件
-EXEC "rm -rf /data/cosmovisor"
-EXEC "mkdir -p /data/cosmovisor/{data,cosmovisor,backup}"
-cat >> /etc/profile << EOF
-export DAEMON_NAME=saod
-export DAEMON_HOME=/data/cosmovisor
-export DAEMON_DATA_BACKUP_DIR=/data/cosmovisor/backup
-export PATH=\$DAEMON_HOME/cosmovisor/current/bin:\$PATH
-EOF
-INFO "cat /etc/profile" && cat /etc/profile
-source /etc/profile
-
 ### 下载二进制文件
-export SAOD_VERSION="v0.1.3"
-EXEC "rm -rf $(which saod)"
-EXEC "curl -SsL ${BASE_URL}/sao-consensus/${BRANCH}/saod -o /tmp/saod"
-EXEC "chmod +x /tmp/saod"
+export SAOD_VERSION=${1-"v0.1.4"}
+export BINARY="saod"
+export SERVICE_NAME="saod"
+export BINARY_URL="https://github.com/SAONetwork/sao-consensus/releases/download/${SAOD_VERSION}/saod-linux"
+export INSTALL_PATH="${HOME}/.sao"
+export PUBLIC_RPC=${2-"180.97.70.214:26657"}
+export PEERS=${3-"099fae8829071292f6b1cfaa2b5d637da4aac1b9@203.23.128.181:26655,9d919ab4d1692d857814a889e3c0890d32fc1d29@180.97.70.214:26656"}
+### 检查 PUBLIC_PRC
+curl -SsL ${PUBLIC_RPC}/status | jq -r .result.sync_info.catching_up | grep 'false' &> /dev/null || ERROR "The block height of ${PUBLIC_RPC} has not been synchronized, please check"
+export CHAIN_ID=$(curl -SsL ${PUBLIC_RPC}/status | jq -r .result.node_info.network)
 
-### 初始化 cosmovisor
-INFO "cosmovisor init /tmp/saod" && cosmovisor init /tmp/saod || exit 1
-INFO "cosmovisor version" && cosmovisor version
+### 检查服务
+EXEC "! systemctl is-active ${SERVICE_NAME}"
+
+### 检查依赖
+EXEC "which jq"
+EXEC "which lz4"
+
+### 初始化安装目录
+EXEC "mkdir -p ${INSTALL_PATH}/{bin,logs}"
+
+### 下载可执行文件
+EXEC "curl -SsL ${BINARY_URL} -o ${INSTALL_PATH}/bin/${BINARY}"
+EXEC "chmod +x ${INSTALL_PATH}/bin/${BINARY}"
+EXEC "rm -f /usr/local/bin/${BINARY}"
+EXEC "ln -fs ${INSTALL_PATH}/bin/${BINARY} /usr/local/bin/${BINARY}"
+INFO "which ${BINARY} && ${BINARY} version" && which ${BINARY} && ${BINARY} version
 
 ### 初始化网络
+## This will generate, in the $HOME/.sao folder, the following files:
+## config/app.toml: Application-related configuration file.
+## config/client.toml: Client-oriented configuration file (not used when running a node).
+## config/config.toml: Tendermint-related configuration file.
+## config/genesis.json: The network's genesis file.
+## config/node_key.json: Private key to use for node authentication in the p2p protocol.
+## config/priv_validator_key: Private key to use as a validator in the consensus protocol.
+## data: The node's database.
 export NODE_NAME="$(hostname)"
-INFO "cosmovisor run init ${NODE_NAME} ${chainIdOption}" && cosmovisor run init ${NODE_NAME} ${chainIdOption} || exit 1
+EXEC "${BINARY} init ${NODE_NAME} --chain-id=${CHAIN_ID} --overwrite"
 
 ### 修改 keyring-backend 为 test
-EXEC "cosmovisor run config keyring-backend test"
+EXEC "${BINARY} config keyring-backend test"
+
+### 设置 moniker
+INFO "Modify config.toml [moniker] ..."
+sed -i -e "s/^moniker *=.*/moniker = \"$NODE_NAME\"/" ${INSTALL_PATH}/config/config.toml
+
+### 设置 p2p 节点
+INFO "Modify config.toml [PEERS]  ..."
+sed -i -e 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' ${INSTALL_PATH}/config/config.toml
+
+### 开启 prometheus metric
+INFO "Modify config.toml [prometheus] ..."
+sed -i -e "s/prometheus = false/prometheus = true/" ${INSTALL_PATH}/config/config.toml
 
 ### 下载创世区块文件 genesis.json
-curl -SsL "${PUBLIC_RPC}/genesis" | jq '.result.genesis' > ${installPath}/config/genesis.json
+curl -SsL "${PUBLIC_RPC}/genesis" | jq '.result.genesis' > ${INSTALL_PATH}/config/genesis.json
 
-### 设置种子节点、p2p 节点和当前安装的是否为种子节点
-export SEEDS=""
-export PEERS="$(saod status -n tcp://${PUBLIC_RPC} | jq -r .NodeInfo.id)@$(echo ${PUBLIC_RPC} | awk -F ':' '{print $1}'):$(saod status -n tcp://${PUBLIC_RPC} | jq -r .NodeInfo.listen_addr | awk -F ':' '{print $NF}')" && echo "PEERS: $PEERS"
-export SEED_MODE="false"
-sed -i -e 's|^seeds *=.*|seeds = "'$SEEDS'"|;' ${installPath}/config/config.toml
-sed -i -e 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' ${installPath}/config/config.toml
-sed -i -e "s/^seed_mode *=.*/seed_mode = \"$SEED_MODE\"/" ${installPath}/config/config.toml
-
-### 为了降低磁盘空间使用率，可以使用以下配置设置修剪
+### 设置裁剪，降低磁盘空间使用率
+INFO "Modify app.toml [pruning] [pruning-keep-recent] [pruning-keep-every] [pruning-interval] ..."
 export PRUNING="custom"
-export PRUNING_KEEP_RECENT="10"
-export PRUNING_INTERVAL="10"
-sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" ${installPath}/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$PRUNING_KEEP_RECENT\"/" ${installPath}/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$PRUNING_INTERVAL\"/" ${installPath}/config/app.toml
+export PRUNING_KEEP_RECENT="5000"
+export PRUNING_KEEP_EVERY="1000"
+export PRUNING_INTERVAL="100"
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" ${INSTALL_PATH}/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$PRUNING_KEEP_RECENT\"/" ${INSTALL_PATH}/config/app.toml
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$PRUNING_KEEP_EVERY\"/" ${INSTALL_PATH}/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$PRUNING_INTERVAL\"/" ${INSTALL_PATH}/config/app.toml
 
-# prometheus metrics
-sed -i 's/prometheus = false/prometheus = true/g' ${installPath}/config/config.toml
+# 重置安装目录
+[ -f ${INSTALL_PATH}/data/priv_validator_state.json ] && EXEC "cp -f ${INSTALL_PATH}/data/priv_validator_state.json ${INSTALL_PATH}/priv_validator_state.json.backup"
+EXEC "rm -rf ${INSTALL_PATH}/data"
+EXEC "${BINARY} tendermint unsafe-reset-all --home ${INSTALL_PATH} --keep-addr-book"
 
-cat > ${installPath}/start.sh << EOF
+### 设置从 state_sync 同步块高
+# export LATEST_HEIGHT=$(curl -SsL ${PUBLIC_RPC}/block | jq -r .result.block.header.height)
+# export BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000))
+# export TRUST_HASH=$(curl -SsL "${PUBLIC_RPC}/block?height=${BLOCK_HEIGHT}" | jq -r .result.block_id.hash)
+# INFO "LATEST_HEIGHT: $LATEST_HEIGHT BLOCK_HEIGHT: $BLOCK_HEIGHT TRUST_HASH: $TRUST_HASH"
+# sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+# s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$PUBLIC_RPC,$PUBLIC_RPC\"| ; \
+# s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+# s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+# s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" ${INSTALL_PATH}/config/config.toml
+
+### 设置从 snapshot 同步块高
+INFO "Sync from snapshot ..."
+sed -i -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" ${INSTALL_PATH}/config/config.toml
+SNAP_NAME=$(curl -s https://ss-t.sao.nodestake.top/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
+INFO "curl -o - -L https://ss-t.sao.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C ${INSTALL_PATH}"
+curl -o - -L https://ss-t.sao.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C ${INSTALL_PATH} || ERROR "download and tar snapshot error ..."
+
+[ -f ${INSTALL_PATH}/priv_validator_state.json.backup ] && EXEC "mv ${INSTALL_PATH}/priv_validator_state.json.backup ${INSTALL_PATH}/data/priv_validator_state.json"
+
+
+# 创建 start.sh
+cat > ${INSTALL_PATH}/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-monikerName="${NODE_NAME}"
-installPath="/root/.sao"
-timestamp=\$(date +%Y%m%d-%H%M%S)
-touch \$installPath/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \$installPath/logs/latest.log
-cosmovisor run start --moniker \${monikerName} &> \${installPath}/logs/latest.log
-EOF
+export installPath="${INSTALL_PATH}"
 
-EXEC "chmod +x ${installPath}/start.sh"
-cat > ${installPath}/saod.service << EOF
+timestamp=\$(date +%Y%m%d-%H%M%S)
+touch \${installPath}/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \${installPath}/logs/latest.log
+
+/usr/local/bin/${BINARY} start &> \${installPath}/logs/latest.log
+EOF
+EXEC "chmod +x ${INSTALL_PATH}/start.sh"
+
+### 配置 systemd 运行
+cat > ${INSTALL_PATH}/${SERVICE_NAME}.service << EOF
 [Unit]
 Description=SAO Consensus Node
 Documentation=https://github.com/SaoNetwork/sao-consensus
@@ -119,25 +129,23 @@ After=network.target
 [Service]
 User=root
 Group=root
-ExecStart=bash /root/.sao/start.sh
+ExecStart=/bin/bash ${INSTALL_PATH}/start.sh
 ExecStop=/bin/kill -s QUIT \$MAINPID
 Restart=always
-RestartSec=2
-LimitNOFILE=4096
+RestartSec=3
+LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
-EXEC "ln -fs ${installPath}/${serviceName}.service /lib/systemd/system/${serviceName}.service"
+EXEC "rm -f /lib/systemd/system/${SERVICE_NAME}.service"
+EXEC "ln -fs ${INSTALL_PATH}/${SERVICE_NAME}.service /lib/systemd/system/${SERVICE_NAME}.service"
 
-# start
-EXEC "systemctl daemon-reload && systemctl enable ${serviceName} && systemctl start ${serviceName}"
-EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceName} --no-pager
+### 启动 service
+EXEC "systemctl daemon-reload && systemctl enable ${SERVICE_NAME} && systemctl start ${SERVICE_NAME}"
+EXEC "systemctl status ${SERVICE_NAME} --no-pager" && systemctl status ${SERVICE_NAME} --no-pager
 
 # INFO
-YELLOW "${serviceName} version: ${SAOD_VERSION}"
-YELLOW "log: tail -f $installPath/logs/latest.log"
-YELLOW "check cmd: saod status"
-YELLOW "control cmd: systemctl [stop|start|restart|reload] ${serviceName}"
-}
-
-main $@
+YELLOW "${SERVICE_NAME} version: ${SAOD_VERSION}"
+YELLOW "log: tail -f ${INSTALL_PATH}/logs/latest.log"
+YELLOW "check cmd: ${BINARY} status"
+YELLOW "control cmd: systemctl [stop|start|restart|reload] ${SERVICE_NAME}"
