@@ -57,8 +57,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 speedtest.melita.it speedtest.melita.it.prod.hosts.ooklaserver.net
 # Server: Homeplus - Taipei (id: 24429)
 127.0.0.1 tp-speedtest.bbtv.tw
-# Server: ORANGE FRANCE - Paris(id: 24215)
-127.0.0.1 montsouris3.speedtest.orange.fr montsouris3.speedtest.orange.fr.prod.hosts.ooklaserver.net
+# Server: KEYYO - Paris(id: 27961)
+127.0.0.1 perf.keyyo.net
 # Server: Swish Fibre - London(id: 34948)
 127.0.0.1 speedtest.swishfibre.com speedtest.swishfibre.com.prod.hosts.ooklaserver.net
 # Server: Vodafone Portugal - Lisboa(id: 46985)
