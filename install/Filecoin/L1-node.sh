@@ -55,8 +55,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 speedtest.il-rh.kamatera.com speedtest.il-rh.kamatera.com.prod.hosts.ooklaserver.net
 # Server: Melita - Milan (id: 25609)
 127.0.0.1 speedtest.melita.it speedtest.melita.it.prod.hosts.ooklaserver.net
-# Server: Homeplus - Taipei (id: 24429)
-127.0.0.1 tp-speedtest.bbtv.tw
+# Server: Taiwan Digital Streaming Co. - Taipei (id: 44603)
+127.0.0.1 speedtest.twds.com.tw.prod.hosts.ooklaserver.net speedtest.twds.com.tw
 # Server: Axione - Paris(id: 28308)
 127.0.0.1 speedperf.axione.fr speedperf.axione.fr.prod.hosts.ooklaserver.net
 # Server: Swish Fibre - London(id: 34948)
