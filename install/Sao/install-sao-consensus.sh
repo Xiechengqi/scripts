@@ -11,7 +11,7 @@ BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 ### 下载二进制文件
-export SAOD_VERSION=${1-"v0.1.4"}
+export SAOD_VERSION=${1-"v0.1.5"}
 export BINARY="saod"
 export SERVICE_NAME="saod"
 export BINARY_URL="https://github.com/SAONetwork/sao-consensus/releases/download/${SAOD_VERSION}/saod-linux"
