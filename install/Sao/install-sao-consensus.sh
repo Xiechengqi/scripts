@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# 2023/05/08
+# 2023/05/31
 # xiechengqi
 # deploy saod
 #
@@ -16,8 +16,8 @@ export BINARY="saod"
 export SERVICE_NAME="saod"
 export BINARY_URL="https://github.com/SAONetwork/sao-consensus/releases/download/${SAOD_VERSION}/saod-linux"
 export INSTALL_PATH="${HOME}/.sao"
-export PUBLIC_RPC=${2-"180.97.70.214:26657"}
-export PEERS=$(curl -SsL ${PUBLIC_RPC}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')
+export PUBLIC_RPC=${2-"rpc-testnet-node0.sao.network"}
+export PEERS=${3-"63284431d62d0b271bd4fd406ff1e0d975fa603c@8.219.208.132:26656,2230361011f7d55e359659a90a0f3528137449d9@8.222.241.135:26656"}
 ### 检查 PUBLIC_PRC
 curl -SsL ${PUBLIC_RPC}/status | jq -r .result.sync_info.catching_up | grep 'false' &> /dev/null || ERROR "The block height of ${PUBLIC_RPC} has not been synchronized, please check"
 export CHAIN_ID=$(curl -SsL ${PUBLIC_RPC}/status | jq -r .result.node_info.network)
@@ -53,6 +53,9 @@ EXEC "${BINARY} init ${NODE_NAME} --chain-id=${CHAIN_ID} --overwrite"
 
 ### 修改 keyring-backend 为 test
 EXEC "${BINARY} config keyring-backend test"
+
+### 修改 client-id 为 ${CHAIN_ID}
+EXEC "${BINARY} config chain-id ${CHAIN_ID}"
 
 ### 设置 moniker
 INFO "Modify config.toml [moniker] ..."
