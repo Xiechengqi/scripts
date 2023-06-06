@@ -69,6 +69,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 speedtest.tbros.net
 # Server: Hi3G Denmark ApS - Copenhagen(id: 16057)
 127.0.0.1 speedtest.3.dk speedtest.3.dk.prod.hosts.ooklaserver.net
+# Server: AltusHost B.V. - Zurich(id: 24815)
+127.0.0.1 ch.altushost.com ch.altushost.com.prod.hosts.ooklaserver.net
 EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
