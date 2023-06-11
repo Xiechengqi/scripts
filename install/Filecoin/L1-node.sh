@@ -52,7 +52,7 @@ cat >> /etc/hosts << EOF
 # Server: China Mobile Hong Kong Boardband - HK (id: 37639)
 127.0.0.1 speedtestbb.hk.chinamobile.com
 # Server: KamaTera, Inc. - IL (id: 11616)
-127.0.0.1 speedtest.il-rh.kamatera.com speedtest.il-rh.kamatera.com.prod.hosts.ooklaserver.net
+127.0.0.1 fibertest.bezeq.co.il
 # Server: Melita - Milan (id: 25609)
 127.0.0.1 speedtest.melita.it speedtest.melita.it.prod.hosts.ooklaserver.net
 # Server: Taiwan Digital Streaming Co. - Taipei (id: 44603)
