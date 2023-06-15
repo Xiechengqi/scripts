@@ -6,10 +6,10 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 main() {
 
 serviceName="saod"
-installPath="${HOME}/.sao"
 binaryName="saod"
-version=${1-"0.1.5"}
-binaryDownloadUrl="https://github.com/SAONetwork/sao-consensus/releases/download/v${version}/saod-linux"
+binaryDownloadUrl=${1}
+[ ".${binaryDownloadUrl}" = "." ] && echo "Less Params binaryDownloadUrl" && exit 1
+installPath=${2-"/root/.sao"}
 
 EXEC "systemctl stop ${serviceName}"
 EXEC "rm -f ${installPath}/bin/${binaryName}"
