@@ -90,6 +90,7 @@ YELLOW "  Get token: https://faucet.testnet.sao.network/"
 YELLOW "  Check new address: saonode account list"
 YELLOW "  Init node to join network: saonode --chain-address ${SAO_CHAIN_API} init --creator [address]"
 YELLOW "  Start service: systemctl start ${serviceName}"
+YELLOW "  Delegate: saod tx node add_vstorage 1sao --from [address]"
 
 }
 
