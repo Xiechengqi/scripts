@@ -3,7 +3,7 @@
 #
 # 2023/06/29
 # xiechengqi
-# deploy saod beta
+# cosmosvisor deploy saod beta
 #
 
 source /etc/profile
@@ -16,8 +16,8 @@ export BINARY="saod"
 export SERVICE_NAME="saod"
 export BINARY_URL="http://8.222.210.19:5000/sao-consensus/${SAOD_VERSION}/saod"
 export INSTALL_PATH="${HOME}/.sao"
-export PUBLIC_RPC=${2-"8.219.208.132:26657"}
-export PEERS=${3-"4a72e7447d0a2c7da1d9354d29b5967582d995ad@8.222.242.30:26656,9f81d62f38e592bcc596aca6d43644c1a1ad6fbd@8.222.223.157:26656"}
+export PUBLIC_RPC=${2-"rpc-beta.sao.network"}
+export PEERS=${3-"b10aa9b0535d444b5ae9a670e74a265ed5f34590@8.222.242.30:26656,dd0a2919cf798f0a03b4377e73311a8c0c06ee59@8.222.223.157:26656"}
 ### 检查 PUBLIC_PRC
 curl -SsL ${PUBLIC_RPC}/status | jq -r .result.sync_info.catching_up | grep 'false' &> /dev/null || ERROR "The block height of ${PUBLIC_RPC} has not been synchronized, please check"
 export CHAIN_ID=$(curl -SsL ${PUBLIC_RPC}/status | jq -r .result.node_info.network)
@@ -29,14 +29,20 @@ EXEC "! systemctl is-active ${SERVICE_NAME}"
 EXEC "which jq"
 EXEC "which lz4"
 
+### 下载 cosmovisor
+! which cosmovisor && EXEC "curl -SsL http://8.222.210.19:5000/cosmovisor/v1.3.0/cosmovisor -o /usr/local/bin/cosmovisor && chmod +x /usr/local/bin/cosmovisor"
+EXEC "mkdir -p ${INSTALL_PATH}/cosmovisor/genesis/bin"
+EXEC "mkdir -p ${INSTALL_PATH}/cosmovisor/upgrades"
+EXEC "cd ${INSTALL_PATH}/cosmovisor"
+EXEC "ln -fs ${INSTALL_PATH}/cosmovisor/genesis current"
+
 ### 初始化安装目录
-EXEC "mkdir -p ${INSTALL_PATH}/{bin,logs}"
+EXEC "mkdir -p ${INSTALL_PATH}/logs"
 
 ### 下载可执行文件
-EXEC "curl -SsL ${BINARY_URL} -o ${INSTALL_PATH}/bin/${BINARY}"
-EXEC "chmod +x ${INSTALL_PATH}/bin/${BINARY}"
+EXEC "curl -SsL ${BINARY_URL} -o ${INSTALL_PATH}/cosmovisor/current/bin/${BINARY} && chmod +x ${INSTALL_PATH}/cosmovisor/current/bin/${BINARY}"
 EXEC "rm -f /usr/local/bin/${BINARY}"
-EXEC "ln -fs ${INSTALL_PATH}/bin/${BINARY} /usr/local/bin/${BINARY}"
+EXEC "ln -fs ${INSTALL_PATH}/cosmovisor/current/bin/${BINARY} /usr/local/bin/${BINARY}"
 INFO "which ${BINARY} && ${BINARY} version" && which ${BINARY} && ${BINARY} version
 
 ### 初始化网络
@@ -56,6 +62,9 @@ EXEC "${BINARY} config keyring-backend test"
 
 ### 修改 client-id 为 ${CHAIN_ID}
 EXEC "${BINARY} config chain-id ${CHAIN_ID}"
+
+### 修改 rpc 为 0.0.0.0
+sed -i "s/127.0.0.1:26657/0.0.0.0:26657/" ${INSTALL_PATH}/config/config.toml
 
 ### 设置 moniker
 INFO "Modify config.toml [moniker] ..."
@@ -97,18 +106,23 @@ EXEC "${BINARY} tendermint unsafe-reset-all --home ${INSTALL_PATH} --keep-addr-b
 
 [ -f ${INSTALL_PATH}/priv_validator_state.json.backup ] && EXEC "mv ${INSTALL_PATH}/priv_validator_state.json.backup ${INSTALL_PATH}/data/priv_validator_state.json"
 
-
 # 创建 start.sh
 cat > ${INSTALL_PATH}/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
-export installPath="${INSTALL_PATH}"
-
 timestamp=\$(date +%Y%m%d-%H%M%S)
-touch \${installPath}/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \${installPath}/logs/latest.log
+touch \${installPath}/logs/\${timestamp}.log && ln -fs \${installPath}/logs/\${timestamp}.log \${installPath}/logs/latest.log
 
-/usr/local/bin/${BINARY} start &> \${installPath}/logs/latest.log
+export installPath="${INSTALL_PATH}"
+export DAEMON_NAME=saod
+export DAEMON_HOME=\${installPath}
+export DAEMON_ALLOW_DOWNLOAD_BINARIES=true
+export DAEMON_LOG_BUFFER_SIZE=512
+export DAEMON_RESTART_AFTER_UPGRADE=true
+export DAEMON_DATA_BACKUP_DIR=\${installPath}/backup
+export UNSAFE_SKIP_BACKUP=true
+\$(which cosmovisor) run start --home \${installPath} &> \${installPath}/logs/latest.log
 EOF
 EXEC "chmod +x ${INSTALL_PATH}/start.sh"
 
