@@ -61,6 +61,10 @@ port=$port
 basedir=$installPath
 datadir=$installPath/data
 log_error=$installPath/logs/mysqld.log
+character-set-server=utf8
+
+[client]
+default-character-set=utf8
 EOF
 
 # check start service user
