@@ -53,8 +53,8 @@ services:
 limiters:
 - name: limiter-0
   limits:
-  - '$ 200MB 200MB'
-  - '$$ 200MB 200MB'
+  - '\$ 200MB 200MB'
+  - '\$\$ 200MB 200MB'
 EOF
 
 # create start.sh
