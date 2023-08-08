@@ -89,7 +89,7 @@ RestartSec=2
 WantedBy=multi-user.target
 EOF
 EXEC "rm -f /etc/systemd/system/${serviceName}.service"
-EXEC "ln -fs ${installPath}/${serviceName} /etc/systemd/system/${serviceName}.service"
+EXEC "ln -fs ${installPath}/${serviceName}.service /etc/systemd/system/${serviceName}.service"
 
 # change softlink
 EXEC "ln -fs ${installPath} $(dirname ${installPath})/${serviceName}"
