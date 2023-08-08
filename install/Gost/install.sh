@@ -30,7 +30,7 @@ EXEC "mkdir -p ${installPath}/{bin,conf,logs}"
 
 # download
 EXEC "rm -rf /tmp/${serviceName} && mkdir /tmp/${serviceName}"
-EXEC "curl -sSL ${downloadUrl} | tar zx --strip-components 1 -C /tmp/${serviceName}"
+EXEC "curl -sSL ${downloadUrl} | tar zx -C /tmp/${serviceName}"
 EXEC "mv /tmp/${serviceName}/gost ${installPath}/bin/ && chmod +x ${installPath}/bin/gost"
 
 # register bin
