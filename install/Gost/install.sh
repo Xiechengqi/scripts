@@ -20,7 +20,6 @@ serviceName="gost"
 version=${1-"3.0.0-rc8"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://github.com/go-gost/gost/releases/download/v${version}/gost_${version}_linux_amd64.tar.gz"
-proxy=${1} # eg: 205.204.1.1:22
 
 # check service
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} has been installed ..." && return 0
@@ -50,7 +49,7 @@ services:
   forwarder:
     nodes:
     - name: target-0
-      addr: ${proxy}
+      addr: 205.204.75.250:33333
 limiters:
 - name: limiter-0
   limits:
