@@ -51,6 +51,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 speedtestbog01.claro.net.co speedtestbog01.claro.net.co.prod.hosts.ooklaserver.net
 # Server: Metrotel - Buenos Aires (id: 18908)
 127.0.0.1 speedtest2.metrotel.com.ar
+# Server: Mobily - Saudi Arabia (id: 1733)
+127.0.0.1 jed.myspeed.net.sa jed.myspeed.net.sa.prod.hosts.ooklaserver.net
 EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
