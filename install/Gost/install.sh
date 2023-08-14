@@ -58,7 +58,7 @@ EXEC "chmod +x ${installPath}/cron-update-config.sh"
 INFO "cat ${installPath}/cron-update-config.sh" && cat ${installPath}/cron-update-config.sh
 
 # add cronjob
-(*/5 * * * * /usr/bin/bash ${installPath}/cron-update-config.sh) | crontab
+echo '*/5 * * * * /usr/bin/bash '"${installPath}"'/cron-update-config.sh' | crontab
 INFO "crontab -l" && crontab -l
 
 # create start.sh
