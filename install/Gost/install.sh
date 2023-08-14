@@ -51,7 +51,7 @@ then
 cp -f /tmp/config.yaml ${installPath}/conf/config.yaml
 systemctl restart gost
 else
-return 0
+exit 0
 fi
 EOF
 EXEC "chmod +x ${installPath}/cron-update-config.sh"
