@@ -1,0 +1,25 @@
+services:
+- name: gnfd-testnet-sp-gateway-https
+  addr: :443
+  limiter: limiter-0
+  handler:
+    type: tcp
+  listener:
+    type: tcp
+  forwarder:
+    nodes:
+    - name: target-https-0
+      addr: 15.156.199.51:443
+    - name: target-https-1
+      addr: 35.182.123.47:443
+      metadata:
+        backup: true
+    selector:
+      strategy: round
+      maxFails: 3
+      failTimeout: 30s
+limiters:
+- name: limiter-0
+  limits:
+  - '$ 100MB 100MB'
+  - '$$ 100MB 100MB'
