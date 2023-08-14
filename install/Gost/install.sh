@@ -20,6 +20,7 @@ serviceName="gost"
 version=${1-"3.0.0-rc8"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://github.com/go-gost/gost/releases/download/v${version}/gost_${version}_linux_amd64.tar.gz"
+configUrl="https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Gost/gnfd-testenet-sp-config.yaml"
 
 # check service
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} has been installed ..." && return 0
@@ -37,25 +38,28 @@ EXEC "mv /tmp/${serviceName}/gost ${installPath}/bin/ && chmod +x ${installPath}
 EXEC "ln -fs ${installPath}/bin/gost /usr/local/bin/gost"
 
 # create config.yaml
-cat > ${installPath}/conf/config.yaml << EOF
-services:
-- name: gnfd-sp-gateway
-  addr: :80
-  limiter: limiter-0
-  handler:
-    type: tcp
-  listener:
-    type: tcp
-  forwarder:
-    nodes:
-    - name: target-0
-      addr: 205.204.75.250:33333
-limiters:
-- name: limiter-0
-  limits:
-  - '\$ 200MB 200MB'
-  - '\$\$ 200MB 200MB'
+EXEC "curl -SsL ${configUrl} -o ${installPath}/conf/config.yaml"
+INFO "cat ${installPath}/conf/config.yaml" && cat ${installPath}/conf/config.yaml
+
+# update config
+cat > ${installPath}/cron-update-config.sh << EOF
+#!/usr/bin/env bash
+
+curl -SsL ${configUrl} -o /tmp/config.yaml
+if [ "\$(md5sum ${installPath}/conf/config.yaml /tmp/config.yaml | awk '{print \$1}' | uniq | wc -l)" = "2" ]
+then
+cp -f /tmp/config.yaml ${installPath}/conf/config.yaml
+systemctl restart gost
+else
+return 0
+fi
 EOF
+EXEC "chmod +x ${installPath}/cron-update-config.sh"
+INFO "cat ${installPath}/cron-update-config.sh" && cat ${installPath}/cron-update-config.sh
+
+# add cronjob
+(*/5 * * * * /usr/bin/bash ${installPath}/cron-update-config.sh) | crontab
+INFO "crontab -l" && crontab -l
 
 # create start.sh
 cat > ${installPath}/start.sh << EOF
