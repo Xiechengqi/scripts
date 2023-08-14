@@ -61,6 +61,9 @@ INFO "cat ${installPath}/cron-update-config.sh" && cat ${installPath}/cron-updat
 echo '*/5 * * * * /usr/bin/bash '"${installPath}"'/cron-update-config.sh' | crontab
 INFO "crontab -l" && crontab -l
 
+# open cron log
+grep '#cron' /etc/rsyslog.d/50-default.conf && sed -i 's/#cron/cron/' /etc/rsyslog.d/50-default.conf && EXEC "systemctl restart rsyslog"
+
 # create start.sh
 cat > ${installPath}/start.sh << EOF
 #!/usr/bin/env bash
