@@ -61,6 +61,8 @@ cat >> /etc/hosts << EOF
 127.0.0.1 speedtest6.vodafone.com.eg speedtest6.vodafone.com.eg.prod.hosts.ooklaserver.net
 # Server: Claro Guatemala (100G) - Guatemala (id: 40095)
 127.0.0.1 speedtest100g.claro.com.gt speedtest100g.claro.com.gt.prod.hosts.ooklaserver.net
+# Server: Suniway Telecom - Manila (id: 44419)
+127.0.0.1 speedtestph.suniway.net
 EOF
 INFO "docker run --name saturn-node -it -d --restart=unless-stopped -v $SATURN_HOME/shared:/usr/src/app/shared -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL --network host --ulimit nofile=1000000 ghcr.io/filecoin-saturn/l1-node:$SATURN_NETWORK"
 docker run --name saturn-node -it -d \
