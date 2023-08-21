@@ -28,14 +28,14 @@ filebeat version &> /dev/null && YELLOW "$serviceName has been installed ..." &&
 
 # check install path
 EXEC "rm -rf ${installPath}"
-EXEC "mkdir -p ${installPath}/{src,data,path,conf}"
+EXEC "mkdir -p ${installPath}/{src,bin,data,path,conf}"
 
 # download tarball
 EXEC "curl -SsL $downloadUrl | tar zx --strip-components 1 -C ${installPath}/src"
-EXEC "mv ${installPath}/src/filebeat ${installPath}/bin"
+EXEC "mv ${installPath}/src/filebeat ${installPath}/bin/"
 
 # register path
-EXEC "ln -fs ${installPath}/data/bin/* /usr/local/bin/"
+EXEC "ln -fs ${installPath}/bin/* /usr/local/bin/"
 INFO "filebeat version" && filebeat version
 
 # download config
