@@ -1,0 +1,8 @@
+filebeat.shutdown_timeout: 5s
+filebeat.inputs:
+- type: log
+  paths:
+    - /root/.sao/logs/latest.log
+    - /root/.sao-node/logs/latest.log
+output.logstash: 
+  hosts: ["8.222.210.19:35044"]
