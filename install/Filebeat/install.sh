@@ -21,7 +21,7 @@ serviceName="filebeat"
 version="8.9.1"
 installPath="/data/${serviceName}"
 downloadUrl="https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${version}-linux-x86_64.tar.gz"
-configUrl=${1-""}
+configUrl=${1-"https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Filebeat/sao-filebeat.yaml"}
 
 # check service
 filebeat version &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
