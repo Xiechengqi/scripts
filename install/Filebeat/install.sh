@@ -28,7 +28,7 @@ filebeat version &> /dev/null && YELLOW "$serviceName has been installed ..." &&
 
 # check install path
 EXEC "rm -rf ${installPath}"
-EXEC "mkdir -p ${installPath}/{src,bin,data,path,conf}"
+EXEC "mkdir -p ${installPath}/{src,bin,logs,conf}"
 
 # download tarball
 EXEC "curl -SsL $downloadUrl | tar zx --strip-components 1 -C ${installPath}/src"
