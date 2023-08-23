@@ -30,7 +30,9 @@ image="fullnode/filecoin-saturn-l1-node:${region}"
 INFO "Running Saturn $SATURN_NETWORK network L1 Node on $SATURN_HOME"
 EXEC "docker rm -f saturn-node || true"
 INFO "Add hosts"
+sed -i '/^# Server/d;/^127.0.0.1/d' /etc/hosts
 cat >> /etc/hosts << EOF
+127.0.0.1 localhost
 # Server: StarHub Ltd - Singapore (id: 4235)
 127.0.0.1 co2dsvr03.speedtest.starhub.com co2dsvr03.speedtest.starhub.com.prod.hosts.ooklaserver.net
 # Server: Jeebr Internet Services - Mumbai (id: 26493)
