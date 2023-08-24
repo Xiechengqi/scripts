@@ -22,6 +22,9 @@ export FIL_WALLET_ADDRESS=${2-"f1no34za7ekr6vzdtylz4nci2avdoyg3nw2c3gfzy"}
 export NODE_OPERATOR_EMAIL=${3-"onealemail@163.com"}
 export SATURN_NETWORK="main"
 export SATURN_HOME="/data/filecoin-saturn-l1-node"
+export IPFS_GATEWAY_ORIGIN="https://ipfs.io"
+export IS_CORE_L1=false
+export ORCHESTRATOR_REGISTRATION=${4-"true"}
 EXEC "mkdir -p ${SATURN_HOME}"
 region=${1}
 [ ".${region}" = "." ] && echo "Empty region code, choose Singapore|VA|OH|OR|Mumbai|Stockholm|Seoul|Dublin|Tokyo" && exit 1
@@ -74,6 +77,9 @@ docker run --name saturn-node -it -d \
   -v $SATURN_HOME/shared:/usr/src/app/shared \
   -e FIL_WALLET_ADDRESS=$FIL_WALLET_ADDRESS \
   -e NODE_OPERATOR_EMAIL=$NODE_OPERATOR_EMAIL \
+  -e IPFS_GATEWAY_ORIGIN=$IPFS_GATEWAY_ORIGIN \
+  -e ORCHESTRATOR_REGISTRATION=$ORCHESTRATOR_REGISTRATION \
+  -e IS_CORE_L1=$IS_CORE_L1 \
   --network host \
   --ulimit nofile=1000000 \
   ${image}
