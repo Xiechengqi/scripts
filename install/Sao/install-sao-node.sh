@@ -24,7 +24,7 @@ EXEC "sysctl -w net.core.rmem_max=2500000"
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
 
 # check install path
-ls ${installPath} &> /dev/null && ERROR "${installPath} is not empty, please remove it first ..."
+ls ${installPath} &> /dev/null && [ "$(ls -alht ${installPath} | wc -l)" -gt "3" ] && ERROR "${installPath} is not empty, please remove it first ..."
 EXEC "mkdir -p ${installPath}/{bin,logs}"
 
 # download binary
