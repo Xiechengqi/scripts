@@ -185,7 +185,15 @@ export public_api=${public_api}
 echo "export public_api=${public_api}" >> ${installPath}/env
 fi
 
-read -p "digit(Required, eg: 0.0000001): " digit
+read -p "Monitor Chain info?(true/false, default false): " if_monitor_chain
+if [ "${if_monitor_chain}" = "true" ]
+then
+sed -i '/if_monitor_chain/d' ${installPath}/env &> /dev/null
+export if_monitor_chain="true"
+echo "export if_monitor_chain=\"true\"" >> ${installPath}/env
+fi
+
+read -p "digit(Required, eg: 0.000001): " digit
 [ ".${digit}" = "." ] && echo "digit can not be empty, exit ..." && exit 1
 sed -i '/digit/d' ${installPath}/env &> /dev/null
 export digit=${digit}
@@ -220,7 +228,7 @@ done
 
 export chain_info="chain_id=\"${chain_id}\",latest_version=\"${latest_version}\""
 
-chain_basic_info
+[ "${if_monitor_chain}" = "true" ] && chain_basic_info
 
 for validator in $(echo ${validators} | tr ',' '\n')
 do
