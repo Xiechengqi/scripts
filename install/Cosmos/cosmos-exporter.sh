@@ -239,9 +239,9 @@ do
 fullnode_info ${fullnode}
 done
 
-format_metric
+format_metric > /data/metric/.${chain_id} && mv /data/metric/.${chain_id} /data/metric/${chain_id}.prom
 
-echo && echo '*/3 * * * * '${installPath}'/cosmos-exporter.sh > /data/metric/.'${chain_id}' 2> /dev/null && mv /data/metric/.'${installPath}' /data/metric/'${chain_id}'.prom'
+! crontab -l | grep 'cosmos-exporter.sh' &> /dev/null && echo '*/3 * * * * bash '${installPath}'/cosmos-exporter.sh' && echo '* */1 * * * curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Cosmos/cosmos-exporter.sh -o '${installPath}'/cosmos-exporter.sh'
 
 }
 
