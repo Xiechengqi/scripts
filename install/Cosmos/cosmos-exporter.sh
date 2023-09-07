@@ -161,10 +161,9 @@ prom_metric fullnode_peers_number ${fullnode_info} ${fullnode_peers_number}
 
 main() {
 
-export installPath="/data/cosmos-exporter" && mkdir -p ${installPath}
+export installPath=${1-"/data/cosmos-exporter"} && mkdir -p ${installPath} /data/metric
+! ls ${installPath}/cosmos-exporter.sh &> /dev/null && curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Cosmos/cosmos-exporter.sh -o ${installPath}/cosmos-exporter.sh && chmod +x ${installPath}/cosmos-exporter.sh
 source ${installPath}/env &> /dev/null
-
-systemctl is-active node-exporter &> /dev/null || curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/node-exporter/install.sh | sudo bash
 
 if [ ".${public_rpc}" = "." ] || [ ".${public_api}" = "." ] || [ ".${digit}" = "." ]
 then
@@ -241,6 +240,8 @@ fullnode_info ${fullnode}
 done
 
 format_metric
+
+echo && echo '*/3 * * * * '${installPath}'/cosmos-exporter.sh > /data/metric/.'${chain_id}' 2> /dev/null && mv /data/metric/.'${installPath}' /data/metric/'${chain_id}'.prom'
 
 }
 
