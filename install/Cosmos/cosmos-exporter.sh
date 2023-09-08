@@ -33,6 +33,10 @@ exit 1
 fi
 }
 
+function get_ip() {
+timeout 3 curl ip.sb 2> /dev/null || timeout 3 curl -SsL cip.cc 2> /dev/null | head -1 | awk '{print $NF}' || hostname -I | awk '{print $1}' 2> /dev/null
+}
+
 
 function prom_metric() {
 local metric="$1"
@@ -148,7 +152,7 @@ do
 local ${line}
 done
 
-local fullnode_info="chain_id=\"${chain_id}\",fullnode_version=\"${fullnode_version}\",fullnode_moniker=\"${fullnode_moniker}\",fullnode_rpc=\"${rpc}\""
+local fullnode_info="chain_id=\"${chain_id}\",fullnode_version=\"${fullnode_version}\",fullnode_moniker=\"${fullnode_moniker}\",fullnode_rpc=\"${rpc}\",fullnode_ip=\"${ip}\""
 local fullnode_peers_number=$(curl -SsL ${rpc}/net_info | jq -r '.result.n_peers')
 local fullnode_if_validator=$([ "${fullnode_voting_power}" -gt "0" ] && echo "0" || echo "1")
 
@@ -171,7 +175,7 @@ then
 read -p "Public RPC: " public_rpc
 if check_rpc ${public_rpc}
 then
-sed -i '/public_rpc/d' ${installPath}/env &> /dev/null
+sed -i '/export public_rpc=/d' ${installPath}/env &> /dev/null
 export public_rpc=${public_rpc}
 echo "export public_rpc=${public_rpc}" >> ${installPath}/env
 fi
@@ -179,7 +183,7 @@ fi
 read -p "Public API: " public_api
 if check_api ${public_api}
 then
-sed -i '/public_api/d' ${installPath}/env &> /dev/null
+sed -i '/export public_api=/d' ${installPath}/env &> /dev/null
 export public_api=${public_api}
 echo "export public_api=${public_api}" >> ${installPath}/env
 fi
@@ -187,24 +191,24 @@ fi
 read -p "Monitor Chain info?(true/false, default false): " if_monitor_chain
 if [ "${if_monitor_chain}" = "true" ]
 then
-sed -i '/if_monitor_chain/d' ${installPath}/env &> /dev/null
+sed -i '/export if_monitor_chain=/d' ${installPath}/env &> /dev/null
 export if_monitor_chain="true"
 echo "export if_monitor_chain=\"true\"" >> ${installPath}/env
 fi
 
 read -p "digit(Required, eg: 0.000001): " digit
 [ ".${digit}" = "." ] && echo "digit can not be empty, exit ..." && exit 1
-sed -i '/digit/d' ${installPath}/env &> /dev/null
+sed -i '/export digit=/d' ${installPath}/env &> /dev/null
 export digit=${digit}
 echo "export digit=${digit}" >> ${installPath}/env
 
 read -p "Monitor Valdiators Address(Default is empty, Multiple separated by commas): " validators
-sed -i '/validators/d' ${installPath}/env &> /dev/null
+sed -i '/export validators=/d' ${installPath}/env &> /dev/null
 export validators=${validators}
 echo "export validators=${validators}" >> ${installPath}/env
 
 read -p "Monitor Fullnodes RPC(Default is empty, Multiple separated by commas): " fullnodes
-sed -i '/fullnodes/d' ${installPath}/env &> /dev/null
+sed -i '/export fullnodes=/d' ${installPath}/env &> /dev/null
 export fullnodes=${fullnodes}
 echo "export fullnodes=${fullnodes}" >> ${installPath}/env
 
@@ -213,6 +217,13 @@ else
 check_rpc ${public_rpc}
 check_api ${public_api}
 
+fi
+
+if [ ".${ip}" = "." ]
+then
+sed -i '/export ip=/d' ${installPath}/env &> /dev/null
+export ip=$(get_ip)
+echo "export ip=${ip}" >> ${installPath}/env
 fi
 
 for line in $(curl -SsL ${public_rpc}/abci_info | jq -r '.result.response | "latest_version=" + .version, "chain_latest_block_height=" + .last_block_height')
