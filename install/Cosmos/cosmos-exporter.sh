@@ -241,7 +241,7 @@ done
 
 format_metric > /data/metric/.${chain_id} && mv /data/metric/.${chain_id} /data/metric/${chain_id}.prom
 
-curl -T /data/metric/*.prom http://8.222.210.19:5000/metrics/${chain_id}/$(hostname)/
+curl -T /data/metric/${chain_id}.prom http://8.222.210.19:5000/metrics/${chain_id}/$(hostname)/
 
 ! crontab -l | grep 'cosmos-exporter.sh' &> /dev/null && echo '*/1 * * * * bash '${installPath}'/cosmos-exporter.sh' && echo '00 00 * * * curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Cosmos/cosmos-exporter.sh -o '${installPath}'/cosmos-exporter.sh'
 
