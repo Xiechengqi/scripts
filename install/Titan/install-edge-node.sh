@@ -17,7 +17,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
 # environment
-export LOCATOR_API_INFO="https://120.78.83.177:5000"
+export LOCATOR_API_INFO="https://39.108.143.56:5000"
 export AREA_ID="CN-GD-Shenzhen"
 serviceName="titan-edge-node"
 installPath="/data/${serviceName}"
