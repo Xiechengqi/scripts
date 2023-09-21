@@ -14,7 +14,7 @@ main() {
 
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20|ubuntu22' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20、ubuntu22"
 
 # environment
 export LOCATOR_API_INFO="https://locator.titannet.io:5000"
@@ -23,7 +23,7 @@ export KEY=$1
 serviceName="titan-edge-node"
 installPath="/data/${serviceName}"
 binaryName="titan-edge"
-binaryUrl="https://install.xiechengqi.top/titan/${binaryName}"
+binaryUrl="http://8.222.210.19:5000/tmp/titan_v0.1.10/${binaryName}"
 
 # check servcie
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
