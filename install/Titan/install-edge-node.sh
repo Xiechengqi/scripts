@@ -17,8 +17,9 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
 # environment
-export LOCATOR_API_INFO="https://39.108.143.56:5000"
-export AREA_ID="CN-GD-Shenzhen"
+export LOCATOR_API_INFO="https://locator.titannet.io:5000"
+export KEY=$1
+[ ".${KEY}" = "." ] && ERROR "Less key, exit ..."
 serviceName="titan-edge-node"
 installPath="/data/${serviceName}"
 binaryName="titan-edge"
@@ -37,19 +38,20 @@ EXEC "chmod +x ${installPath}/bin/${binaryName}"
 EXEC "ln -fs ${installPath}/bin/${binaryName} /usr/local/bin/${binaryName}"
 
 # create start.sh
-cat > $installPath/start.sh << EOF
+cat > ${installPath}/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
 export installPath="${installPath}"
 export LOCATOR_API_INFO=${LOCATOR_API_INFO}
+export KEY=${KEY}
 
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \${installPath}/logs/\${timestamp}.log && ln -fs \$installPath/logs/\${timestamp}.log \${installPath}/logs/latest.log
 
-${binaryName} run &> \${installPath}/logs/latest.log
+\${installPath}/bin/${binaryName} run &> \${installPath}/logs/latest.log
 EOF
-EXEC "chmod +x $installPath/start.sh"
+EXEC "chmod +x ${installPath}/start.sh"
 
 # register service
 cat > $installPath/${serviceName}.service << EOF
@@ -74,10 +76,10 @@ EXEC "ln -fs ${installPath}/${serviceName}.service /lib/systemd/system/${service
 # start
 EXEC "systemctl daemon-reload && systemctl enable ${serviceName}"
 
+# register key
+INFO "${binaryName} register --key ${KEY}" && ${binaryName} register --key ${KEY}
+
 # info
-YELLOW "import key: ${binaryName} key import --path private.key"
-YELLOW "config: ${binaryName} config set --node-id=your_node_id --area-id=${AREA_ID}"
-YELLOW "start: systemctl start ${serviceName}"
 YELLOW "log cmd: tail -f ${installPath}/logs/redis.log"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] ${serviceName}"
 
