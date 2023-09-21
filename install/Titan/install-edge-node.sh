@@ -76,6 +76,9 @@ EXEC "ln -fs ${installPath}/${serviceName}.service /lib/systemd/system/${service
 # start
 EXEC "systemctl daemon-reload && systemctl enable ${serviceName}"
 
+EXEC "sysctl -w net.core.rmem_max=2500000"
+EXEC "sysctl -w net.core.wmem_max=2500000"
+
 # register key
 INFO "${binaryName} register --key ${KEY}" && ${binaryName} register --key ${KEY}
 
