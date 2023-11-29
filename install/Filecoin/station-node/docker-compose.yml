@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  station-node:
+    init: true
+    image: ghcr.io/filecoin-station/core:latest
+    container_name: station-node
+    restart: unless-stopped
+    environment:
+      FIL_WALLET_ADDRESS: "@FIL_WALLET_ADDRESS"
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    network_mode: host
+    stop_signal: SIGTERM
+    stop_grace_period: 1m
+    privileged: true
+    labels:
+      com.centurylinklabs.watchtower.scope: station
+      com.centurylinklabs.watchtower.enable: true
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: station-watchtower
+    restart: always
+    environment:
+      WATCHTOWER_POLL_INTERVAL: 300 # 每隔300秒检查一次
+      WATCHTOWER_CLEANUP: true # 更新后删除旧镜像
+      WATCHTOWER_LABEL_ENABLE: true # 启用label筛选
+      WATCHTOWER_SCOPE: station
+    privileged: true
+    labels:
+      com.centurylinklabs.watchtower.scope: station
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
