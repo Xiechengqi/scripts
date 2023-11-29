@@ -7,8 +7,8 @@
 #
 
 source /etc/profile
-BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
-# BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
+# BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
@@ -18,7 +18,7 @@ export FIL_WALLET_ADDRESS=${1="0x3Cbd51c70afF7f7cDC0fa0513391f25aFA821a74"}
 
 # install docker
 INFO "install docker"
-curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/install.sh | sudo bash
+curl -SsL ${BASEPATH}/install/Docker/install.sh | sudo bash
 
 installPath="/data/station-node"
 cd ${installPath} &> /dev/null && [ "$(docker compose top | wc -l)" != "0" ] && INFO "station is running!" && docker compose top && exit 0
