@@ -27,6 +27,7 @@ EXEC "cd ${installPath}"
 curl -SsL ${BASEURL}/install/Filecoin/station-node/docker-compose.yml | sed "s/@FIL_WALLET_ADDRESS/${FIL_WALLET_ADDRESS}/" > docker-compose.yml
 
 # start
+INFO "docker rm -f station-node station-watchtower" && docker rm -f station-node station-watchtower
 INFO "docker compose up -d" && docker compose up -d && INFO "docker compose top" && docker compose top
 
 }
