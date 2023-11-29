@@ -14,7 +14,7 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 main() {
 
 # env
-export FIL_WALLET_ADDRESS=${1="0x3Cbd51c70afF7f7cDC0fa0513391f25aFA821a74"}
+export FIL_WALLET_ADDRESS=${1-"0x3Cbd51c70afF7f7cDC0fa0513391f25aFA821a74"}
 
 # install docker
 INFO "install docker"
