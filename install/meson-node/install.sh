@@ -19,7 +19,7 @@ export CACHE_SIZE="30"
 
 # environment
 serviceName="meson_cdn"
-version=${1-"3.1.19"}
+version=${1-"3.1.20"}
 installPath="/data/${serviceName}"
 downloadUrl="https://staticassets.meson.network/public/meson_cdn/v${version}/meson_cdn-linux-amd64.tar.gz"
 binaryName="meson_cdn"
