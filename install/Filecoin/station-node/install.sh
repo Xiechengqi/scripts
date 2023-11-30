@@ -20,7 +20,7 @@ INFO "install docker"
 curl -SsL ${BASEURL}/install/Docker/install.sh | sudo bash
 
 installPath="/data/station-node"
-cd ${installPath} &> /dev/null && [ "$(docker compose top | wc -l)" != "0" ] && INFO "station is running!" && docker compose top && exit 0
+# cd ${installPath} &> /dev/null && [ "$(docker compose top | wc -l)" != "0" ] && INFO "station is running!" && docker compose top && exit 0
 EXEC "rm -rf ${installPath} && mkdir -p ${installPath}"
 EXEC "cd ${installPath}"
 # conf
