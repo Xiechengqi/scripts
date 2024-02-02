@@ -19,7 +19,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 # environments
 serviceName="ooklaserver"
 installPath="/data/${serviceName}"
-downloadUrl="https://install.speedtest.net/ooklaserver/stable/OoklaServer.tgz"
+downloadUrl="https://github.com/Xiechengqi/scripts/raw/master/install/ooklaserver/OoklaServer-linux64.tgz"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
@@ -30,9 +30,7 @@ EXEC "mkdir -p $installPath/{src,bin,logs}"
 
 # download tarball
 EXEC "cd ${installPath}/src"
-EXEC "curl -sSL ${downloadUrl} -o OoklaServer.tgz"
-EXEC "tar xvf OoklaServer.tgz"
-EXEC "mv OoklaServer-linux64.tgz ${installPath}"
+EXEC "curl -sSL ${downloadUrl} -o ${installPath}/OoklaServer-linux64.tgz"
 EXEC "cd ${installPath}"
 EXEC "tar xvf OoklaServer-linux64.tgz"
 
