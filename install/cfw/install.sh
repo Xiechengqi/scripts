@@ -32,7 +32,8 @@ INFO "systemctl status --no-pager ${serviceName}" && systemctl status --no-pager
 
 EXEC "sleep 5"
 
-# open 443 80
+# open 443 80 22
+EXEC "/etc/cfw/py39/bin/python /etc/cfw/client.py allow 22"
 EXEC "/etc/cfw/py39/bin/python /etc/cfw/client.py allow 80"
 EXEC "/etc/cfw/py39/bin/python /etc/cfw/client.py allow 443"
 INFO "/etc/cfw/py39/bin/python /etc/cfw/client.py status" && /etc/cfw/py39/bin/python /etc/cfw/client.py status
