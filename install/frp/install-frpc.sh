@@ -16,7 +16,7 @@ main() {
 osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'centos7|ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: centos7、ubuntu18、ubuntu20"
 
-countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
+curl cip.cc | grep '中国' &> /dev/null && countryCode="CN"
 
 # environment
 serviceName="frpc"
