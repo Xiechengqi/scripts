@@ -52,7 +52,7 @@ timestamp=\$(date +%Y%m%d-%H%M%S)
 
 touch \${installPath}/logs/\${timestamp}.log && ln -fs \${installPath}/logs/\${timestamp}.log \${installPath}/logs/latest.log
 
-\${installPath}/frps -c \${installPath}/config.ini &> \${installPath}/logs/latest.log
+\${installPath}/bin/frps -c \${installPath}/conf/config.ini &> \${installPath}/logs/latest.log
 EOF
 EXEC "chmod +x ${installPath}/start.sh"
 
