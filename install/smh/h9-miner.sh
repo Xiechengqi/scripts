@@ -4,6 +4,7 @@
 # 2024/03/21
 # xiechengqi
 # install H9 SMH Miner
+# doc: https://h9support.notion.site/SPACEMESH-P-WIN-LIN-e1e0880d248f4ddb9c3d671048409d29
 # cmd: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/smh/h9-miner.sh | bash
 #
 
