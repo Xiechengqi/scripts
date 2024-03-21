@@ -4,6 +4,7 @@
 # 2024/03/21
 # xiechengqi
 # install H9 SMH Proxy
+# cmd: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/smh/h9-proxy.sh | bash
 #
 
 source /etc/profile
