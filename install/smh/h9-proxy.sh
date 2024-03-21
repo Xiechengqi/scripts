@@ -4,6 +4,7 @@
 # 2024/03/21
 # xiechengqi
 # install H9 SMH Proxy
+# doc: https://h9support.notion.site/SPACEMESH-Xproxy-c0a062e11cbe4ecda1f1d906ebc83d58
 # cmd: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/smh/h9-proxy.sh | bash
 #
 
