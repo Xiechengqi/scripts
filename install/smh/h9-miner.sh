@@ -4,6 +4,7 @@
 # 2024/03/21
 # xiechengqi
 # install H9 SMH Miner
+# cmd: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/smh/h9-miner.sh | bash
 #
 
 source /etc/profile
