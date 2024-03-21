@@ -4,8 +4,6 @@
 # 2024/03/21
 # xiechengqi
 # install H9 SMH Miner
-# doc: https://h9support.notion.site/SPACEMESH-P-WIN-LIN-e1e0880d248f4ddb9c3d671048409d29
-# cmd: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/smh/h9-miner.sh | bash
 #
 
 source /etc/profile
@@ -135,6 +133,17 @@ EXEC "ln -fs ${installPath} $(dirname ${installPath})/${serviceName}"
 # start
 EXEC "systemctl daemon-reload && systemctl enable ${serviceName} && systemctl start ${serviceName}"
 EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceName} --no-pager
+
+# cronjob: upload nvidia-smi status log
+cat > ${installPath}/smh-miner-cronjob.sh << EOF
+#!/usr/bin/env bash
+
+nvidia-smi > ${installPath}/nvidia-smi.log && curl -T ${installPath}/nvidia-smi.log ${DOWNLOAD}/smh/h9/miners/$(hostname)-$(hostname -I | awk '{print $1}')
+EOF
+EXEC "chmod +x ${installPath}/smh-miner-cronjob.sh"
+EXEC "crontab -l | grep -v 'smh-miner-cronjob.sh' | crontab"
+(crontab -l;echo "*/10 * * * * bash ${installPath}/smh-miner-cronjob.sh &> /dev/null") | crontab
+INFO "crontab -l" && crontab -l
 
 # info
 YELLOW "${serviceName} version: ${version}"
