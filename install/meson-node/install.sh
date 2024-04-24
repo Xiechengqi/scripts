@@ -15,7 +15,7 @@ main() {
 
 export MESON_TOKEN="ndofiwxlyoaqyiaicyydvtqh"
 export HTTPS_PORT="29092"
-export CACHE_SIZE="20"
+export CACHE_SIZE="30"
 
 # environment
 serviceName="meson_cdn"
