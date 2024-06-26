@@ -4,6 +4,7 @@
 # 2024/06/26
 # xiechengqi
 # github: https://github.com/lilypad-tech/lilypad
+# doc: https://docs.lilypad.tech/lilypad/hardware-providers/run-a-node#disconnecting-a-node
 # cmd: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/lilypad/install.sh | bash
 #
 
