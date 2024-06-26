@@ -8,8 +8,8 @@
 #
 
 source /etc/profile
-# BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
-BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
+# BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
@@ -41,7 +41,6 @@ EXEC "ln -fs ${installPath}/bin/${binaryName} /usr/local/bin/${binaryName}"
 # creat start.sh
 cat > ${installPath}/start.sh << EOF
 #!/usr/bin/env /bash
-
 
 export installPath="${installPath}"
 export LOG_TYPE="json"
