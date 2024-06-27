@@ -51,7 +51,7 @@ pubkey=$(${installPath}/bin/nkey list --p2p.network $NETWORK --node.type $NODE_T
 YELLOW "Address: ${address}"
 YELLOW "pubkey: ${pubkey}"
 YELLOW "Mnemonic: ${mnemonic}"
-echo "${address},${pubkey},${mnemonic}"
+echo "${address}: ${pubkey},${mnemonic}"
 INFO "${installPath}/bin/nubit $NODE_TYPE auth $AUTH_TYPE --node.store ${dataPath}" && ${installPath}/bin/nubit $NODE_TYPE auth $AUTH_TYPE --node.store ${dataPath}
 EXEC "sleep 5"
 
