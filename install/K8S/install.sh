@@ -44,7 +44,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # environments
 serviceName="kubelet"
-version="1.31"
+version="v1.31"
 versionTag="0"
 VERSION="${version}-${versionTag}"
 # countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
