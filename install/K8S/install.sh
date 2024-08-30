@@ -26,9 +26,8 @@ cat /etc/apt/sources.list.d/kubernetes.list
 INFO "apt-get update"
 apt-get update || exit 1
 EXEC "apt-get -y install curl apt-transport-https"
-EXEC "apt-mark unhold kubelet kubeadm kubectl"
-INFO "apt-get install -y kubectl=${VERSION}-00 kubelet=${VERSION}-00 kubeadm=${VERSION}-00"
-apt-get install -y kubectl=${VERSION}-00 kubelet=${VERSION}-00 kubeadm=${VERSION}-00 || exit 1
+INFO "apt-get install -y kubectl kubelet kubeadm"
+apt-get install -y kubectl kubelet kubeadm || exit 1
 EXEC "apt-mark hold kubelet kubeadm kubectl"
 
 }
@@ -46,8 +45,6 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 # environments
 serviceName="kubelet"
 version="v1.28"
-versionTag="0"
-VERSION="${version}.${versionTag}"
 # countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
 curl -SsL cip.cc | grep -E '^地址' | head -1 | grep '中国' &> /dev/null && countryCode="CN" || countryCode="Other"
 
