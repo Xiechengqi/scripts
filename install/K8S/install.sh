@@ -13,6 +13,7 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 _ubuntu() {
 
+EXEC "rm -f /etc/apt/sources.list.d/kubernetes.list"
 EXEC "curl -fsSL https://pkgs.k8s.io/core:/stable:/${version}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg"
 cat > /etc/apt/sources.list.d/kubernetes.list << EOF
 deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://mirrors.tuna.tsinghua.edu.cn/kubernetes/core:/stable:/${version}/deb/ /
@@ -44,7 +45,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # environments
 serviceName="kubelet"
-version="v1.31"
+version="v1.28"
 versionTag="0"
 VERSION="${version}-${versionTag}"
 # countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
