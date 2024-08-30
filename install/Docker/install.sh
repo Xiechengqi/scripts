@@ -80,7 +80,7 @@ if [ "$countryCode" = "CN" ]
 then
 cat > /etc/docker/daemon.json << EOF
 {
-  "registry-mirrors": ["https://ykawlvjt.mirror.aliyuncs.com","https://docker.mirrors.sjtug.sjtu.edu.cn","https://docker.nju.edu.cn"],
+  "registry-mirrors": ["https://hub.rat.dev", "https://docker.1panel.live", "https://docker.rainbond.cc"],
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
   "log-opts": {
