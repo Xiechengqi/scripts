@@ -27,12 +27,12 @@ EXEC "apt-get install -y apt-transport-https ca-certificates curl gnupg2 softwar
 EXEC "mkdir -p /etc/apt/keyrings"
 if [ "$countryCode" = "CN" ]
 then
-EXEC "curl -fsSL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
+EXEC "rm -f /etc/apt/keyrings/docker.gpg && curl -fsSL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
 cat > /etc/apt/sources.list.d/docker.list << EOF
 deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable
 EOF
 else
-EXEC "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
+EXEC "rm -f /etc/apt/keyrings/docker.gpg && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
 cat > /etc/apt/sources.list.d/docker.list << EOF
 deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
 EOF
