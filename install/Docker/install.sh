@@ -68,7 +68,8 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 # environments
 serviceName="docker"
 # countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
-timeout 3 curl -SsL cip.cc | grep -E '^地址' | head -1 | grep '中国' &> /dev/null && countryCode="CN" || countryCode="Other"
+# timeout 3 curl -SsL cip.cc | grep -E '^地址' | head -1 | grep '中国' &> /dev/null && countryCode="CN" || countryCode="Other"
+curl -I -m 10 -o /dev/null -s -w %{http_code} google.com | grep 200 &> /dev/null && countryCode="Other" || countryCode="CN"
 
 # check service
 systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
