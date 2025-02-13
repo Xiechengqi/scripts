@@ -20,7 +20,7 @@ curl cip.cc | grep '中国' &> /dev/null && countryCode="CN"
 
 # environment
 serviceName="frps"
-version=${1-"0.55.1"}
+version=${1-"0.61.1"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://github.com/fatedier/frp/releases/download/v${version}/frp_${version}_linux_amd64.tar.gz"
 [ "${countryCode}" = "CN" ] && downloadUrl="https://gh-proxy.com/${downloadUrl}"
