@@ -22,6 +22,11 @@ serviceName="tailscaled"
 # check servcie
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
 
+EXEC "apt update"
+
+EXEC "apt install -y gnupg"
+EXEC "mkdir -p --mode=0755 /usr/share/keyrings"
+INFO "curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/tailscaled/focal.noarmor.gpg | apt-key add -" && curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/tailscaled/focal.noarmor.gpg | apt-key add -
 cat > /etc/apt/sources.list.d/tailscale.list << EOF
 deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu focal main
 EOF
