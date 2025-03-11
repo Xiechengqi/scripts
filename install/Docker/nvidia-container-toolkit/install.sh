@@ -15,7 +15,7 @@ main() {
 osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20|ubuntu22' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20、ubuntu22"
 
-EXEC "curl -fsSL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/nvidia-container-toolkit/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg"
+EXEC "curl -fsSL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/nvidia-container-toolkit/nvidia-container-toolkit-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg"
 cat > /etc/apt/sources.list.d/nvidia-container-toolkit.list << EOF
 deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH) /
 EOF
