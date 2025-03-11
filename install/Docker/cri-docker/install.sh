@@ -3,6 +3,7 @@
 # xiechengqi
 # 2025/03/11
 # make install cri-dockerd
+# curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/cri-docker/install.sh | sudo bash
 #
 
 source /etc/profile
