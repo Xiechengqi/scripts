@@ -21,7 +21,7 @@ export serviceName="cri-docker"
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
 
 # download deb package
-EXEC "curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/cri-dockerd/cri-dockerd_0.3.15.3-0.ubuntu-focal_amd64.deb -o /tmp/cri-dockerd_0.3.15.3-0.ubuntu-focal_amd64.deb"
+EXEC "curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/cri-docker/cri-dockerd_0.3.15.3-0.ubuntu-focal_amd64.deb -o /tmp/cri-dockerd_0.3.15.3-0.ubuntu-focal_amd64.deb"
 
 # install
 INFO "dpkg -i /tmp/cri-dockerd_0.3.15.3-0.ubuntu-focal_amd64.deb" && dpkg -i /tmp/cri-dockerd_0.3.15.3-0.ubuntu-focal_amd64.deb || exit 1
