@@ -22,7 +22,7 @@ EOF
 INFO "cat /etc/apt/sources.list.d/nvidia-container-toolkit.list" && cat /etc/apt/sources.list.d/nvidia-container-toolkit.list
 INFO "apt update" && apt update || exit 1
 INFO "apt install -y nvidia-container-toolkit" && apt install -y nvidia-container-toolkit
-# 使用 nvidia-ctk 命令修改 /etc/docker/daemon.json 文件
+# 使用 nvidia-ctk 命令修改 /etc/docker/daemon.json 文件，设置 Docker 默认使用 NVIDIA runtime
 EXEC "nvidia-ctk runtime configure --runtime=docker"
 INFO "cat /etc/docker/daemon.json" && cat /etc/docker/daemon.json
 EXEC "systemctl restart docker"
