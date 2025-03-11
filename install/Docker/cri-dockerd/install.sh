@@ -14,7 +14,7 @@ main() {
 osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu22' &> /dev/null && ERROR "You could only install on os: ubuntu22"
 
-export serviceName="cri-dockerd"
+export serviceName="cri-docker"
 
 # check servcie
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
