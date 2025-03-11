@@ -17,8 +17,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 EXEC "curl -fsSL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/nvidia-container-toolkit/nvidia-container-toolkit-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg"
 cat > /etc/apt/sources.list.d/nvidia-container-toolkit.list << EOF
-deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH) /
-deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/$(ARCH) /
+deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/\$(ARCH) /
 EOF
 INFO "cat /etc/apt/sources.list.d/nvidia-container-toolkit.list" && cat /etc/apt/sources.list.d/nvidia-container-toolkit.list
 INFO "apt update" && apt update || exit 1
