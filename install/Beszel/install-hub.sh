@@ -4,6 +4,7 @@
 # xiechengqi
 # 2025/03/18
 # install beszel-hub
+# curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Beszel/install-hub.sh | sudo bash
 #
 
 source /etc/profile
