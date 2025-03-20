@@ -15,32 +15,54 @@ source /etc/profile
 BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
+function usage() {
+INFO "curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/K8S/image.sh | sudo bash -s [docker|containerd]"
+exit 0
+}
+
 main() {
 # check location
 countryCode=$(check_if_in_china)
 [ ".${countryCode}" = "." ] && ERROR "Get country location fail ..."
 
-# Env
-[ "$countryCode" = "China" ] && imageRepositoryOption="--image-repository k8s-gcr.m.daocloud.io" || imageRepositoryOption=""
-criSocket=${1-"unix:///var/run/cri-dockerd.sock"}
+cri=${1-"docker"}
+case cri in
+"docker")
+criSocket="unix:///var/run/cri-dockerd.sock"
+pullCmd="docker pull"
+tagCmd="docker tag"
+;;
+"containerd")
+criSocket="unix:///var/run/containerd/containerd.sock"
+pullCmd="ctr -n k8s.io i pull"
+tagCmd="ctr -n k8s.io i tag"
+;;
+*)
+usage
+esac
 criSocketOption="--cri-socket ${criSocket}"
 
-# pull images
-INFO "kubeadm config images pull ${criSocketOption} ${imageRepositoryOption}" && kubeadm config images pull ${criSocketOption} ${imageRepositoryOption} || exit 1
+EXEC "kubeadm config images list > /tmp/k8s_office_images.list"
+INFO "cat /tmp/k8s_office_images.list" && cat /tmp/k8s_office_images.list
 
-# if [ "$countryCode" = "China" ]
-# then
-# EXEC "kubeadm config images list > /tmp/k8s_office_images.list"
-# cat /tmp/k8s_office_images.list
-# EXEC "kubeadm config images list --image-repository registry.aliyuncs.com/google_containers > /tmp/k8s_cn_images.list"
-# cat /tmp/k8s_cn_images.list
-# for cnImageUrl in $(cat /tmp/k8s_cn_images.list)
-# do
-# imageName=$(echo ${cnImageUrl} | awk -F '/' '{print $NF}')
-# officeImageUrl=$(cat /tmp/$$_office_images.list | grep -E "${imageName}$")
-# EXEC "docker tag ${cnImageUrl} ${officeImageUrl} && docker rmi ${cnImageUrl}"
-# done
-# fi
+# pull images
+[ "$countryCode" = "China" ] && imageRepository="k8s-gcr.m.daocloud.io"
+if [ "$countryCode" = "China" ]
+then
+for image in $(cat /tmp/k8s_office_images.list)
+do
+local cnImage=$(echo ${image} | sed "s/registry.k8s.io/${imageRepository}/g")
+INFO "${pullCmd} ${cnImage}" && ${pullCmd} ${cnImage} || exit 1
+INFO "${tagCmd} ${cnImage} ${image}" && ${tagCmd} ${cnImage} ${image} || exit 1
+done
+else
+for image in $(cat /tmp/k8s_office_images.list)
+do
+INFO "${pullCmd} ${image}" && ${pullCmd} ${image} || exit 1
+done
+fi
+
+EXEC "kubeadm config images pull ${criSocketOption}"
 
 }
 
