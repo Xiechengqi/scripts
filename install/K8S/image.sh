@@ -46,7 +46,7 @@ EXEC "kubeadm config images list > /tmp/k8s_office_images.list"
 INFO "cat /tmp/k8s_office_images.list" && cat /tmp/k8s_office_images.list
 
 # pull images
-[ "$countryCode" = "China" ] && imageRepository="k8s-gcr.m.daocloud.io"
+[ "$countryCode" = "China" ] && imageRepository="k8s.m.daocloud.io"
 if [ "$countryCode" = "China" ]
 then
 for image in $(cat /tmp/k8s_office_images.list)
