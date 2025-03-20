@@ -4,7 +4,7 @@
 # xiechengqi
 # 2025/03/20
 # Ubuntu 18.04+
-# Usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/K8S/image.sh | sudo bash [-s cri_socket_path]
+# Usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/K8S/image.sh | sudo bash -s [docker|containerd]
 # kubeadm pull k8s images
 # Containerd:  unix:///var/run/containerd/containerd.sock
 # CRI-O:  unix:///var/run/crio/crio.sock
