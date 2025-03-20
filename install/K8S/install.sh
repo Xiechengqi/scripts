@@ -31,6 +31,7 @@ else
 cat > /etc/apt/sources.list.d/kubernetes.list << EOF
 deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/${version}/deb/ /
 EOF
+fi
 INFO "cat /etc/apt/sources.list.d/kubernetes.list" && cat /etc/apt/sources.list.d/kubernetes.list
 
 # install
