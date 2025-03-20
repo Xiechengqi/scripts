@@ -80,3 +80,21 @@ real_logical_cpu_num=$(cat /proc/cpuinfo | grep "processor" | wc -l)
 [ "${real_logical_cpu_num}" -gt "${logical_cpu_num}" ] && echo "true" || echo "false"
 
 }
+
+check_if_in_china() {
+
+if ! hash ping || ! hash curl
+then
+echo "Install ping and curl first please" && exit 1
+fi
+! ping -c 3 -W 3 1.1.1.1 &> /dev/null && echo "Network exception, unable to connect to Ethernet !!!" && exit 1
+check_location_api_arr=("3.0.3.0" "3.0.2.1" "3.0.2.9")
+for check_location_api in ${check_location_api_arr[*]}
+do
+location=$(timeout 3 curl -SsL ${check_location_api} | grep location)
+[ ".${location}" = "." ] && continue
+echo "${location}" | grep '中国' &> /dev/null && echo "China" || echo "Other"
+break
+done
+
+}
