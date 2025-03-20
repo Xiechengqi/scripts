@@ -60,9 +60,8 @@ for image in $(cat /tmp/k8s_office_images.list)
 do
 INFO "${pullCmd} ${image}" && ${pullCmd} ${image} || exit 1
 done
-fi
-
 INFO "kubeadm config images pull ${criSocketOption}" && kubeadm config images pull ${criSocketOption} || exit 1
+fi
 
 }
 
