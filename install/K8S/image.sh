@@ -26,7 +26,7 @@ countryCode=$(check_if_in_china)
 [ ".${countryCode}" = "." ] && ERROR "Get country location fail ..."
 
 cri=${1-"docker"}
-case cri in
+case $cri in
 "docker")
 criSocket="unix:///var/run/cri-dockerd.sock"
 pullCmd="docker pull"
