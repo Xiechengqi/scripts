@@ -4,6 +4,7 @@
 # xiechengqi
 # 2025/03/20
 # Ubuntu 18.04+
+# Usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/K8S/install.sh | sudo bash
 # install kubeadm kubelet kubectl
 # China: https://mirrors.tuna.tsinghua.edu.cn/help/kubernetes/
 # Other: https://v1-28.docs.kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
