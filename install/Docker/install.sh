@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2023/01/13
+# 2025/03/20
 # Ubuntu 18.04+
 # https://docs.docker.com/engine/install/ubuntu/
 # install docker
@@ -25,7 +25,7 @@ EXEC "apt-get install -y apt-transport-https ca-certificates curl gnupg2 softwar
 
 # add app source
 EXEC "mkdir -p /etc/apt/keyrings"
-if [ "$countryCode" = "CN" ]
+if [ "$countryCode" = "China" ]
 then
 EXEC "rm -f /etc/apt/keyrings/docker.gpg && curl -fsSL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
 cat > /etc/apt/sources.list.d/docker.list << EOF
@@ -50,7 +50,7 @@ INFO "yum remove -y docker docker-client docker-client-latest docker-common dock
 yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
 EXEC "yum install -y yum-utils device-mapper-persistent-data lvm2"
 EXEC "yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
-if [ "${countryCode}" = "CN" ]
+if [ "${countryCode}" = "China" ]
 then
 EXEC "sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo"
 EXEC "yum makecache fast"
@@ -67,22 +67,21 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # environments
 serviceName="docker"
-# countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
-# timeout 3 curl -SsL cip.cc | grep -E '^地址' | head -1 | grep '中国' &> /dev/null && countryCode="CN" || countryCode="Other"
-curl -I -m 10 -o /dev/null -s -w %{http_code} google.com | grep 200 &> /dev/null && countryCode="Other" || countryCode="CN"
+countryCode=$(check_if_in_china)
+[ ".${countryCode}" = "." ] && ERROR "Get country location fail ..."
 
 # check service
-systemctl is-active $serviceName &> /dev/null && YELLOW "$serviceName is running ..." && return 0
+systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
 
 echo $osInfo | grep ubuntu &> /dev/null && _ubuntu
 echo $osInfo | grep centos &> /dev/null && _centos
 
 # modify config
-if [ "$countryCode" = "CN" ]
+if [ "$countryCode" = "China" ]
 then
 cat > /etc/docker/daemon.json << EOF
 {
-  "registry-mirrors": ["https://hub.rat.dev", "https://docker.1panel.live", "https://docker.rainbond.cc"],
+  "registry-mirrors": ["https://docker.m.daocloud.io", "https://hub.rat.dev", "https://docker.1panel.live", "https://docker.rainbond.cc"],
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
   "log-opts": {
