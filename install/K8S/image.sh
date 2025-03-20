@@ -62,7 +62,7 @@ INFO "${pullCmd} ${image}" && ${pullCmd} ${image} || exit 1
 done
 fi
 
-EXEC "kubeadm config images pull ${criSocketOption}"
+INFO "kubeadm config images pull ${criSocketOption}" && kubeadm config images pull ${criSocketOption} || exit 1
 
 }
 
