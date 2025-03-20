@@ -2,9 +2,13 @@
 
 #
 # xiechengqi
-# 2022/10/27
+# 2025/03/20
 # Ubuntu 18.04+
-# docker pull k8s used images
+# Usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/K8S/image.sh | sudo bash [-s cri_socket_path]
+# kubeadm pull k8s images
+# Containerd:  unix:///var/run/containerd/containerd.sock
+# CRI-O:  unix:///var/run/crio/crio.sock
+# Docker Engine(cri-dockerd):  unix:///var/run/cri-dockerd.sock
 #
 
 source /etc/profile
@@ -12,37 +16,31 @@ BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
+# check location
+countryCode=$(check_if_in_china)
+[ ".${countryCode}" = "." ] && ERROR "Get country location fail ..."
 
-# countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
-curl -SsL cip.cc | grep -E '^地址' | head -1 | grep '中国' &> /dev/null && countryCode="CN" || countryCode="Other"
+# Env
+[ "$countryCode" = "China" ] && imageRepositoryOption="--image-repository k8s-gcr.m.daocloud.io" || imageRepositoryOption=""
+criSocket=${1-"unix:///var/run/cri-dockerd.sock"}
+criSocketOption="--cri-socket ${criSocket}"
 
-# check if installed
-systemctl is-active docker &> /dev/null && kubectl version --client &> /dev/null && kubeadm version &> /dev/null || ERROR "Please install docker or kubectl or kubeadm first ..."
+# pull images
+INFO "kubeadm config images pull ${criSocketOption} ${imageRepositoryOption}" && kubeadm config images pull ${criSocketOption} ${imageRepositoryOption} || exit 1
 
-if [ "$countryCode" = "CN" ]
-then
-INFO "kubeadm config images pull --image-repository registry.aliyuncs.com/google_containers"
-kubeadm config images pull --image-repository registry.aliyuncs.com/google_containers || exit 1
-EXEC "kubeadm config images list > /tmp/$$_office_images.list"
-cat /tmp/$$_office_images.list
-EXEC "kubeadm config images list --image-repository registry.aliyuncs.com/google_containers > /tmp/$$_cn_images.list"
-cat /tmp/$$_cn_images.list
-for cnImageUrl in $(cat /tmp/$$_cn_images.list)
-do
-imageName=$(echo ${cnImageUrl} | awk -F '/' '{print $NF}')
-officeImageUrl=$(cat /tmp/$$_office_images.list | grep -E "${imageName}$")
-EXEC "docker tag ${cnImageUrl} ${officeImageUrl} && docker rmi ${cnImageUrl}"
-done
-
-EOF
-else
-INFO "kubeadm config images pull"
-kubeadm config images pull || exit 1
-EOF
-fi
-
-INFO "docker images"
-docker images
+# if [ "$countryCode" = "China" ]
+# then
+# EXEC "kubeadm config images list > /tmp/k8s_office_images.list"
+# cat /tmp/k8s_office_images.list
+# EXEC "kubeadm config images list --image-repository registry.aliyuncs.com/google_containers > /tmp/k8s_cn_images.list"
+# cat /tmp/k8s_cn_images.list
+# for cnImageUrl in $(cat /tmp/k8s_cn_images.list)
+# do
+# imageName=$(echo ${cnImageUrl} | awk -F '/' '{print $NF}')
+# officeImageUrl=$(cat /tmp/$$_office_images.list | grep -E "${imageName}$")
+# EXEC "docker tag ${cnImageUrl} ${officeImageUrl} && docker rmi ${cnImageUrl}"
+# done
+# fi
 
 }
 
