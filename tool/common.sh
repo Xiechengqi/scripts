@@ -87,7 +87,7 @@ if ! hash ping || ! hash curl
 then
 echo "Install ping and curl first please" && exit 1
 fi
-! ping -c 3 -W 3 1.1.1.1 &> /dev/null && echo "Network exception, unable to connect to Ethernet !!!" && exit 1
+! ping -c 3 -W 3 1.1.1.1 &> /dev/null && ! ping -c 3 -W 3 baidu.com &> /dev/null && echo "Network exception, unable to connect to Ethernet !!!" && exit 1
 check_location_api_arr=("3.0.3.0" "3.0.2.1" "3.0.2.9")
 for check_location_api in ${check_location_api_arr[*]}
 do
