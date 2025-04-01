@@ -1,0 +1,46 @@
+version: 0.1
+log:
+  accesslog:
+    disabled: true
+  level: info
+  formatter: text
+  fields:
+    service: registry
+    environment: staging
+storage:
+  cache:
+    # 改为 blan 禁用 blob 描述符缓存，可解决docker pull error：unexpected EOF
+    blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: /var/lib/registry
+  #inmemory: # 此存储驱动程序不会在运行期间保留任何数据,适合磁盘空间小的机器使用(但是会使用内存开销,只适合测试)
+  maintenance:
+    uploadpurging:
+      enabled: false
+  tag:
+    concurrencylimit: 8
+  delete:
+    enabled: true
+
+http:
+  addr: :5000
+  headers:
+    X-Content-Type-Options: [nosniff]
+    Access-Control-Allow-Origin: ['*']
+    Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
+    Access-Control-Allow-Headers: ['Authorization', 'Accept', 'Cache-Control']
+    Access-Control-Max-Age: [1728000]
+    Access-Control-Allow-Credentials: [true]
+    Access-Control-Expose-Headers: ['Docker-Content-Digest']
+
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
+
+proxy:
+  remoteurl: http://100.86.71.119:55000
+  username: 
+  password:
+  ttl: 168h

@@ -1,0 +1,182 @@
+services:
+  ## docker hub
+  dockerhub:
+    container_name: reg-docker-hub
+    image: dqzboy/registry:latest
+    restart: always
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      #- http=http://host:port
+      #- https=http://host:port
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry-hub.yml:/etc/distribution/config.yml
+      #- ./htpasswd:/auth/htpasswd
+    ports:
+      - 51000:5000
+    networks:
+      - registry-net
+
+  ## ghcr.io
+  ghcr:
+    container_name: reg-ghcr
+    image: dqzboy/registry:latest
+    restart: always
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      #- http=http://host:port
+      #- https=http://host:port
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry-ghcr.yml:/etc/distribution/config.yml
+      #- ./htpasswd:/auth/htpasswd
+    ports:
+      - 52000:5000
+    networks:
+      - registry-net
+
+  ## gcr.io
+  gcr:
+    container_name: reg-gcr
+    image: dqzboy/registry:latest
+    restart: always
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      #- http=http://host:port
+      #- https=http://host:port
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry-gcr.yml:/etc/distribution/config.yml
+      #- ./htpasswd:/auth/htpasswd
+    ports:
+      - 53000:5000
+    networks:
+      - registry-net
+
+  ## k8s.gcr.io
+  k8sgcr:
+    container_name: reg-k8s-gcr
+    image: dqzboy/registry:latest
+    restart: always
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      #- http=http://host:port
+      #- https=http://host:port
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry-k8sgcr.yml:/etc/distribution/config.yml
+      #- ./htpasswd:/auth/htpasswd
+    ports:
+      - 54000:5000
+    networks:
+      - registry-net
+
+  ## registry.k8s.io
+  k8s:
+    container_name: reg-k8s
+    image: dqzboy/registry:latest
+    restart: always
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      #- http=http://host:port
+      #- https=http://host:port
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry-k8s.yml:/etc/distribution/config.yml
+      #- ./htpasswd:/auth/htpasswd
+    ports:
+      - 55000:5000
+    networks:
+      - registry-net
+  
+  ## quay.io
+  quay:
+    container_name: reg-quay
+    image: dqzboy/registry:latest
+    restart: always
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      #- http=http://host:port
+      #- https=http://host:port
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry-quay.yml:/etc/distribution/config.yml
+      #- ./htpasswd:/auth/htpasswd
+    ports:
+      - 56000:5000
+    networks:
+      - registry-net
+
+  ## mcr.microsoft.com
+  mcr:
+    container_name: reg-mcr
+    image: dqzboy/registry:latest
+    restart: always
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      #- http=http://host:port
+      #- https=http://host:port
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry-mcr.yml:/etc/distribution/config.yml
+      #- ./htpasswd:/auth/htpasswd
+    ports:
+      - 57000:5000
+    networks:
+      - registry-net
+
+  ## docker.elastic.co
+  elastic:
+    container_name: reg-elastic
+    image: dqzboy/registry:latest
+    restart: always
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      #- http=http://host:port
+      #- https=http://host:port
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry-elastic.yml:/etc/distribution/config.yml
+      #- ./htpasswd:/auth/htpasswd
+    ports:
+      - 58000:5000
+    networks:
+      - registry-net
+
+  ## nvcr.io
+  nvcr:
+    container_name: reg-nvcr
+    image: dqzboy/registry:latest
+    restart: always
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      #- http=http://host:port
+      #- https=http://host:port
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry-nvcr.yml:/etc/distribution/config.yml
+      #- ./htpasswd:/auth/htpasswd
+    ports:
+      - 59000:5000
+    networks:
+      - registry-net
+
+  ## UI
+  registry-ui:
+    container_name: registry-ui
+    image: dqzboy/docker-registry-ui:latest
+    environment:
+      - DOCKER_REGISTRY_URL=http://registry-ui.xiecq.top:50000
+      # [必须]使用 openssl rand -hex 16 生成唯一值
+      - SECRET_KEY_BASE=1633fe57a41a24e3766c49de45e4ea35
+      # 启用Image TAG 的删除按钮
+      - ENABLE_DELETE_IMAGES=true
+      - NO_SSL_VERIFICATION=true
+    restart: always
+    ports:
+      - 50000:8080
+    networks:
+      - registry-net
+
+networks:
+  registry-net:
