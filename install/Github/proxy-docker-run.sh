@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+#
+# https://blog.wjqserver.com/
+#
+
 BASEPATH=`dirname $(readlink -f ${BASH_SOURCE[0]})` && cd $BASEPATH
 
 name="github-proxy"
