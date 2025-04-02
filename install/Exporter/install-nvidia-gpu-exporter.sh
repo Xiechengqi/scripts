@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# 2025/03/22
+# 2025/04/02
 # xiechengqi
 # install nvidia-gpu-exporter
 # https://github.com/utkuozdemir/nvidia_gpu_exporter
