@@ -98,3 +98,5 @@ break
 done
 
 }
+
+export GITHUB_PROXY="https://github.xiecq.top"
