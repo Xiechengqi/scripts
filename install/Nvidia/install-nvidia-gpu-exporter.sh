@@ -25,7 +25,7 @@ serviceName="nvidia-gpu-exporter"
 version="1.3.0"
 installPath="/data/${serviceName}"
 downloadUrl="https://github.com/utkuozdemir/nvidia_gpu_exporter/releases/download/v${version}/nvidia_gpu_exporter_${version}_linux_x86_64.tar.gz"
-[ "${countryCode}" = "China" ] && downloadUrl="https://file.xiecq.top/tools/nvidia-gpu-exporter/nvidia_gpu_exporter_${version}_linux_x86_64.tar.gz"
+[ "${countryCode}" = "China" ] && downloadUrl="${GITHUB_PROXY}/${downloadUrl}"
 # downloadProxy="https://gh-proxy.com/"
 # downloadUrl="${downloadProxy}https://github.com/utkuozdemir/nvidia_gpu_exporter/releases/download/v${version}/nvidia_gpu_exporter_${version}_linux_x86_64.tar.gz"
 port=${1-"9835"}
