@@ -25,8 +25,6 @@ version="v1.1"
 installPath="/data/${serviceName}"
 downloadUrl="https://github.com/BitdeerAI/node_exporter/releases/download/${version}/node_exporter_amd64.tar.gz"
 [ "${countryCode}" = "China" ] && downloadUrl="${GITHUB_PROXY}/${downloadUrl}"
-# downloadProxy="https://gh-proxy.com/"
-# downloadUrl="${downloadProxy}https://github.com/BitdeerAI/node_exporter/releases/download/${version}/node_exporter_amd64.tar.gz"
 port=${1-"9009"}
 
 # check service
