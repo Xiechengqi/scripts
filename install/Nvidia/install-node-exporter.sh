@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# 2025/03/22
+# 2025/04/02
 # xiechengqi
 # install bitdeer node-exporter
 # https://github.com/BitdeerAI/node_exporter/releases
@@ -24,7 +24,7 @@ serviceName="node-exporter"
 version="v1.1"
 installPath="/data/${serviceName}"
 downloadUrl="https://github.com/BitdeerAI/node_exporter/releases/download/${version}/node_exporter_amd64.tar.gz"
-[ "${countryCode}" = "China" ] && downloadUrl="https://file.xiecq.top/tools/bitdeer/node_exporter_amd64.tar.gz"
+[ "${countryCode}" = "China" ] && downloadUrl="${GITHUB_PROXY}/${downloadUrl}"
 # downloadProxy="https://gh-proxy.com/"
 # downloadUrl="${downloadProxy}https://github.com/BitdeerAI/node_exporter/releases/download/${version}/node_exporter_amd64.tar.gz"
 port=${1-"9009"}
