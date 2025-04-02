@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2024/03/13
+# 2025/04/02
 # install frps
 #
 
@@ -11,19 +11,21 @@ BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
+# check location
+countryCode=$(check_if_in_china)
+[ ".${countryCode}" = "." ] && ERROR "Get country location fail ..."
+INFO "Location: ${countryCode}"
 
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'centos7|ubuntu18|ubuntu20|ubuntu22' &> /dev/null && ERROR "You could only install on os: centos7、ubuntu18、ubuntu20"
-
-curl cip.cc | grep '中国' &> /dev/null && countryCode="CN"
 
 # environment
 serviceName="frps"
 version=${1-"0.61.1"}
 installPath="/data/${serviceName}-${version}"
 downloadUrl="https://github.com/fatedier/frp/releases/download/v${version}/frp_${version}_linux_amd64.tar.gz"
-[ "${countryCode}" = "CN" ] && downloadUrl="https://gh-proxy.com/${downloadUrl}"
+[ "${countryCode}" = "China" ] && downloadUrl="${GITHUB_PROXY}/${downloadUrl}"
 
 # check servcie
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
