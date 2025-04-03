@@ -14,7 +14,7 @@ main() {
 
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'ubuntu20' &> /dev/null && ERROR "You could only install on os: centos7、ubuntu18、ubuntu20"
+! echo "$osInfo" | grep -E 'ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu20"
 
 # environments
 serviceName="tailscaled"
