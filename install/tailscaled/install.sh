@@ -4,6 +4,7 @@
 # xiechengqi
 # 2025/02/14
 # install tailscaled
+# doc: https://pkgs.tailscale.com/stable/
 #
 
 # source /etc/profile
