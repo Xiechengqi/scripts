@@ -4,7 +4,7 @@
 # 2025/04/13
 # xiechengqi
 # install VictoriaMetrics
-# https://github.com/VictoriaMetrics/VictoriaMetrics
+# docs: https://docs.victoriametrics.com/quick-start/
 # scrape config: https://docs.victoriametrics.com/scrape_config_examples/
 # usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/VictoriaMetrics/install.sh | sudo bash
 #
