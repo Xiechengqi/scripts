@@ -35,9 +35,7 @@ systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is run
 # check install path
 EXEC "rm -rf ${installPath} /tmp/${serviceName} /var/lib/vector"
 EXEC "mkdir -p ${installPath} /tmp/${serviceName}"
-EXEC "mkdir -p ${installPath}/{bin,conf,logs}"
-EXEC "mkdir -p /var/lib/vector"
-EXEC "ln -fs /var/lib/vector ${installPath}/data"
+EXEC "mkdir -p ${installPath}/{bin,conf,logs,data}"
 
 # download tarball
 EXEC "curl -SsL ${sourceDownloadUrl} | tar zx --strip-components 2 -C /tmp/${serviceName}/"
@@ -50,25 +48,17 @@ INFO "${binary} -V" && ${binary} -V
 
 # create config
 cat > ${installPath}/conf/demo_logs.yaml << EOF
-sources:
-  generate_syslog:
-    type:   "demo_logs"
-    format: "syslog"
-    count:  100
+data_dir: "${installPath}/data"
 
-transforms:
-  remap_syslog:
-    inputs:
-      - "generate_syslog"
-    type:   "remap"
-    source: |
-            structured = parse_syslog!(.message)
-            . = merge(., structured)
+sources:
+  host_metrics:
+    type: host_metrics
+    scrape_interval_secs: 30
 
 sinks:
   emit_syslog:
     inputs:
-      - "remap_syslog"
+      - "host_metrics"
     type: "console"
     encoding:
       codec: "json"
