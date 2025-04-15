@@ -1,38 +1,45 @@
 #!/usr/bin/env bash
 
 #
+# 2025/04/15
 # xiechengqi
+# install filebeat
+# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Filebeat/install.sh | sudo bash
 # OS: ubuntu
-# 2023/08/21
-# binary install golang (adapt to China)
 #
 
 source /etc/profile
+# BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
 BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
+# check location
+countryCode=$(check_if_in_china)
+[ ".${countryCode}" = "." ] && ERROR "Get country location fail ..."
+INFO "Location: ${countryCode}"
+
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20|centos7|centos8' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20、centos7、centos8"
+! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20|ubuntu22|centos7|centos8' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20、ubuntu22、centos7、centos8"
 
 # environments
 serviceName="filebeat"
-version="8.9.1"
+version="8.15.3"
 installPath="/data/${serviceName}"
 downloadUrl="https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${version}-linux-x86_64.tar.gz"
-configUrl=${1-"https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Filebeat/sao-filebeat.yaml"}
+[ "${countryCode}" = "China" ] && configUrl=${1-"${GITHUB_PROXY}/https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Filebeat/sao-filebeat.yaml"} || configUrl=${1-"https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Filebeat/sao-filebeat.yaml"}
 
 # check service
-filebeat version &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
+systemctl is-active ${serviceName} &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
 
 # check install path
 EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/{src,bin,logs,conf}"
 
 # download tarball
-EXEC "curl -SsL $downloadUrl | tar zx --strip-components 1 -C ${installPath}/src"
-EXEC "mv ${installPath}/src/filebeat ${installPath}/bin/"
+EXEC "curl -SsL ${downloadUrl} | tar zx --strip-components 1 -C ${installPath}/src"
+EXEC "cp -f ${installPath}/src/filebeat ${installPath}/bin/"
 
 # register path
 EXEC "ln -fs ${installPath}/bin/* /usr/local/bin/"
@@ -81,6 +88,9 @@ EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceN
 
 # info
 YELLOW "version: ${version}"
+YELLOW "install: ${installPath}"
+YELLOW "log: tail -f ${installPath}/logs/latest.log"
+YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] ${serviceName}"
 }
 
 main $@
