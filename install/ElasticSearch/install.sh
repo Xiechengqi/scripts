@@ -69,8 +69,8 @@ EXEC "ln -fs ${installPath}/bin/${binary} /usr/local/bin/${binary}"
 INFO "${binary} -version" && ${binary} -version
 
 # create conf
-sed -i "s/^#path.data: .*/path.data: ${installPath}/data" ${installPath}/config/elasticsearch.yml
-sed -i "s/^#path.logs: .*/path.logs: ${installPath}/logs" ${installPath}/config/elasticsearch.yml
+sed -i "s!^#path.data: .*!path.data: ${installPath}/data!" ${installPath}/config/elasticsearch.yml
+sed -i "s!^#path.logs: .*!path.logs: ${installPath}/logs!" ${installPath}/config/elasticsearch.yml
 sed -i "s/^#cluster.name: .*/cluster.name: ${clusterName}/" ${installPath}/config/elasticsearch.yml
 sed -i "s/^#node.name: .*/node.name: ${nodeName}/" ${installPath}/config/elasticsearch.yml
 sed -i "s/^#network.host: .*/network.host: 0.0.0.0/" ${installPath}/config/elasticsearch.yml
