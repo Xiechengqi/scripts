@@ -80,6 +80,7 @@ sed -i "s/^#discovery.seed_hosts: .*/discovery.seed_hosts: []/" ${installPath}/c
 cat >> ${installPath}/config/elasticsearch.yml << EOF
 transport.host: 0.0.0.0
 xpack.security.enabled: false
+discovery.type: single-node
 EOF
 
 # creat start.sh
