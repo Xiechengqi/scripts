@@ -19,6 +19,10 @@ countryCode=$(check_if_in_china)
 [ ".${countryCode}" = "." ] && ERROR "Get country location fail ..."
 INFO "Location: ${countryCode}"
 
+# check os
+osInfo=`get_os` && INFO "current os: $osInfo"
+! echo "$osInfo" | grep -E 'ubuntu20|ubuntu22' &> /dev/null && ERROR "You could only install on os: ubuntu20、ubuntu22"
+
 # environment
 serviceName="elasticsearch"
 version="8.18.0"
