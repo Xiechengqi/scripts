@@ -45,58 +45,70 @@ INFO "${binary} -v" && ${binary} -v
 
 # create conf
 cat > ${installPath}/conf/${serviceName}.yaml << EOF
+shell:
+  - name: test shell
+    cmd: "ls"
+    args:
+      - "-l"
+
+tls:
+  - name: test tls
+    host: www.baidu.com:443
+    nolinger: true             # Disable SO_LINGER
+    insecure_skip_verify: true # don't check cert validity
+    expire_skip_verify: true   # don't check cert expire date
+    alert_expire_before: 168h  # alert if cert expire date is before X, the value is a Duration,
+
 http:
-  - name: elasticsearch
-    url: http://elasticsearch/_cluster/health
+  - name: test http
+    url: https://www.baidu.com
     method: GET
     content_encoding: text/json
     insecure: true
     success_code:
       - [200,206]
       - [300,308]
-    contain: "cluster_name"
-    eval:
-      doc: JSON
-      expression: "x_str('//status')"
-    labels:
-      env: dev
+#    contain: "STATUS OK"
 
 ping:
-  - name: Ping HK
-    host: hk
+  - name: test ping
+    host: baidu.com
     count: 5 # number of packets to send, default: 3
     lost: 0.2 # 20% lost percentage threshold, mark it down if the loss is greater than this, default: 0
     privileged: true # if true, the ping will be executed with icmp, otherwise use udp, default: false (Note: On Windows platform, this must be set to True)
     timeout: 10s # default is 30 seconds
     interval: 2m # default is 60 seconds
-    labels:
-      env: production
 
-# TCP Probe Configuration
+  - name: test ping jd.com
+    host: jd.com
+    count: 5 # number of packets to send, default: 3
+    lost: 0.2 # 20% lost percentage threshold, mark it down if the loss is greater than this, default: 0
+    privileged: true # if true, the ping will be executed with icmp, otherwise use udp, default: false (Note: On Windows platform, this must be set to True)
+    timeout: 10s # default is 30 seconds
+    interval: 2m # default is 60 seconds
+
 tcp:
-  - name: SSH HK
-    host: hk:22
+  - name: test tcp
+    host: localhost:22
     timeout: 10s # default is 30 seconds
     interval: 2m # default is 60 seconds
     nolinger: true # Disable SO_LINGER
-    labels:
-      env: production
 
 # Notification Configuration
 notify:
   log:
     - name: log file # local log file
-      file: ${installPath}/logs/notify.log
+      file: /data/easeprobe/logs/notify.log
 
-#   wecom:
-#     - name: "wechat alert"
-#       webhook: ""
+#  wecom:
+#    - name: "wechat alert"
+#      webhook: ""
 
 # Global settings for all probes and notifiers.
 settings:
   name: "EaseProbe" # the name of the probe: default: "EaseProbe"
   icon: "https://megaease.com/favicon.png" # the icon of the probe. default: "https://megaease.com/favicon.png"
-  pid: ${installPath}/easeprobe.pid
+  pid: /data/easeprobe/easeprobe.pid
 
   # A HTTP Server configuration
   http:
@@ -104,7 +116,7 @@ settings:
     port: 8181 # the port of the server. default: 8181
     refresh: 30s # the auto-refresh interval of the server. default: the minimum value of the probes' interval.
     log:
-      file: ${installPath}/logs/http.log # access log file. default: Stdout
+      file: /data/easeprobe/logs/http.log # access log file. default: Stdout
       # Log Rotate Configuration (optional)
       self_rotate: true # true: self rotate log file. default: true
       size: 10 # max of access log file size. default: 10m
@@ -123,7 +135,7 @@ settings:
       max: 1 # the max of the alert, default: 1
 
   log:
-    file: ${installPath}/logs/probe.log # default: stdout
+    file: /data/easeprobe/logs/probe.log # default: stdout
     level: "info" # can be: panic, fatal, error, warn, info, debug.
     self_rotate: true # default: true
     size: 10 # max size of log file. default: 10M
