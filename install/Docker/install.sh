@@ -82,6 +82,7 @@ then
 cat > /etc/docker/daemon.json << EOF
 {
   "registry-mirrors": ["https://docker.m.daocloud.io", "https://hub.rat.dev", "https://docker.1panel.live", "https://docker.rainbond.cc"],
+  "insecure-registries" : ["docker.io", "docker.elastic.co","gcr.io","ghcr.io","k8s.gcr.io","mcr.microsoft.com","nvcr.io","quay.io","registry.k8s.io"],
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
   "log-opts": {
@@ -93,6 +94,7 @@ EOF
 else
 cat > /etc/docker/daemon.json << EOF
 {
+  "insecure-registries" : ["docker.io", "docker.elastic.co","gcr.io","ghcr.io","k8s.gcr.io","mcr.microsoft.com","nvcr.io","quay.io","registry.k8s.io"],
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
   "log-opts": {
