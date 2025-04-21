@@ -51,17 +51,57 @@ cat > ${installPath}/conf/demo_logs.yaml << EOF
 data_dir: "${installPath}/data"
 
 sources:
-  host_metrics:
-    type: host_metrics
-    scrape_interval_secs: 30
+  dmesg:
+    type: file
+    read_from: beginning
+    include:
+      - /var/log/dmesg
+
+  syslog:
+    type: file
+    read_from: end
+    include:
+      - /var/log/syslog
+
+transforms:
+  label_dmesg:
+    inputs:
+      - dmesg
+    type: remap
+    source: |
+      .labels.type = "dmesg"
+      .labels.hostname = "$(hostname)"
+      .labels.ip = "$(hostname -I | awk '{print $1}')"
+
+  label_syslog:
+    inputs:
+      - syslog
+    type: remap
+    source: |
+      .labels.type = "syslog"
+      .labels.hostname = "$(hostname)"
+      .labels.ip = "$(hostname -I | awk '{print $1}')"
 
 sinks:
-  emit_syslog:
+  sink_to_console:
     inputs:
-      - "host_metrics"
-    type: "console"
+      - label_syslog
+    type: console
     encoding:
-      codec: "json"
+      codec: raw_message
+
+  sink_to_loki:
+    inputs:
+      - label_dmesg
+      - label_syslog
+    type: loki
+    endpoint: http://localhost:3100
+    encoding:
+      codec: raw_message
+    labels:
+      'type': "{{ labels.type }}"
+      'hostname': "{{ labels.hostname }}"
+      'ip': "{{ labels.ip }}"
 EOF
 
 # creat start.sh
