@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# 2025/04/13
+# 2025/04/22
 # xiechengqi
 # install VictoriaMetrics
 # docs: https://docs.victoriametrics.com/quick-start/
@@ -45,14 +45,42 @@ EXEC "${binary} -version" && ${binary} -version
 # create scrape config demo
 cat > ${installPath}/scrape.yaml << EOF
 scrape_configs:
-- job_name: node-exporter
-  static_configs:
-  - targets:
-    - localhost:9100
-- job_name: victoriametrics
+- job_name: local-victoriametrics
   static_configs:
   - targets:
     - http://localhost:8428/metrics
+
+- job_name: k8s-node-exporter
+  kubernetes_sd_configs:
+  - role: endpoints
+    kubeconfig_file: "/root/.kube/config"
+  scrape_interval: 30s
+  metrics_path: /metrics
+  relabel_configs:
+  - action: keep
+    source_labels:
+    - __meta_kubernetes_endpoints_name
+    regex: .*node-exporter.*
+  - action: keep
+    source_labels:
+    - __meta_kubernetes_pod_container_port_number
+    regex: 9100
+
+- job_name: k8s-argocd-application-controller-metrics
+  kubernetes_sd_configs:
+  - role: endpoints
+    kubeconfig_file: "/root/.kube/config"
+  scrape_interval: 30s
+  metrics_path: /metrics
+  relabel_configs:
+  - action: keep
+    source_labels:
+    - __meta_kubernetes_endpoints_name
+    regex: argo-cd-argocd-application-controller-metrics
+  - action: keep
+    source_labels:
+    - __meta_kubernetes_pod_container_port_number
+    regex: 8082
 EOF
 
 # creat start.sh
