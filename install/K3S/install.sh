@@ -88,6 +88,7 @@ EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceN
 
 # alias
 ! which kubectl && ! alias kubectl && echo 'alias kubectl="k3s kubectl"' >> /etc/profile
+! which ctr && ! alias ctr && echo 'alias ctr="k3s ctr"' >> /etc/profile
 ! which crictl && ! alias crictl && echo 'alias crictl="k3s crictl"' >> /etc/profile
 grep 'alias' /etc/profile 2> /dev/null && INFO "Run 'source /etc/profile' to active"
 
