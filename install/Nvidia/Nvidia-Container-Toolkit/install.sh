@@ -31,7 +31,8 @@ INFO "cat /etc/apt/sources.list.d/nvidia-container-toolkit.list" && cat /etc/apt
 INFO "apt update" && apt update || exit 1
 INFO "apt install -y nvidia-container-toolkit" && apt install -y nvidia-container-toolkit || exit 1
 
-YELLOW "nvidia-ctk runtime configure --runtime=[docker|containerd|crio]"
+YELLOW "Default: nvidia-ctk runtime configure --runtime=[docker|containerd|crio]"
+YELLOW "K3S: nvidia-ctk runtime configure --runtime=containerd --config /var/lib/rancher/k3s/agent/etc/containerd/config.toml"
 YELLOW "Doc: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html"
 
 }
