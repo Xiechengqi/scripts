@@ -58,7 +58,7 @@ export installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \${installPath}/logs/\${timestamp}.log && ln -fs \${installPath}/logs/\${timestamp}.log \${installPath}/logs/latest.log
 
-\${installPath}/bin/k3s server --write-kubeconfig \${installPath}/kubeconfig &> \${installPath}/logs/latest.log
+\${installPath}/bin/k3s server --disable traefik --write-kubeconfig \${installPath}/kubeconfig &> \${installPath}/logs/latest.log
 EOF
 EXEC "chmod +x ${installPath}/start.sh"
 
@@ -87,9 +87,9 @@ EXEC "systemctl daemon-reload && systemctl enable ${serviceName} && systemctl st
 EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceName} --no-pager
 
 # alias
-! which kubectl && ! alias kubectl && EXEC "echo \"alias kubectl=\"k3s kubectl\"\" >> /etc/profile"
-! which crictl && ! alias crictl && EXEC "echo \"alias crictl=\"k3s crictl\"\" >> /etc/profile"
-INFO "Run 'source /etc/profile' to active"
+! which kubectl && ! alias kubectl && echo 'alias kubectl="k3s kubectl"' >> /etc/profile
+! which crictl && ! alias crictl && echo 'alias crictl="k3s crictl"' >> /etc/profile
+grep 'alias' /etc/profile 2> /dev/null && INFO "Run 'source /etc/profile' to active"
 
 # info
 YELLOW "${serviceName} version: ${version}"
