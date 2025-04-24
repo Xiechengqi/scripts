@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 #
-# 2025/04/22
+# 2025/04/25
 # xiechengqi
-# install VictoriaMetrics
+# install victoria-metrics-prod
 # docs: https://docs.victoriametrics.com/quick-start/
 # scrape config: https://docs.victoriametrics.com/scrape_config_examples/
-# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/VictoriaMetrics/install.sh | sudo bash
+# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/VictoriaMetrics/install-vm.sh | sudo bash
 #
 
 source /etc/profile
@@ -21,7 +21,7 @@ countryCode=$(check_if_in_china)
 INFO "Location: ${countryCode}"
 
 # environment
-serviceName="victoriametrics"
+serviceName="vm"
 version="1.115.0"
 installPath="/data/${serviceName}"
 downloadUrl="https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/v${version}/victoria-metrics-linux-amd64-v${version}.tar.gz"
