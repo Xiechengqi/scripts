@@ -6,7 +6,7 @@
 # install chartmuseum
 # doc: https://chartmuseum.com/docs/
 # config: https://chartmuseum.com/docs/#configuration
-# usage: usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Helm/ChartMuseum/install.sh | sudo bash
+# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Helm/ChartMuseum/install.sh | sudo bash
 #
 
 source /etc/profile
