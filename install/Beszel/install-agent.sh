@@ -16,7 +16,7 @@ main() {
 export serviceName="beszel-agent"
 export installPath="/data/${serviceName}"
 export port="45876"
-export sshKey=${1-"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHxW62P1mhocV7yBaAv+pFcd0Ha+o+ui+vLFEpqfoP63"}
+export sshKey=${1-"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOgdF22473XMlRhURgxyGSBeziNmnLQiHHek7/LoGTaL"}
 export version="v0.10.2"
 export GITHUB_PROXY_URL="https://gh-proxy.com/"
 export downloadUrl="${GITHUB_PROXY_URL}https://github.com/henrygd/beszel/releases/download/${version}/beszel-agent_linux_amd64.tar.gz"
