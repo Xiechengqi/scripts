@@ -4,7 +4,7 @@
 # xiechengqi
 # 2025/03/18
 # install beszel-agent
-# curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Beszel/install-agent.sh | sudo bash [-s hub_ssh_key]
+# curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Beszel/install-agent.sh | sudo bash -s hub_ssh_key
 #
 
 source /etc/profile
@@ -12,14 +12,19 @@ BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
+# check location
+countryCode=$(check_if_in_china)
+[ ".${countryCode}" = "." ] && ERROR "Get country location fail ..."
+INFO "Location: ${countryCode}"
 
 export serviceName="beszel-agent"
 export installPath="/data/${serviceName}"
 export port="45876"
-export sshKey=${1-"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOgdF22473XMlRhURgxyGSBeziNmnLQiHHek7/LoGTaL"}
-export version="v0.10.2"
-export GITHUB_PROXY_URL="https://gh-proxy.com/"
-export downloadUrl="${GITHUB_PROXY_URL}https://github.com/henrygd/beszel/releases/download/${version}/beszel-agent_linux_amd64.tar.gz"
+[ ".${1}" != "." ] && export sshKey="ssh-ed25519 ${1}" || ERROR "Less sshKey, exit ..."
+INFO "ssh key: ${sshKey}"
+export version="v0.11.0"
+export downloadUrl="https://github.com/henrygd/beszel/releases/download/${version}/beszel-agent_linux_amd64.tar.gz"
+[ "${countryCode}" = "China" ] && downloadUrl="${GITHUB_PROXY}/${downloadUrl}"
 
 # check service
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
