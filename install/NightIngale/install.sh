@@ -4,7 +4,7 @@
 # 2025/04/23
 # xiechengqi
 # install nightingale
-# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Nightingale/install.sh | sudo bash
+# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/NightIngale/install.sh | sudo bash
 # doc: https://flashcat.cloud/docs/content/flashcat-monitor/nightingale-v7/install/binary/
 # config: https://github.com/ccfos/nightingale/blob/main/etc/config.toml
 #
