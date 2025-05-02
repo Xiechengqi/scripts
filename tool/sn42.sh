@@ -5,7 +5,7 @@
 # usage: source <(curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/tool/sn42.sh)
 #
 
-# usage: sn42_tweets_number [axon]
+# usage: sn42_tweets_number_metric [axon]
 function sn42_tweets_number_metric() {
 
 axon=${1}
