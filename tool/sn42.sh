@@ -2,7 +2,7 @@
 
 #
 # sn42 common functions
-# usage: source <(curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/tool/bench.sh)
+# usage: source <(curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/tool/sn42.sh)
 #
 
 # usage: sn42_tweets_number [axon]
