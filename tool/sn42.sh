@@ -5,6 +5,14 @@
 # usage: source <(curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/tool/sn42.sh)
 #
 
+# usage: prom_guage [metric name]
+function prom_guage() {
+cat << EOF
+# HELP ${1} get $(echo ${1} | tr '_' ' ')
+# TYPE ${1} gauge
+EOF
+}
+
 # usage: sn42_tweets_number_metric [axon]
 function sn42_tweets_number_metric() {
 axon=${1}
