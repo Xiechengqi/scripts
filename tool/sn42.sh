@@ -7,7 +7,6 @@
 
 # usage: sn42_tweets_number_metric [axon]
 function sn42_tweets_number_metric() {
-
 axon=${1}
 local teeUrl=$(curl -SsL http://${axon}/tee | sed 's/"//g')
 [ ".${teeUrl}" = "." ] && echo "Error: ${axon}" && exit 1
@@ -17,5 +16,15 @@ local result=$(curl -SsL -k ${teeUrl}/job/status/${uuid})
 local de=$(curl -SsL -k ${teeUrl}/job/result -H "Content-Type: application/json" -d '{ "encrypted_result": "'${result}'", "encrypted_request": "'${sig}'" }')
 local tweets=$(echo ${de} | jq '.stats.twitter_returned_tweets')
 echo "sn42_tweets_number{axon=\"${axon}\", tee=\"${teeUrl}\"} ${tweets}"
+}
 
+# usage: sn42_tweets_per_minute_metric [axon]
+function sn42_tweets_per_minute_metric() {
+axon=${1}
+local teeUrl=$(curl -SsL http://${axon}/tee | sed 's/"//g')
+local tweetsA=$(sn42_tweets_number_metric ${axon} | awk '{print $NF}')
+sleep 10s
+local tweetsB=$(sn42_tweets_number_metric ${axon} | awk '{print $NF}')
+local tweetsPerMinute=$(echo "$(echo "${tweetsB} - ${tweetsA}" | bc) * 6" | bc)
+echo "sn42_tweets_per_minute{axon=\"${axon}\", tee=\"${teeUrl}\"} ${tweetsPerMinute}"
 }
