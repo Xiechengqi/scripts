@@ -5,6 +5,7 @@
 # xiechengqi
 # https://github.com/komodorio/helm-dashboard
 # install helm dashboard
+# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Helm/Dashboard/install.sh | sudo bash
 #
 
 source /etc/profile
