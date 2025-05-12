@@ -11,12 +11,6 @@ source /etc/profile
 BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
-trap _clean "EXIT"
-
-_clean() {
-rm -f /data/$$_minio
-}
-
 main() {
 # check os
 osInfo=`get_os` && INFO "current os: ${osInfo}"
@@ -80,12 +74,12 @@ RestartSec=2
 WantedBy=multi-user.target
 EOF
 
-# set root_user and root_password
-sed -i '/MINIO_ROOT_USER/d;/MINIO_ROOT_PASSWORD/d' /etc/profile
-cat > /etc/profile << EOF
-export MINIO_ROOT_USER=${minio_root_user}
-export MINIO_ROOT_PASSWORD=${minio_root_password}
-EOF
+# # set root_user and root_password
+# sed -i '/MINIO_ROOT_USER/d;/MINIO_ROOT_PASSWORD/d' /etc/profile
+# cat > /etc/profile << EOF
+# export MINIO_ROOT_USER=${minio_root_user}
+# export MINIO_ROOT_PASSWORD=${minio_root_password}
+# EOF
 
 # start
 EXEC "systemctl daemon-reload && systemctl enable ${serviceName} && systemctl start ${serviceName}"
