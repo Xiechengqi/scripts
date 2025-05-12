@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2021/10/12
+# 2025/05/12
 # http://docs.minio.org.cn/docs/
 # docker install minio server and client
 #
@@ -20,7 +20,7 @@ rm -f /data/$$_minio
 main() {
 # check os
 osInfo=`get_os` && INFO "current os: $osInfo"
-! echo "$osInfo" | grep -E 'centos7|centos8|ubuntu16|ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: centos7、centos8、ubuntu16、ubuntu18、ubuntu20"
+! echo "$osInfo" | grep -E 'centos7|centos8|ubuntu16|ubuntu18|ubuntu20|ubuntu22' &> /dev/null && ERROR "You could only install on os: centos7、centos8、ubuntu16、ubuntu18、ubuntu20、ubuntu22"
 
 # environments
 serviceName="minio"
