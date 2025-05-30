@@ -4,7 +4,6 @@
 # xiechengqi
 # 2025/05/30
 # make install redis
-# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Redis/install.sh | sudo bash -s verison
 #
 
 source /etc/profile
@@ -48,10 +47,14 @@ EXEC "make && make install"
 
 # conf
 sed -i '/^requirepass/d' ${installPath}/redis.conf
+sed -i '/^bind/d' ${installPath}/redis.conf
+sed -i '/^port/d' ${installPath}/redis.conf
 sed -i '/^dir/d' ${installPath}/redis.conf
 sed -i '/^logfile/d' ${installPath}/redis.conf
 cat >> ${installPath}/redis.conf << EOF
 
+bind 0.0.0.0
+port ${port}
 dir ${installPath}/data
 logfile "${installPath}/logs/latest.log"
 EOF
