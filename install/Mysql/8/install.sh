@@ -41,6 +41,9 @@ systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is run
 ! grep mysql /etc/group &> /dev/null && EXEC "groupadd mysql"
 ! grep mysql /etc/passwd &> /dev/null && EXEC "useradd -r -s /bin/false -g mysql mysql"
 
+# install requirements
+EXEC "apt update && apt install -y libncurses5"
+
 # check install path
 EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/{xtrabackup,mysql-server,conf,data,logs,run,tmp,mysql-bin,relay-logs}"
