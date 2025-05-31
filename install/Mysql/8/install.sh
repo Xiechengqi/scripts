@@ -46,13 +46,13 @@ EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/{xtrabackup,mysql-server,conf,data,logs,run,tmp,mysql-bin,relay-logs}"
 
 # download mysql
-# EXEC "rm -f /tmp/mysql.tar.xz"
-# INFO "wget ${downloadUrl} -O /tmp/mysql.tar.xz" && wget ${downloadUrl} -O /tmp/mysql.tar.xz || exit 1
+EXEC "rm -f /tmp/mysql.tar.xz"
+INFO "wget ${downloadUrl} -O /tmp/mysql.tar.xz" && wget ${downloadUrl} -O /tmp/mysql.tar.xz || exit 1
 EXEC "tar xvJf /tmp/mysql.tar.xz --strip-components 1 -C ${installPath}/mysql-server/"
 
 # download xtrabackup
-# EXEC "rm -f /tmp/xtrabackup.tar.gz"
-# INFO "wget ${xtrabackupDownloadUrl} -O /tmp/xtrabackup.tar.gz" && wget ${xtrabackupDownloadUrl} -O /tmp/xtrabackup.tar.gz|| exit 1
+EXEC "rm -f /tmp/xtrabackup.tar.gz"
+INFO "wget ${xtrabackupDownloadUrl} -O /tmp/xtrabackup.tar.gz" && wget ${xtrabackupDownloadUrl} -O /tmp/xtrabackup.tar.gz|| exit 1
 EXEC "tar -zxvf /tmp/xtrabackup.tar.gz --strip-components 1 -C ${installPath}/xtrabackup"
 EXEC "chown -R mysql:mysql ${installPath}/xtrabackup"
 
