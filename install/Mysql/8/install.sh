@@ -174,6 +174,8 @@ general_log_file=${installPath}/logs/query.log
 ####### binlog ######
 ##binlog 格式
 binlog_format=row
+##binlog 1 天自动过期删除
+binlog_expire_logs_seconds=86400
 ##binlog文件
 log-bin=${installPath}/mysql-bin/mysql-${mysqlPort}-bin
 ##binlog的cache大小
