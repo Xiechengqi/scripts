@@ -58,7 +58,7 @@ export installPath="${installPath}"
 timestamp=\$(date +%Y%m%d-%H%M%S)
 touch \${installPath}/logs/\${timestamp}.log && ln -fs \${installPath}/logs/\${timestamp}.log \${installPath}/logs/latest.log
 
-\${installPath}/bin/k3s server --disable traefik --write-kubeconfig \${installPath}/kubeconfig &> \${installPath}/logs/latest.log
+\${installPath}/bin/k3s server --docker --disable traefik --write-kubeconfig \${installPath}/kubeconfig &> \${installPath}/logs/latest.log
 EOF
 EXEC "chmod +x ${installPath}/start.sh"
 
