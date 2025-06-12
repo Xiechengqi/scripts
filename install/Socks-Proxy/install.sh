@@ -28,6 +28,15 @@ port=${1-"1080"}
 # check service
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} has been installed ..." && return 0
 
+# check ssh key
+if ! ls /root/.ssh/id_rsa &> /dev/null || ! ls /root/.ssh/id_rsa.pub
+then
+EXEC "rm -f /root/.ssh/id_rsa /root/.ssh/id_rsa.pub"
+EXEC "ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -N ''"
+fi
+grep 'ssh-rsa' /root/.ssh/id_rsa.pub &> /dev/null && ! grep "$(cat /root/.ssh/id_rsa.pub)" /root/.ssh/authorized_keys &> /dev/null && EXEC "cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys"
+INFO "cat /root/.ssh/authorized_keys" && cat /root/.ssh/authorized_keys
+
 # check install path
 EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/logs"
