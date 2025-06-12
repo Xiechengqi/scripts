@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # xiechengqi
-# 2025/06/11
+# 2025/06/12
 # install socks5 localhost:1080
 # usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/install/Socks-Proxy/install.sh | sudo bash
 #
@@ -45,7 +45,7 @@ do
 if ! timeout 3 curl -x socks://localhost:${port} https://checkip.amazonaws.com &> /dev/null || ! ss -plunt | grep ":${port}" &> /dev/null
 then
 echo -e \$(TZ=UTC-8 date +"%Y-%m-%d %H:%M:%S")" set socks5 localhost:${port} ... " >> \${installPath}/logs/latest.log
-kill -9 $(ss -plunt | grep ":${port}" | awk -F 'pid=' '{print $NF}' | awk -F ',' '{print $1}' | sort | uniq | tr '\n' ' ')
+kill -9 \$(ss -plunt | grep ":${port}" | awk -F 'pid=' '{print \$NF}' | awk -F ',' '{print \$1}' | sort | uniq | tr '\n' ' ')
 ssh -p 22 -f -N -D *:${port} root@localhost && echo "[ok]" >> \${installPath}/logs/latest.log || echo "[fail]" >> \${installPath}/logs/latest.log
 fi
 echo \$(TZ=UTC-8 date +"%Y-%m-%d %H:%M:%S")" sleep 1m ..." >> \${installPath}/logs/latest.log
