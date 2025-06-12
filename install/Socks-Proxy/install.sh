@@ -86,6 +86,10 @@ EOF
 EXEC "systemctl daemon-reload && systemctl enable ${serviceName} && systemctl start ${serviceName}"
 EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceName} --no-pager
 
+# add check
+EXEC "echo \"curl -x socks://localhost:${port} 3.0.3.0\" > /usr/local/bin/check && chmod +x /usr/local/bin/check"
+INFO "check" && check
+
 # info
 YELLOW "${serviceName}"
 YELLOW "install: ${installPath}"
