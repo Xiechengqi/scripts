@@ -88,6 +88,7 @@ EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceN
 
 # add check
 EXEC "echo \"curl -x socks://localhost:${port} 3.0.3.0\" > /usr/local/bin/check && chmod +x /usr/local/bin/check"
+EXEC "sleep 5"
 INFO "check" && check
 
 # info
