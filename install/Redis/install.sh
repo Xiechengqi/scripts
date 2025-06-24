@@ -4,6 +4,7 @@
 # xiechengqi
 # 2025/05/30
 # make install redis
+# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/Redis/install.sh | sudo bash
 #
 
 source /etc/profile
