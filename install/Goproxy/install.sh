@@ -41,7 +41,7 @@ EXEC "mv /tmp/${serviceName}/proxy ${installPath}/bin/${binary} && chmod +x ${in
 
 # register bin
 EXEC "ln -fs ${installPath}/bin/${binary} /usr/local/bin/${binary}"
-INFO "${binary} -version" && ${binary} -version
+INFO "${binary} --version" && ${binary} --version
 
 # creat start.sh
 cat > ${installPath}/start.sh << EOF
