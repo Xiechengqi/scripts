@@ -10,7 +10,7 @@ main() {
 local ip=${1}
 [ ".${ip}" = "." ] && echo "Less IP, exit ..." && exit 1
 echo "=> grep ufw ${ip}"
-ufw status numbered | grep -E " ${ip} " || exit 0
+ufw status numbered | grep -E " ${ip}" || exit 0
 echo "=> delete ufw ${ip}"
 for number in $(ufw status numbered | grep -E " ${ip}" | grep -oP "^\[[ ]*[0-9]+\]" |  grep -oP "[0-9]+" | sort -rn)
 do
