@@ -10,9 +10,9 @@ main() {
 local port=${1}
 [ ".${port}" = "." ] && echo "Less Port, exit ..." && exit 1
 echo "=> grep ufw ${port}"
-ufw status numbered | grep -E "^\[[0-9]+\] ${port} " || exit 0
+ufw status numbered | grep -E "^\[[ ]*[0-9]+\] ${port} " || exit 0
 echo "=> delete ufw ${port}"
-for number in $(ufw status numbered | grep -oP "^\[[0-9]+\] ${port} " | grep -oP "^\[[0-9]+\]" |  grep -oP "[0-9]+" | sort -rn)
+for number in $(ufw status numbered | grep -oP "^\[[ ]*[0-9]+\] ${port} " | grep -oP "^\[[ ]*[0-9]+\]" |  grep -oP "[0-9]+" | sort -rn)
 do
 echo "=> ufw delete ${number}"
 echo 'y' | ufw delete ${number}
