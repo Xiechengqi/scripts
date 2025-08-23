@@ -3,7 +3,7 @@
 # 2025/08/23
 # xiechengqi
 # install rage4 zerotier-one
-# usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/Rage4/install-zerotier.sh | bash -s REGION RAGE_ANYCAST_APIKEY ANYCASTIP1,ANYCASTIP2...
+# usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Rage4/install-zerotier.sh | bash -s REGION RAGE_ANYCAST_APIKEY ANYCASTIP1,ANYCASTIP2...
 #
 
 source /etc/profile
@@ -11,7 +11,7 @@ BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 USAGE() {
-INFO "curl -SsL ${BASEURL}/Rage4/install-zerotier.sh | bash -s REGION RAGE_ANYCAST_APIKEY ANYCASTIP1,ANYCASTIP2..."
+INFO "curl -SsL ${BASEURL}/install/Rage4/install-zerotier.sh | bash -s REGION RAGE_ANYCAST_APIKEY ANYCASTIP1,ANYCASTIP2..."
 exit 0
 }
 
@@ -20,7 +20,7 @@ main() {
 # environment
 export serviceName="zerotier-one"
 export installPath="/data/${serviceName}" && EXEC "mkdir -p ${installPath}"
-export anycastIpLocationUrl="${BASEURL}/Rage4/anycast-ip-location.txt"
+export anycastIpLocationUrl="${BASEURL}/install/Rage4/anycast-ip-location.txt"
 EXEC "curl -SsL ${anycastIpLocationUrl} -o ${installPath}/anycast-ip-location.txt"
 export REGION=${1}
 [ ".${REGION}" = "." ] && USAGE
