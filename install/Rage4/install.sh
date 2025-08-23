@@ -12,9 +12,11 @@ source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
 
-if ! grep REGION env || ! grep RAGE_ANYCAST_APIKEY env || ! grep ANYCAST_IP_LIST env || ! grep RAGE_ANYCAST_NETWORK_PASSWORD env
+if ! grep RAGE_ANYCAST_EMAIL env || ! grep RAGE_ANYCAST_NETWORK env || ! grep REGION env || ! grep RAGE_ANYCAST_APIKEY env || ! grep ANYCAST_IP_LIST env || ! grep RAGE_ANYCAST_NETWORK_PASSWORD env
 then
 cat << EOF
+export RAGE_ANYCAST_EMAIL=
+export RAGE_ANYCAST_NETWORK=
 export REGION=
 export RAGE_ANYCAST_APIKEY=
 # ANYCASTIP1,ANYCASTIP2...
