@@ -3,7 +3,7 @@
 # 2025/08/23
 # xiechengqi
 # install rage4
-# usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/Rage4/install.sh | sudo bash
+# usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Rage4/install.sh | sudo bash
 #
 
 source /etc/profile
@@ -32,11 +32,11 @@ ANYCAST_IP_LIST: ${ANYCAST_IP_LIST}
 RAGE_ANYCAST_NETWORK_PASSWORD: ${RAGE_ANYCAST_NETWORK_PASSWORD}
 EOF
 
-YELLOW "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/Rage4/install-zerotier.sh | bash -s ${REGION} ${RAGE_ANYCAST_APIKEY} ${ANYCAST_IP_LIST}"
-curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/Rage4/install-zerotier.sh | bash -s ${REGION} ${RAGE_ANYCAST_APIKEY} ${ANYCAST_IP_LIST} || exit 1
+YELLOW "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Rage4/install-zerotier.sh | bash -s ${REGION} ${RAGE_ANYCAST_APIKEY} ${ANYCAST_IP_LIST}"
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/Rage4/install/install-zerotier.sh | bash -s ${REGION} ${RAGE_ANYCAST_APIKEY} ${ANYCAST_IP_LIST} || exit 1
 
-YELLOW "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/Rage4/install-bird.sh | bash -s ${REGION} ${RAGE_ANYCAST_NETWORK_PASSWORD}"
-curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/Rage4/install-bird.sh | bash -s ${REGION} ${RAGE_ANYCAST_NETWORK_PASSWORD}
+YELLOW "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Rage4/install-bird.sh | bash -s ${REGION} ${RAGE_ANYCAST_NETWORK_PASSWORD}"
+curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Rage4/install-bird.sh | bash -s ${REGION} ${RAGE_ANYCAST_NETWORK_PASSWORD}
 
 }
 
