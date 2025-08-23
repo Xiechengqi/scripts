@@ -3,7 +3,7 @@
 # 2025/08/23
 # xiechengqi
 # install rage4 zerotier-one
-# usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Rage4/install-zerotier.sh | bash -s REGION RAGE_ANYCAST_APIKEY ANYCASTIP1,ANYCASTIP2...
+# usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Rage4/install-zerotier.sh | bash -s RAGE_ANYCAST_EMAIL RAGE_ANYCAST_NETWORK RAGE_REGION RAGE_ANYCAST_APIKEY ANYCASTIP1,ANYCASTIP2...
 #
 
 source /etc/profile
@@ -11,7 +11,7 @@ BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 USAGE() {
-INFO "curl -SsL ${BASEURL}/install/Rage4/install-zerotier.sh | bash -s REGION RAGE_ANYCAST_APIKEY ANYCASTIP1,ANYCASTIP2..."
+INFO "curl -SsL ${BASEURL}/install/Rage4/install-zerotier.sh | bash -s RAGE_ANYCAST_EMAIL RAGE_ANYCAST_NETWORK RAGE_REGION RAGE_ANYCAST_APIKEY ANYCASTIP1,ANYCASTIP2..."
 exit 0
 }
 
@@ -22,23 +22,28 @@ export serviceName="zerotier-one"
 export installPath="/data/${serviceName}" && EXEC "mkdir -p ${installPath}"
 export anycastIpLocationUrl="${BASEURL}/install/Rage4/anycast-ip-location.txt"
 EXEC "curl -SsL ${anycastIpLocationUrl} -o ${installPath}/anycast-ip-location.txt"
-export REGION=${1}
+
+export RAGE_ANYCAST_EMAIL=${1}
+[ ".${RAGE_ANYCAST_EMAIL}" = "." ] && USAGE
+export RAGE_ANYCAST_NETWORK=${2}
+[ ".${RAGE_ANYCAST_NETWORK}" = "." ] && USAGE
+export REGION=${3}
 [ ".${REGION}" = "." ] && USAGE
 EXEC "grep ${REGION} ${installPath}/anycast-ip-location.txt"
 export ANYCAST_GW="172.31.255."$(grep ${REGION} ${installPath}/anycast-ip-location.txt | head -1 | awk -F '172.31.255.' '{print $NF}' | awk '{print $1}')
-export RAGE_ANYCAST_APIKEY=${2}
+export RAGE_ANYCAST_APIKEY=${4}
 [ ".${RAGE_ANYCAST_APIKEY}" = "." ] && USAGE
 # eg: 185.187.152.11,185.187.153,3
-export ANYCAST_IP_LIST=${3}
+export ANYCAST_IP_LIST=${5}
 [ ".${ANYCAST_IP_LIST}" = "." ] && USAGE
 export DEVICE="dummy0"
 export RAGE_ANYCAST_URL='https://rage4.com'
-export RAGE_ANYCAST_NETWORK="a80b1461811046f2"
-export RAGE_ANYCAST_EMAIL="xiechengqi01@gmail.com"
 export RAGE_ANYCAST_ASNUM="65012"
 export RAGE_ANYCAST_REGION=$(grep ${REGION} ${installPath}/anycast-ip-location.txt | head -1 | awk -F '172.31.255.' '{print $1}' | awk '{print $NF}' | sed 's/[[:space:]]//g')
 
-INFO "REGION: ${REGION}"
+INFO "RAGE ANYCAST EMAIL: ${RAGE_ANYCAST_EMAIL}"
+INFO "RAGE ANYCAST NETWORK: ${RAGE_ANYCAST_NETWORK}"
+INFO "RAGE REGION: ${REGION}"
 INFO "ANYCAST IP LIST: ${ANYCAST_IP_LIST}"
 INFO "ANYCAST GATEWAY: ${ANYCAST_GW}"
 INFO "RAGE4 ANYCAST URL: ${RAGE_ANYCAST_URL}"
