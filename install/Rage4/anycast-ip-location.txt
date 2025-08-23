@@ -1,0 +1,22 @@
+Johannesburg,ZA	jhb	172.31.255.181	fd00:dead:c0de:cafe:172:31:255:181
+Mumbai,IN	mum	172.31.255.149	fd00:dead:c0de:cafe:172:31:255:149
+Singapore,SG	sin	172.31.255.145	fd00:dead:c0de:cafe:172:31:255:145
+Sydney,AU	syd	172.31.255.146	fd00:dead:c0de:cafe:172:31:255:146
+Tokyo,JP	tok	172.31.255.148	fd00:dead:c0de:cafe:172:31:255:148
+Fujairah,UAE	uae	172.31.255.147	fd00:dead:c0de:cafe:172:31:255:147
+Madrid,ES	mad	172.31.255.127	fd00:dead:c0de:cafe:172:31:255:127
+Amsterdam,NL	ams	172.31.255.126	fd00:dead:c0de:cafe:172:31:255:126
+Frankfurt,DE	fra	172.31.255.121	fd00:dead:c0de:cafe:172:31:255:121
+London,UK	lon	172.31.255.123	fd00:dead:c0de:cafe:172:31:255:123
+Paris,FR	par	172.31.255.125	fd00:dead:c0de:cafe:172:31:255:125
+Stockholm,SE	sto	172.31.255.124	fd00:dead:c0de:cafe:172:31:255:124
+Warsaw,PL	waw	172.31.255.122	fd00:dead:c0de:cafe:172:31:255:122
+Chicago,IL,US	chi	172.31.255.103	fd00:dead:c0de:cafe:172:31:255:103
+Dallas,TX,US	dal	172.31.255.104	fd00:dead:c0de:cafe:172:31:255:104
+Los Angeles,CA,US	lax	172.31.255.105	fd00:dead:c0de:cafe:172:31:255:105
+Miami,FL,US	mia	172.31.255.106	fd00:dead:c0de:cafe:172:31:255:106
+New York,NY,US	nyc	172.31.255.109	fd00:dead:c0de:cafe:172:31:255:109
+San Jose,CA,US	sjc	172.31.255.108	fd00:dead:c0de:cafe:172:31:255:108
+Seattle,WA,US	sea	172.31.255.107	fd00:dead:c0de:cafe:172:31:255:107
+Sao Paulo,BR	sao	172.31.255.161	fd00:dead:c0de:cafe:172:31:255:161
+Santiago,CL	san	172.31.255.162	fd00:dead:c0de:cafe:172:31:255:162
