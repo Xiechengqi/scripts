@@ -37,7 +37,7 @@ export ANYCAST_IP_LIST=$(grep 'export ANYCAST_IP_LIST' /data/zerotier-one/post-s
 export ZEROTIER_IP=$(ifconfig | grep -B1 'inet 172.3' | tail -1 | awk -F 'inet ' '{print $NF}' | awk '{print $1}')
 export ZEROTIER_DEVICE=$(ifconfig | grep -B1 'inet 172.3' | head -1 | awk -F ':' '{print $1}')
 export RAGE_ANYCAST_DEVICE="dummy0"
-export RAGE_ANYCAST_ASNUM="65012"
+export RAGE_ANYCAST_ASNUM="65026"
 
 # check servcie
 systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
