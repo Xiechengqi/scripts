@@ -38,7 +38,7 @@ export ANYCAST_IP_LIST=${5}
 [ ".${ANYCAST_IP_LIST}" = "." ] && USAGE
 export DEVICE="dummy0"
 export RAGE_ANYCAST_URL='https://rage4.com'
-export RAGE_ANYCAST_ASNUM="65012"
+export RAGE_ANYCAST_ASNUM="65026"
 export RAGE_ANYCAST_REGION=$(grep ${REGION} ${installPath}/anycast-ip-location.txt | head -1 | awk -F '172.31.255.' '{print $1}' | awk '{print $NF}' | sed 's/[[:space:]]//g')
 
 INFO "RAGE ANYCAST EMAIL: ${RAGE_ANYCAST_EMAIL}"
