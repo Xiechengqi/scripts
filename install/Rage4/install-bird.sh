@@ -18,6 +18,7 @@ exit 0
 main() {
 
 EXEC "systemctl is-active zerotier-one"
+EXEC "export DEBIAN_FRONTEND=noninteractive"
 
 # environment
 export serviceName="bird"
