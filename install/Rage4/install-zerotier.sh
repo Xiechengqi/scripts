@@ -17,6 +17,8 @@ exit 0
 
 main() {
 
+export DEBIAN_FRONTEND=noninteractive
+
 # environment
 export serviceName="zerotier-one"
 export installPath="/data/${serviceName}" && EXEC "mkdir -p ${installPath}"
@@ -61,7 +63,7 @@ systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is run
 EXEC "cd ${installPath}"
 
 # install
-INFO "curl -s https://install.zerotier.com | sudo bash" && curl -s https://install.zerotier.com | sudo bash
+INFO "DEBIAN_FRONTEND=noninteractive curl -s https://install.zerotier.com | sudo bash" && DEBIAN_FRONTEND=noninteractive curl -s https://install.zerotier.com curl -s https://install.zerotier.com | sudo bash
 INFO "ip a" && ip a
 EXEC "sleep 3"
 systemctl is-active ${serviceName} &> /dev/null || EXEC "systemctl start ${serviceName}"
