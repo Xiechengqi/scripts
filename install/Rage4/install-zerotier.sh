@@ -80,9 +80,10 @@ INFO "wget --user=${RAGE_ANYCAST_EMAIL} --password=${RAGE_ANYCAST_APIKEY} --auth
 EXEC "sleep 5"
 INFO "ip a" && ip a
 EXEC "systemctl stop zerotier-one"
-EXEC "sleep 5"
+EXEC "sleep 30"
+INFO "ss -plunt | grep zerotier" && ss -plunt | grep zerotier && ERROR "stop zerotier-one fail ..."
 EXEC "systemctl start zerotier-one"
-EXEC "sleep 5"
+EXEC "sleep 10"
 INFO "ip a" && ip a
 
 cat > ${installPath}/post-start.sh << EOF
