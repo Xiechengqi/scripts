@@ -99,4 +99,4 @@ done
 
 }
 
-export GITHUB_PROXY="https://github.xiecq.top"
+export GITHUB_PROXY="https://gh-proxy.com"
