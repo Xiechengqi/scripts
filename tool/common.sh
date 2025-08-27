@@ -99,4 +99,4 @@ done
 
 }
 
-export GITHUB_PROXY="https://gh-proxy.com"
+export GITHUB_PROXY="http://154.36.163.115:7210"
