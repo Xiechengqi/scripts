@@ -31,6 +31,23 @@ INIT_DATA=$(cat << EOF
     {
       "type": "function",
       "function": {
+        "name": "get_weather",
+        "description": "获取指定地点今天天气",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "description": "城市英文名称，例如 Beijing、Shanghai"
+            }
+          },
+          "required": ["location"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
         "name": "get_linux_command_context",
         "description": "获取指定Linux命令运行上下文",
         "parameters": {
