@@ -21,7 +21,7 @@ $(curl -SsL https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${TOKEN}USDT)
 
 EOF
 
-sleep 5
+sleep 15
 
 }
 
