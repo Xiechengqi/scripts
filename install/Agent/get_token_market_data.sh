@@ -21,6 +21,7 @@ $(curl -SsL https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${TOKEN}USDT)
 
 EOF
 
+# taapi 冷却
 sleep 15
 
 }
