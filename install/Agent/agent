@@ -25,7 +25,7 @@ INIT_DATA=$(cat << EOF
 {
   "model": "${OPENAI_MODEL}",
   "messages": [
-    {"role": "user", "content": "$@"}
+    {"role": "user", "content": "$@，如果完成当前tool_calls中所有tool调用，就能回答用户问题，则在最后调用一次 terminate tool"}
   ],
   "tools": [
     {
@@ -94,6 +94,13 @@ INIT_DATA=$(cat << EOF
           },
           "required": ["token"]
         }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "terminate",
+        "description": "任务完成"
       }
     }
   ],
