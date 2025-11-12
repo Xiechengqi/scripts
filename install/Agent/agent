@@ -4,17 +4,11 @@ source ~/.profile
 export BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/install/Agent"
 
 [ ".${OPENAI_API_BASEURL}" = "." ] && read -p "OPENAI_API_BASEURL(eg: https://openrouter.ai/api/v1): " OPENAI_API_BASEURL
-[ ".${OPENAI_API_BASEURL}" = "." ] && echo "OPENAI_API_BASEURL can not be empty, exit ..." && exit 1
+[ ".${OPENAI_API_BASEURL}" = "." ] && echo "OPENAI_API_BASEURL can not be empty, exit ..." && exit 1 || echo "export OPENAI_API_BASEURL=\"${OPENAI_API_BASEURL}\"" >> ~/.profile
 [ ".${OPENAI_MODEL}" = "." ] && read -p "OPENAI_MODEL(eg: deepseek/deepseek-r1): " OPENAI_MODEL
-[ ".${OPENAI_MODEL}" = "." ] && echo "OPENAI_MODEL can not be empty, exit ..." && exit 1
+[ ".${OPENAI_MODEL}" = "." ] && echo "OPENAI_MODEL can not be empty, exit ..." && exit 1 || echo "export OPENAI_MODEL=\"${OPENAI_MODEL}\"" >> ~/.profile
 [ ".${OPENAI_API_KEY}" = "." ] && read -p "OPENAI_API_KEY(eg: sk...): " OPENAI_API_KEY
-[ ".${OPENAI_API_KEY}" = "." ] && echo "OPENAI_API_KEY can not be empty, exit ..." && exit 1
-
-cat >> ~/.profile << EOF
-export OPENAI_API_BASEURL="${OPENAI_API_BASEURL}"
-export OPENAI_MODEL="${OPENAI_MODEL}"
-export OPENAI_API_KEY="${OPENAI_API_KEY}"
-EOF
+[ ".${OPENAI_API_KEY}" = "." ] && echo "OPENAI_API_KEY can not be empty, exit ..." && exit 1 || echo "export OPENAI_API_KEY=\"${OPENAI_API_KEY}\"" >> ~/.profile
 
 INIT_DATA=$(cat << EOF
 {
@@ -37,6 +31,23 @@ INIT_DATA=$(cat << EOF
             }
           },
           "required": ["command"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_url_context",
+        "description": "获取指定URL内容",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "URL 链接，例如 https://google.com"
+            }
+          },
+          "required": ["url"]
         }
       }
     }
