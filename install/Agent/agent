@@ -89,12 +89,16 @@ curl -SsL ${OPENAI_API_BASEURL}/chat/completions \
   -H "Authorization: Bearer ${OPENAI_API_KEY}" \
   -d "${INIT_DATA}" 2> /dev/null | grep -E -v '^$' > /tmp/llm.log
 
-cat /tmp/llm.log | jq -r '.choices[0].message.content'
+echo "===== Reasoning ====="
+cat /tmp/llm.log | jq -r '.choices[0].message.reasoning'
 
-rm -f -v /tmp/llm-step.log
+echo "===== Function ====="
+cat /tmp/llm.log | jq -r '.choices[0].message.tool_calls[].function'
+
+rm -f /tmp/llm-step.log
 for step in $(cat /tmp/llm.log | jq -r '.choices[0].message.tool_calls[].index')
 do
-rm -f -v /tmp/llm-step-${step}.log
+rm -f /tmp/llm-step-${step}.log
 echo "======= Step ${step} =======" >> /tmp/llm-step-${step}.log
 cat /tmp/llm.log | jq --arg STEP "${step}" -r '.choices[0].message.tool_calls[$STEP | tonumber]' | jq -r --arg URL "${BASEURL}" '"curl -SsL \($URL)/\(.function.name + ".sh") | bash -s \(.function.arguments | fromjson | to_entries | map("\(.key)=\(.value)") | join(" "))"' 2> /dev/null > /tmp/cmd.sh
 export cmd=$(cat /tmp/cmd.sh)
