@@ -10,7 +10,6 @@ cat << EOF
 $(curl -SsL https://wttr.in/${CITY}?T)
 
 EOF
-)
 
 }
 
