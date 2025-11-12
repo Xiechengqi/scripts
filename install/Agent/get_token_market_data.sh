@@ -2,8 +2,11 @@
 
 main() {
 
-[ ".${TAAPI_API_KEY}" = "." ] && read -p "TAAPI_API_KEY(https://taapi.io/my-account/): " TAAPI_API_KEY
+if [ ".${TAAPI_API_KEY}" = "." ]
+then
+read -p "TAAPI_API_KEY(https://taapi.io/my-account/): " TAAPI_API_KEY
 [ ".${TAAPI_API_KEY}" = "." ] && echo "TAAPI_API_KEY 不可以为空，退出 ..." && exit 1 || echo "export TAAPI_API_KEY=\"${TAAPI_API_KEY}\"" >> ~/.profile
+fi
 
 export TOKEN=$(echo ${1} | awk -F '=' '{print $NF}' | awk -F 'USDT' '{print $1}')
 [ "$(curl -SsL https://api.binance.com/api/v3/ticker/price?symbol=${TOKEN}USDT | jq -r .symbol)" != "${TOKEN}USDT" ] && echo "Binance 找不到 ${TOKEN}USDT 交易对，请检查 ..." && exit 1
