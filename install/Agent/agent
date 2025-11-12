@@ -3,12 +3,23 @@
 source ~/.profile
 export BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/install/Agent"
 
-[ ".${OPENAI_API_BASEURL}" = "." ] && read -p "OPENAI_API_BASEURL(eg: https://openrouter.ai/api/v1): " OPENAI_API_BASEURL
+if [ ".${OPENAI_API_BASEURL}" = "." ]
+then
+read -p "OPENAI_API_BASEURL(eg: https://openrouter.ai/api/v1): " OPENAI_API_BASEURL
 [ ".${OPENAI_API_BASEURL}" = "." ] && echo "OPENAI_API_BASEURL can not be empty, exit ..." && exit 1 || echo "export OPENAI_API_BASEURL=\"${OPENAI_API_BASEURL}\"" >> ~/.profile
-[ ".${OPENAI_MODEL}" = "." ] && read -p "OPENAI_MODEL(eg: deepseek/deepseek-r1): " OPENAI_MODEL
+fi
+
+if [ ".${OPENAI_MODEL}" = "." ]
+then
+read -p "OPENAI_MODEL(eg: deepseek/deepseek-r1): " OPENAI_MODEL
 [ ".${OPENAI_MODEL}" = "." ] && echo "OPENAI_MODEL can not be empty, exit ..." && exit 1 || echo "export OPENAI_MODEL=\"${OPENAI_MODEL}\"" >> ~/.profile
-[ ".${OPENAI_API_KEY}" = "." ] && read -p "OPENAI_API_KEY(eg: sk...): " OPENAI_API_KEY
+fi
+
+if [ ".${OPENAI_API_KEY}" = "." ]
+then
+read -p "OPENAI_API_KEY(eg: sk...): " OPENAI_API_KEY
 [ ".${OPENAI_API_KEY}" = "." ] && echo "OPENAI_API_KEY can not be empty, exit ..." && exit 1 || echo "export OPENAI_API_KEY=\"${OPENAI_API_KEY}\"" >> ~/.profile
+fi
 
 INIT_DATA=$(cat << EOF
 {
@@ -48,6 +59,23 @@ INIT_DATA=$(cat << EOF
             }
           },
           "required": ["url"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_token_market_data",
+        "description": "获取指定加密货币市场行情数据",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string",
+              "description": "加密货币 token，例如 BTCUSDT"
+            }
+          },
+          "required": ["token"]
         }
       }
     }
