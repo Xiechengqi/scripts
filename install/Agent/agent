@@ -92,10 +92,13 @@ curl -SsL ${OPENAI_API_BASEURL}/chat/completions \
 echo "===== Reasoning ====="
 cat /tmp/llm.log | jq -r '.choices[0].message.reasoning'
 
+rm -f /tmp/llm-step.log
+if [ "$(cat /tmp/llm.log | jq -r .choices[0].message.tool_calls)" != "null" ]
+then
+
 echo "===== Function ====="
 cat /tmp/llm.log | jq -r '.choices[0].message.tool_calls[].function'
 
-rm -f /tmp/llm-step.log
 for step in $(cat /tmp/llm.log | jq -r '.choices[0].message.tool_calls[].index')
 do
 rm -f /tmp/llm-step-${step}.log
@@ -106,6 +109,12 @@ export cmd=$(cat /tmp/cmd.sh)
 cat /tmp/llm-step-${step}.log | grep -E -v '^$' >> /tmp/llm-step.log
 cat /tmp/llm-step-${step}.log
 done
+
+else
+
+echo "没找到可调用的 Tool ..." >> /tmp/llm-step.log
+
+fi
 
 echo "用户原始提问内容:$1" >> /tmp/llm-step.log
 
