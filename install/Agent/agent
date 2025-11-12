@@ -57,7 +57,7 @@ for step in $(cat /tmp/llm.log | jq -r '.choices[0].message.tool_calls[].index')
 do
 rm -f -v /tmp/llm-step-${step}.log
 echo "======= Step ${step} =======" >> /tmp/llm-step-${step}.log
-cat /tmp/llm.log | jq --arg STEP "${step}" -r '.choices[0].message.tool_calls[$STEP | tonumber]' | jq -r --arg URL "${BASEURL}" '"curl -SsL $URL/scripts/\(.function.name + ".sh") | bash -s \(.function.arguments | fromjson | to_entries | map("\(.key)=\(.value)") | join(" "))"' 2> /dev/null > /tmp/cmd.sh
+cat /tmp/llm.log | jq --arg STEP "${step}" -r '.choices[0].message.tool_calls[$STEP | tonumber]' | jq -r --arg URL "${BASEURL}" '"curl -SsL \($URL)/scripts/\(.function.name + ".sh") | bash -s \(.function.arguments | fromjson | to_entries | map("\(.key)=\(.value)") | join(" "))"' 2> /dev/null > /tmp/cmd.sh
 export cmd=$(cat /tmp/cmd.sh)
 [ ".${cmd}" != "." ] && bash /tmp/cmd.sh &>> /tmp/llm-step-${step}.log
 cat /tmp/llm-step-${step}.log | grep -E -v '^$' >> /tmp/llm-step.log
