@@ -117,8 +117,14 @@ echo "===== Reasoning ====="
 cat /tmp/llm.log | jq -r '.choices[0].message.reasoning'
 
 rm -f /tmp/llm-step.log
-if [ "$(cat /tmp/llm.log | jq -r .choices[0].message.tool_calls)" != "null" ]
+if [ "$(cat /tmp/llm.log | jq -r .choices[0].message.tool_calls)" = "null" ] || [ "$(cat /tmp/llm.log | jq -r .choices[0].message.tool_calls[0].function.name)" = "terminate" ]
 then
+
+echo
+echo "===== 不需要调用 Tool ====="
+echo
+
+else
 
 echo "===== Function ====="
 cat /tmp/llm.log | jq -r '.choices[0].message.tool_calls[].function'
@@ -130,17 +136,16 @@ echo "======= Step ${step} =======" >> /tmp/llm-step-${step}.log
 cat /tmp/llm.log | jq --arg STEP "${step}" -r '.choices[0].message.tool_calls[$STEP | tonumber]' | jq -r --arg URL "${BASEURL}" '"curl -SsL \($URL)/\(.function.name + ".sh") | bash -s \(.function.arguments | fromjson | to_entries | map("\(.key)=\(.value)") | join(" "))"' 2> /dev/null > /tmp/cmd.sh
 export cmd=$(cat /tmp/cmd.sh)
 [ ".${cmd}" != "." ] && echo "=> $(cat /tmp/cmd.sh)" && bash /tmp/cmd.sh &>> /tmp/llm-step-${step}.log
+[ "${cmd}" = "terminate" ] && echo "=> 已经可以回答用户提问，调用 Tools 结束 ..." && rm -f /tmp/llm-step-${step}.log && break
 cat /tmp/llm-step-${step}.log | grep -E -v '^$' >> /tmp/llm-step.log
 cat /tmp/llm-step-${step}.log
 done
 
-else
-
-echo "没找到可调用的 Tool ..." >> /tmp/llm-step.log
-
 fi
 
-echo "用户原始提问内容:$1" >> /tmp/llm-step.log
+echo "用户原始提问内容: $@" >> /tmp/llm-step.log
+
+echo "===== 原始提问: $@ ====="
 
 # 总结
 CONTENT=$(cat /tmp/llm-step.log | jq -Rs .)
@@ -155,6 +160,7 @@ DATA=$(cat << EOF
 EOF
 )
 
+echo "===== 最终回答 ====="
 curl -SsL ${OPENAI_API_BASEURL}/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer ${OPENAI_API_KEY}" \
