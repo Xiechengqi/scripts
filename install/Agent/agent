@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 source ~/.profile
-export BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/install/Agent"
+
+exprot GITHUB_PROXY="https://gh-proxy.com"
+export BASEURL="${GITHUB_PROXY}/https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/install/Agent"
+
+! which agent &> /dev/null && curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent && chmod +x /usr/local/bin/agent
 
 if [ ".${OPENAI_API_BASEURL}" = "." ]
 then
