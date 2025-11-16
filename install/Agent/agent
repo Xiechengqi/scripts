@@ -2,8 +2,10 @@
 
 source ~/.profile
 
-exprot GITHUB_PROXY="https://gh-proxy.com"
+export GITHUB_PROXY="https://gh-proxy.com"
 export BASEURL="${GITHUB_PROXY}/https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/install/Agent"
+
+! which jq &> /dev/null && echo "Please install jq first, exit ..." && exit 1
 
 ! which agent &> /dev/null && curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent && chmod +x /usr/local/bin/agent
 
