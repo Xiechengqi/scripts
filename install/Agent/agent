@@ -88,6 +88,23 @@ INIT_DATA=$(cat << EOF
     {
       "type": "function",
       "function": {
+        "name": "get_file_content",
+        "description": "获取本地文件内容",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "file_path": {
+              "type": "string",
+              "description": "文件路径，例如 main.py 或 /root/test.sh"
+            }
+          },
+          "required": ["file_path"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
         "name": "get_token_market_data",
         "description": "获取指定加密货币市场行情数据",
         "parameters": {
@@ -139,10 +156,11 @@ for step in $(cat /tmp/llm.log | jq -r '.choices[0].message.tool_calls[].index')
 do
 rm -f /tmp/llm-step-${step}.log
 echo "======= Step ${step} =======" >> /tmp/llm-step-${step}.log
-cat /tmp/llm.log | jq --arg STEP "${step}" -r '.choices[0].message.tool_calls[$STEP | tonumber]' | jq -r --arg URL "${BASEURL}" '"curl -SsL \($URL)/\(.function.name + ".sh") | bash -s \(.function.arguments | fromjson | to_entries | map("\(.key)=\(.value)") | join(" "))"' 2> /dev/null > /tmp/cmd.sh
-export cmd=$(cat /tmp/cmd.sh)
-[ ".${cmd}" != "." ] && echo "=> $(cat /tmp/cmd.sh)" && bash /tmp/cmd.sh &>> /tmp/llm-step-${step}.log
-[ "${cmd}" = "terminate" ] && echo "=> 已经可以回答用户提问，调用 Tools 结束 ..." && rm -f /tmp/llm-step-${step}.log && break
+TOOL=$(cat /tmp/llm.log | jq --arg STEP "${step}" -r '.choices[0].message.tool_calls[$STEP | tonumber].function.name')
+OPTS=$(cat /tmp/llm.log | jq --arg STEP "${step}" -r '.choices[0].message.tool_calls[$STEP | tonumber].function.arguments | fromjson | to_entries | map("\(.key)=\(.value)") | join(" ")')
+[ "${TOOL}" = "terminate" ] && echo && echo "===== 已经可以回答用户提问，调用 Tools 结束 =====" && echo && rm -f /tmp/llm-step-${step}.log && break
+export cmd="bash <(curl -SsL ${BASEURL}/${TOOL}.sh) ${OPTS} </dev/tty"
+[ ".${cmd}" != "." ] && echo "=> ${cmd}" && eval ${cmd} >> /tmp/llm-step-${step}.log
 cat /tmp/llm-step-${step}.log | grep -E -v '^$' >> /tmp/llm-step.log
 cat /tmp/llm-step-${step}.log
 done
