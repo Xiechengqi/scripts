@@ -16,7 +16,7 @@ EOF
 
 if [ "${@}" = "update" ]
 then
-if curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent && chmod +x /usr/local/bin/agent
+if sudo curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent && sudo chmod +x /usr/local/bin/agent
 then
 echo "===== 更新成功 ====="
 else
@@ -27,7 +27,7 @@ fi
 
 ! which jq &> /dev/null && echo "Please install jq first, exit ..." && exit 1
 
-! which agent &> /dev/null && curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent && chmod +x /usr/local/bin/agent
+! which agent &> /dev/null && sudo curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent && sudo chmod +x /usr/local/bin/agent
 
 if [ ".${OPENAI_API_BASEURL}" = "." ]
 then
