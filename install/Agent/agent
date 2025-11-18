@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-
+#
+# curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/install/Agent/agent -o /usr/local/bin/agent && chmod +x /usr/local/bin/agent
+#
 source ~/.profile
 
 export GITHUB_PROXY="https://gh-proxy.com"
