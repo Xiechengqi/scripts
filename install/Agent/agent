@@ -27,6 +27,12 @@ fi
 exit 0
 fi
 
+if [ "${@}" = "clean" ]
+then
+echo "===== 清理 ~/.profile 中 ENV ====="
+sed -i '/OPENAI_API_BASEURL/d;/OPENAI_MODEL/d;/OPENAI_API_KEY/d' ~/.profile
+fi
+
 ! which jq &> /dev/null && echo "Please install jq first, exit ..." && exit 1
 
 ! which agent &> /dev/null && sudo curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent && sudo chmod +x /usr/local/bin/agent
