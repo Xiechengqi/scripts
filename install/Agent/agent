@@ -5,6 +5,26 @@ source ~/.profile
 export GITHUB_PROXY="https://gh-proxy.com"
 export BASEURL="${GITHUB_PROXY}/https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/install/Agent"
 
+cat << EOF
+
+-------------------------------------------------------------------------------------------------
+|                                        agent                                                  |
+| 更新命令: agent update                                                                        |
+-------------------------------------------------------------------------------------------------
+
+EOF
+
+if [ "${@}" = "update" ]
+then
+if curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent && chmod +x /usr/local/bin/agent
+then
+echo "===== 更新成功 ====="
+else
+echo "===== 更新失败，手动更新命令: curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent ====="
+fi
+exit 0
+fi
+
 ! which jq &> /dev/null && echo "Please install jq first, exit ..." && exit 1
 
 ! which agent &> /dev/null && curl -SsL ${BASEURL}/agent -o /usr/local/bin/agent && chmod +x /usr/local/bin/agent
