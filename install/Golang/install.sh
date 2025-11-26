@@ -3,8 +3,9 @@
 #
 # xiechengqi
 # OS: ubuntu
-# 2021/08/14
+# 2025/11/26
 # binary install golang (adapt to China)
+# usage: curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/refs/heads/master/install/Golang/install.sh | sudo bash
 #
 
 source /etc/profile
@@ -18,10 +19,10 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # environments
 serviceName="golang"
-version=${1-"1.16.6"}
+version=${1-"1.24.9"}
 installPath="/data/${serviceName}-${version}"
-countryCode=`curl -SsL https://api.ip.sb/geoip | sed 's/,/\n/g' | grep country_code | awk -F '"' '{print $(NF-1)}'`
-[ "$countryCode" = "CN" ] && downloadUrl="https://mirrors.ustc.edu.cn/golang/go${version}.linux-amd64.tar.gz" || downloadUrl="https://golang.org/dl/go${version}.linux-amd64.tar.gz"
+downloadUrl="https://mirrors.ustc.edu.cn/golang/go${version}.linux-amd64.tar.gz"
+# downloadUrl="https://golang.org/dl/go${version}.linux-amd64.tar.gz"
 
 # check service
 go version &> /dev/null && YELLOW "$serviceName has been installed ..." && return 0
