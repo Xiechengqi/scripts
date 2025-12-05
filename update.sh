@@ -10,6 +10,9 @@ README_FILE="${SCRIPT_DIR}/README.md"
 GITHUB_BASE="https://github.com/Xiechengqi/scripts/edit/master"
 INSTALL_BASE="https://install.xiechengqi.top"
 
+# 获取当前北京时间
+BUILD_TIME=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S %Z')
+
 # 临时文件
 TEMP_FILE=$(mktemp)
 ENTRIES_FILE=$(mktemp)
@@ -51,70 +54,8 @@ find "$INSTALL_DIR" -name "install.sh" -type f | while read -r install_file; do
     # 生成安装 URL 路径
     install_path="install/${rel_path}"
     
-    # 生成 curl 命令，默认使用 bash（注意：代码块内的 | 不需要转义）
-    curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | bash"
-    
-    # 检查脚本内容，判断是否需要参数
-    script_content=$(cat "$install_file")
-    
-    # 检查是否需要参数
-    needs_param=false
-    param_type="version"
-    
-    # 检查特定的参数类型（优先检查）
-    if echo "$script_content" | grep -qiE 'mainnet.*testnet.*kovan|kovan.*mainnet.*testnet|rinkey.*kovan|mainnet.*rinkey.*kovan'; then
-        needs_param=true
-        param_type="mainnet|testnet|kovan"
-    elif echo "$script_content" | grep -qiE 'polkadot.*kusama.*westend|kusama.*polkadot.*westend'; then
-        needs_param=true
-        param_type="polkadot|kusama|westend"
-    elif echo "$script_content" | grep -qiE 'mainnet.*testnet|testnet.*mainnet'; then
-        needs_param=true
-        param_type="mainnet|testnet"
-    # 检查是否有 version=${1- 模式
-    elif echo "$script_content" | grep -q 'version=\${1-'; then
-        needs_param=true
-        param_type="version"
-    # 检查是否有 $1 参数使用（排除注释行，匹配 $1 后面跟非数字字符或空格）
-    elif echo "$script_content" | grep -vE '^\s*#' | grep -qE '\$1\s|chainId=\$1|chain=\$1'; then
-        needs_param=true
-        # 如果检测到 chainId 或 chain，检查是否有特定的网络类型
-        if echo "$script_content" | grep -qiE 'mainnet.*testnet.*kovan|kovan.*mainnet.*testnet|rinkey.*kovan'; then
-            param_type="mainnet|testnet|kovan"
-        elif echo "$script_content" | grep -qiE 'mainnet.*testnet|testnet.*mainnet'; then
-            param_type="mainnet|testnet"
-        else
-            param_type="version"
-        fi
-    fi
-    
-    # 构建 curl 命令（代码块内的 | 不需要转义）
-    if [[ "$needs_param" == true ]]; then
-        if [[ "$param_type" == "version" ]]; then
-            curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | bash -s [version]"
-        else
-            # 代码块内的 | 不需要转义
-            curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | bash -s [${param_type}]"
-        fi
-    fi
-    
-    # 检查是否需要 sudo（如 Rust）
-    if echo "$script_content" | grep -qi 'sudo bash' || [[ "$display_name" == "Rust" ]]; then
-        if [[ "$needs_param" == true ]]; then
-            if [[ "$param_type" == "version" ]]; then
-                curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | sudo bash -s [version]"
-            else
-                curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | sudo bash -s [${param_type}]"
-            fi
-        else
-            curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | sudo bash"
-        fi
-    fi
-    
-    # 特殊处理：Python 使用固定版本示例
-    if [[ "$display_name" == "Python" ]]; then
-        curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | bash -s 3.6"
-    fi
+    # 生成 curl 命令，统一使用 sudo bash
+    curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} \| sudo bash"
     
     # 写入临时文件（用于排序）
     # 使用 printf 来避免反引号转义问题
@@ -138,7 +79,9 @@ cat > "$HTML_FILE" << 'HTML_EOF'
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>安装脚本集合</title>
+    <meta name="description" content="运维安装脚本集合">
+    <title>运维安装脚本集合</title>
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/26536442?v=4">
     <style>
         * {
             margin: 0;
@@ -163,33 +106,6 @@ cat > "$HTML_FILE" << 'HTML_EOF'
             padding: 40px;
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: block;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease;
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
-        }
-        
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 0;
-            text-align: center;
-            font-size: 2.5em;
-            font-weight: 600;
-        }
-        
         table {
             width: 100%;
             border-collapse: collapse;
@@ -209,11 +125,15 @@ cat > "$HTML_FILE" << 'HTML_EOF'
         }
         
         th:first-child {
-            width: 25%;
+            width: 20%;
+        }
+        
+        th:nth-child(2) {
+            width: 70%;
         }
         
         th:last-child {
-            width: 75%;
+            width: 10%;
         }
         
         tbody tr {
@@ -246,13 +166,14 @@ cat > "$HTML_FILE" << 'HTML_EOF'
         }
         
         .command-cell {
-            display: flex;
-            align-items: center;
-            gap: 12px;
             font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
             font-size: 0.9em;
             color: #2c3e50;
             word-break: break-all;
+        }
+        
+        td:last-child {
+            text-align: center;
         }
         
         .copy-btn {
@@ -285,11 +206,25 @@ cat > "$HTML_FILE" << 'HTML_EOF'
         }
         
         .command-text {
-            flex: 1;
             background: #f8f9fa;
             padding: 10px 14px;
             border-radius: 6px;
             border: 1px solid #e8e8e8;
+            display: inline-block;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e8e8e8;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .build-time {
+            color: #999;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
         }
         
         @media (max-width: 768px) {
@@ -297,24 +232,9 @@ cat > "$HTML_FILE" << 'HTML_EOF'
                 padding: 20px;
             }
             
-            .logo {
-                width: 60px;
-                height: 60px;
-                margin-bottom: 15px;
-            }
-            
-            h1 {
-                font-size: 1.8em;
-            }
-            
             th, td {
                 padding: 12px 8px;
                 font-size: 0.9em;
-            }
-            
-            .command-cell {
-                flex-direction: column;
-                align-items: flex-start;
             }
             
             .copy-btn {
@@ -325,32 +245,38 @@ cat > "$HTML_FILE" << 'HTML_EOF'
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <img src="https://avatars.githubusercontent.com/u/26536442?v=4" alt="Logo" class="logo">
-            <h1>🚀 安装脚本集合</h1>
-        </div>
         <table>
             <thead>
                 <tr>
                     <th>安装项</th>
                     <th>安装命令</th>
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
 HTML_EOF
 
 # 读取 README.md 并生成 HTML 表格行（跳过表头）
-tail -n +3 "$README_FILE" | while IFS='|' read -r install_link command; do
-    # 清理空白字符
-    install_link=$(echo "$install_link" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-    command=$(echo "$command" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+tail -n +3 "$README_FILE" | while IFS= read -r line; do
+    # 使用 sed 提取链接部分（第一个 | 之前的内容，去掉首尾空格）
+    install_link=$(echo "$line" | sed 's/^[[:space:]]*//' | sed 's/|.*//' | sed 's/[[:space:]]*$//')
+    
+    # 使用 sed 提取命令部分（在反引号之间的内容）
+    command=$(echo "$line" | sed -n 's/.*`\(.*\)`.*/\1/p')
+    
+    # 跳过空行或无效行
+    [ -z "$install_link" ] && continue
+    [ -z "$command" ] && continue
     
     # 提取链接文本和URL
     install_name=$(echo "$install_link" | sed -n 's/\[\(.*\)\](.*)/\1/p')
     install_url=$(echo "$install_link" | sed -n 's/\[.*\](\(.*\))/\1/p')
     
-    # 提取命令（去掉代码块标记）
-    command_text=$(echo "$command" | sed 's/^`//;s/`$//')
+    # 将转义的管道符替换为正常的管道符
+    command_text=$(echo "$command" | sed 's/\\|/|/g')
+    
+    # 清理命令首尾的空白字符
+    command_text=$(echo "$command_text" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
     
     # 转义 HTML 特殊字符（用于显示）
     install_name_html=$(echo "$install_name" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
@@ -365,18 +291,23 @@ tail -n +3 "$README_FILE" | while IFS='|' read -r install_link command; do
         echo "                    <td><a href=\"$install_url\" target=\"_blank\">$install_name_html</a></td>"
         echo "                    <td>"
         echo "                        <div class=\"command-cell\">"
-        printf "                            <button class=\"copy-btn\" data-command=\"%s\" onclick=\"copyCommand(this)\">复制</button>\n" "$command_text_attr"
         echo "                            <span class=\"command-text\">$command_text_html</span>"
         echo "                        </div>"
+        echo "                    </td>"
+        echo "                    <td>"
+        printf "                        <button class=\"copy-btn\" data-command=\"%s\" onclick=\"copyCommand(this)\">复制</button>\n" "$command_text_attr"
         echo "                    </td>"
         echo "                </tr>"
     } >> "$HTML_FILE"
 done
 
 # 添加 JavaScript 和结束标签
-cat >> "$HTML_FILE" << 'HTML_EOF'
+cat >> "$HTML_FILE" << HTML_EOF
             </tbody>
         </table>
+        <div class="footer">
+            <div class="build-time">页面生成时间: $BUILD_TIME</div>
+        </div>
     </div>
     
     <script>
