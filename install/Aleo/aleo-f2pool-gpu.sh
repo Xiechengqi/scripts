@@ -7,7 +7,7 @@
 #
 
 source /etc/profile
-BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+BASEURL="https://install.xiechengqi.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 function install() {
@@ -42,8 +42,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 f2pool_username=${1-"xiechengqi"}
 # f2pool proxy
 f2pool_proxy=${2-"aleo-asia.f2pool.com:4400"}
-# BASEURL="https://aleo-resource.oss-cn-shenzhen.aliyuncs.com/aleo-prover-cuda"
-BASEURL="http://10.19.5.20:5000/aleo/bin"
+BASEURL="https://install.xiechengqi.top"
 # binary name
 binaryName="aleo-prover-cuda"
 # download url

@@ -7,7 +7,7 @@
 #
 
 source /etc/profile
-BASEURL="https://raw.githubusercontent.com/Xiechengqi/scripts/master"
+BASEURL="https://install.xiechengqi.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 function install() {
@@ -35,7 +35,7 @@ main() {
 osInfo=`get_os` && INFO "current os: $osInfo"
 ! echo "$osInfo" | grep -E 'ubuntu18|ubuntu20' &> /dev/null && ERROR "You could only install on os: ubuntu18、ubuntu20"
 
-BASEURL="http://10.19.5.20:5000/bminer/bin"
+BASEURL="https://install.xiechengqi.top"
 # binary name
 binaryName="bminer"
 # download url

@@ -7,7 +7,7 @@
 #
 
 source /etc/profile
-BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+BASEURL="https://install.xiechengqi.top"
 source <(curl -SsL ${BASEURL}/tool/common.sh)
 
 main() {

@@ -7,7 +7,7 @@
 #
 
 source /etc/profile
-BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+BASEURL="https://install.xiechengqi.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
@@ -23,7 +23,7 @@ xproxy=${2-"10.19.6.15:9190"}
 # download url
 echo "$osInfo" | grep -E 'ubuntu18' &> /dev/null && binaryName="hpool-miner-aleo-cuda-ubuntu18"
 echo "$osInfo" | grep -E 'ubuntu20' &> /dev/null && binaryName="hpool-miner-aleo-cuda-ubuntu20"
-BASEURL="http://10.19.5.20:5000/aleo/bin/hpool"
+BASEURL="https://install.xiechengqi.top"
 downloadUrl="${BASEURL}/${binaryName}"
 # install path
 installPath="/scratch/aleo-gpu"

@@ -7,7 +7,7 @@
 #
 
 source /etc/profile
-BASEURL="https://gitee.com/Xiechengqi/scripts/raw/master"
+BASEURL="https://install.xiechengqi.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 function install() {
@@ -41,8 +41,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 aleo_address=${1-"aleo1wfz88rr2wnuk65pxzgk8ewlzr2vhltzq2ggev3dq60nrd2e9lggqunt6cg"}
 # 1to proxy
 proxy=${2-"ws://pool.aleo1.to:32000"}
-# BASEURL="http://cn.1to.sh/builds/aleo/partners/miner-9q57lnd4"
-BASEURL="http://10.19.5.20:5000/aleo/bin"
+BASEURL="https://install.xiechengqi.top"
 # binary name
 binaryName="1to-miner"
 # download url
