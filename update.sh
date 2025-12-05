@@ -118,7 +118,7 @@ find "$INSTALL_DIR" -name "install.sh" -type f | while read -r install_file; do
     
     # 写入临时文件（用于排序）
     # 使用 printf 来避免反引号转义问题
-    printf '%s|[%s](%s) | `%s` |\n' "${display_name}" "${display_name}" "${GITHUB_BASE}/${github_path}" "${curl_cmd}" >> "$ENTRIES_FILE"
+    printf '%s|[%s](%s) | %s |\n' "${display_name}" "${display_name}" "${GITHUB_BASE}/${github_path}" "${curl_cmd}" >> "$ENTRIES_FILE"
 done
 
 # 按显示名称排序并写入表格
