@@ -36,7 +36,8 @@ find "$INSTALL_DIR" -name "install.sh" -type f | while read -r install_file; do
         display_name=$(basename "$dir_path")
         # 如果最后一级是纯数字（如 Mysql/8），使用父目录名-数字
         if [[ "$display_name" =~ ^[0-9]+$ ]]; then
-            parent_dir=$(basename "$(dirname "$install_file")")
+            # 获取父目录名（install/Mysql/8 -> Mysql）
+            parent_dir=$(basename "$(dirname "$dir_path")")
             display_name="${parent_dir}-${display_name}"
         fi
     else
@@ -50,8 +51,8 @@ find "$INSTALL_DIR" -name "install.sh" -type f | while read -r install_file; do
     # 生成安装 URL 路径
     install_path="install/${rel_path}"
     
-    # 生成 curl 命令，默认使用 bash
-    curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} \\| bash"
+    # 生成 curl 命令，默认使用 bash（注意：代码块内的 | 不需要转义）
+    curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | bash"
     
     # 检查脚本内容，判断是否需要参数
     script_content=$(cat "$install_file")
@@ -87,14 +88,13 @@ find "$INSTALL_DIR" -name "install.sh" -type f | while read -r install_file; do
         fi
     fi
     
-    # 构建 curl 命令
+    # 构建 curl 命令（代码块内的 | 不需要转义）
     if [[ "$needs_param" == true ]]; then
         if [[ "$param_type" == "version" ]]; then
-            curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} \\| bash -s [version]"
+            curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | bash -s [version]"
         else
-            # 转义管道符
-            escaped_param=$(echo "$param_type" | sed 's/|/\\|/g')
-            curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} \\| bash -s [${escaped_param}]"
+            # 代码块内的 | 不需要转义
+            curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | bash -s [${param_type}]"
         fi
     fi
     
@@ -102,23 +102,23 @@ find "$INSTALL_DIR" -name "install.sh" -type f | while read -r install_file; do
     if echo "$script_content" | grep -qi 'sudo bash' || [[ "$display_name" == "Rust" ]]; then
         if [[ "$needs_param" == true ]]; then
             if [[ "$param_type" == "version" ]]; then
-                curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} \\| sudo bash -s [version]"
+                curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | sudo bash -s [version]"
             else
-                escaped_param=$(echo "$param_type" | sed 's/|/\\|/g')
-                curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} \\| sudo bash -s [${escaped_param}]"
+                curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | sudo bash -s [${param_type}]"
             fi
         else
-            curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} \\| sudo bash"
+            curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | sudo bash"
         fi
     fi
     
     # 特殊处理：Python 使用固定版本示例
     if [[ "$display_name" == "Python" ]]; then
-        curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} \\| bash -s 3.6"
+        curl_cmd="curl -SsL ${INSTALL_BASE}/${install_path} | bash -s 3.6"
     fi
     
     # 写入临时文件（用于排序）
-    echo "${display_name}|[${display_name}](${GITHUB_BASE}/${github_path}) | \`${curl_cmd}\` |" >> "$ENTRIES_FILE"
+    # 使用 printf 来避免反引号转义问题
+    printf '%s|[%s](%s) | `%s` |\n' "${display_name}" "${display_name}" "${GITHUB_BASE}/${github_path}" "${curl_cmd}" >> "$ENTRIES_FILE"
 done
 
 # 按显示名称排序并写入表格
@@ -129,7 +129,5 @@ rm -f "$ENTRIES_FILE"
 
 # 替换原 README.md
 mv "$TEMP_FILE" "$README_FILE"
-
-sed -i '/8-8/d' $README_FILE
 
 echo "README.md 已更新完成！"
