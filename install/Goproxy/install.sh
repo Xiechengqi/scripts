@@ -20,7 +20,7 @@ INFO "Location: ${countryCode}"
 
 # environment
 serviceName="goproxy"
-version="15.1"
+version="15.2"
 installPath="/data/${serviceName}"
 downloadUrl="https://github.com/snail007/goproxy/releases/download/v${version}/proxy-linux-amd64.tar.gz"
 [ "${countryCode}" = "China" ] && downloadUrl="${GITHUB_PROXY}/${downloadUrl}"
