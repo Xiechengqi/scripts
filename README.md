@@ -16,7 +16,6 @@
 [cosmos-node](https://github.com/Xiechengqi/scripts/edit/master/install/Cosmos/cosmos-node/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Cosmos/cosmos-node/install.sh \| sudo bash` |
 [cri-docker](https://github.com/Xiechengqi/scripts/edit/master/install/Docker/cri-docker/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Docker/cri-docker/install.sh \| sudo bash` |
 [Dashboard](https://github.com/Xiechengqi/scripts/edit/master/install/Helm/Dashboard/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Helm/Dashboard/install.sh \| sudo bash` |
-[docker-compose](https://github.com/Xiechengqi/scripts/edit/master/install/Docker/docker-compose/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Docker/docker-compose/install.sh \| sudo bash` |
 [Docker](https://github.com/Xiechengqi/scripts/edit/master/install/Docker/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Docker/install.sh \| sudo bash` |
 [EaseProbe](https://github.com/Xiechengqi/scripts/edit/master/install/EaseProbe/install.sh) | `curl -SsL https://install.xiechengqi.top/install/EaseProbe/install.sh \| sudo bash` |
 [ElasticSearch](https://github.com/Xiechengqi/scripts/edit/master/install/ElasticSearch/install.sh) | `curl -SsL https://install.xiechengqi.top/install/ElasticSearch/install.sh \| sudo bash` |
