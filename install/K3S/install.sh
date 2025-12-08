@@ -5,7 +5,6 @@
 # xiechengqi
 # install K3S
 # docs: https://docs.k3s.io/zh/installation/configuration
-# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/K3S/install.sh | sudo bash
 #
 
 source /etc/profile

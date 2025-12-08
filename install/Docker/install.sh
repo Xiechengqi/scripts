@@ -2,7 +2,7 @@
 
 #
 # xiechengqi
-# 2025/03/20
+# 2025/12/18
 # Ubuntu 18.04+
 # https://docs.docker.com/engine/install/ubuntu/
 # install docker
@@ -24,14 +24,13 @@ EXEC "apt-get install -y apt-transport-https ca-certificates curl gnupg2 softwar
 
 # add app source
 EXEC "mkdir -p /etc/apt/keyrings"
-if [ "$countryCode" = "China" ]
+EXEC "rm -f /etc/apt/keyrings/docker.gpg && curl -fsSL ${BASEURL}/install/Docker/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
+if [ "${countryCode}" = "China" ]
 then
-EXEC "rm -f /etc/apt/keyrings/docker.gpg && curl -fsSL https://gitee.com/Xiechengqi/scripts/raw/master/install/Docker/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
 cat > /etc/apt/sources.list.d/docker.list << EOF
 deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable
 EOF
 else
-EXEC "rm -f /etc/apt/keyrings/docker.gpg && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
 cat > /etc/apt/sources.list.d/docker.list << EOF
 deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
 EOF
@@ -76,29 +75,33 @@ echo $osInfo | grep ubuntu &> /dev/null && _ubuntu
 echo $osInfo | grep centos &> /dev/null && _centos
 
 # modify config
-if [ "$countryCode" = "China" ]
+if [ "${countryCode}" = "China" ]
 then
 cat > /etc/docker/daemon.json << EOF
 {
-  "registry-mirrors": ["https://docker.m.daocloud.io", "https://hub.rat.dev", "https://docker.1panel.live", "https://docker.rainbond.cc"],
-  "insecure-registries" : ["docker.gh-proxy.org", docker.elastic.co","gcr.io","ghcr.io","k8s.gcr.io","mcr.microsoft.com","nvcr.io","quay.io","registry.k8s.io"],
+  "registry-mirrors": ["https://docker.gh-proxy.org", "https://docker.1ms.run"],
+  "dns": ["8.8.8.8", "114.114.114.114", "1.1.1.1"],
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
   "log-opts": {
     "max-size": "100m"
   },
-  "storage-driver": "overlay2"
+  "storage-driver": "overlay2",
+  "experimental": true,
+  "live-restore": true
 }
 EOF
 else
 cat > /etc/docker/daemon.json << EOF
 {
+  "dns": ["8.8.8.8", "114.114.114.114", "1.1.1.1"],
   "exec-opts": ["native.cgroupdriver=systemd"],
-  "log-driver": "json-file",
-  "log-opts": {
+  "log-driver": "json-file",  "log-opts": {
     "max-size": "100m"
   },
-  "storage-driver": "overlay2"
+  "storage-driver": "overlay2",
+  "experimental": true,
+  "live-restore": true
 }
 EOF
 fi
