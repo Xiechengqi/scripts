@@ -1,0 +1,50 @@
+name: main
+on: 
+  [ push, delete, create ]
+jobs:
+  updateIndex:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 允许写入仓库内容
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SCRIPTS_GITHUB_TOKEN }}
+          fetch-depth: 0
+      - name: Run update index
+        run: |
+          chmod +x update.sh
+          ./update.sh
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "📝 检测到文件变更"
+            git status
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "✅ 没有文件变更"
+          fi
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          git add .
+          git commit -m "chore: auto-commit changes from workflow [skip ci]"
+          git push
+
+  syncToGitee:
+    name: sync to Gitee
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wearerequired/git-mirror-action@v1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+        with:
+          source-repo: "git@github.com:Xiechengqi/scripts.git"
+          destination-repo: "git@gitee.com:Xiechengqi/scripts.git"
