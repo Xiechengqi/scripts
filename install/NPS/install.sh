@@ -8,7 +8,7 @@
 #  https://ehang-io.github.io/nps/
 #  https://ai.feishu.cn/wiki/FmVVwDcEGiTZxekYJl5ccuFanlg
 # conf: https://ehang-io.github.io/nps/#/server_config
-# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/NPS/install-nps.sh | sudo bash
+# usage: curl -SsL https://install.xiechengqi.top/install/NPS/install.sh | sudo bash
 #
 
 source /etc/profile
