@@ -7,7 +7,7 @@
 # docs:
 #  https://ehang-io.github.io/nps/
 #  https://ai.feishu.cn/wiki/FmVVwDcEGiTZxekYJl5ccuFanlg
-# usage: curl -SsL https://gitee.com/Xiechengqi/scripts/raw/master/install/NPS/install-npc.sh | sudo bash -s [OPTS]
+# usage: curl -SsL https://install.xiechengqi.top/install/NPS/npc/install.sh | sudo bash -s [OPTS]
 #
 
 source /etc/profile
