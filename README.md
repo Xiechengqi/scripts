@@ -49,6 +49,7 @@
 [Nginx](https://github.com/Xiechengqi/scripts/edit/master/install/Nginx/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Nginx/install.sh \| sudo bash` |
 [NightIngale](https://github.com/Xiechengqi/scripts/edit/master/install/NightIngale/install.sh) | `curl -SsL https://install.xiechengqi.top/install/NightIngale/install.sh \| sudo bash` |
 [Node](https://github.com/Xiechengqi/scripts/edit/master/install/Node/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Node/install.sh \| sudo bash` |
+[NPS](https://github.com/Xiechengqi/scripts/edit/master/install/NPS/install.sh) | `curl -SsL https://install.xiechengqi.top/install/NPS/install.sh \| sudo bash` |
 [Ntp](https://github.com/Xiechengqi/scripts/edit/master/install/Ntp/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Ntp/install.sh \| sudo bash` |
 [Nvidia-Container-Toolkit](https://github.com/Xiechengqi/scripts/edit/master/install/Nvidia/Nvidia-Container-Toolkit/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Nvidia/Nvidia-Container-Toolkit/install.sh \| sudo bash` |
 [Ooklaserver](https://github.com/Xiechengqi/scripts/edit/master/install/Ooklaserver/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Ooklaserver/install.sh \| sudo bash` |
