@@ -31,8 +31,7 @@ EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/{bin,logs}"
 
 # download and install
-EXEC "curl -SsL ${downloadUrl} | tar zx -C ${installPath}/bin/"
-EXEC "chmod +x ${installPath}/bin/${binary}"
+EXEC "curl -SsL ${downloadUrl} -o ${installPath}/bin/${binary} && chmod +x ${installPath}/bin/${binary}"
 EXEC "ln -fs ${installPath}/bin/${binary} /usr/local/bin/${binary}"
 
 # conf
