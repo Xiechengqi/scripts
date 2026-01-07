@@ -41,6 +41,7 @@
 [litecoin-node](https://github.com/Xiechengqi/scripts/edit/master/install/Litecoin/litecoin-node/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Litecoin/litecoin-node/install.sh \| sudo bash` |
 [Loki](https://github.com/Xiechengqi/scripts/edit/master/install/Grafana/Loki/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Grafana/Loki/install.sh \| sudo bash` |
 [meson-node](https://github.com/Xiechengqi/scripts/edit/master/install/meson-node/install.sh) | `curl -SsL https://install.xiechengqi.top/install/meson-node/install.sh \| sudo bash` |
+[Miao](https://github.com/Xiechengqi/scripts/edit/master/install/Miao/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Miao/install.sh \| sudo bash` |
 [Minio](https://github.com/Xiechengqi/scripts/edit/master/install/Minio/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Minio/install.sh \| sudo bash` |
 [Mongodb](https://github.com/Xiechengqi/scripts/edit/master/install/Mongodb/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Mongodb/install.sh \| sudo bash` |
 [Mysql-8](https://github.com/Xiechengqi/scripts/edit/master/install/Mysql/8/install.sh) | `curl -SsL https://install.xiechengqi.top/install/Mysql/8/install.sh \| sudo bash` |
