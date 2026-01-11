@@ -36,11 +36,7 @@ EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/logs"
 
 # download tarball
-EXEC "curl -SsL ${downloadUrl} | tar zx -C ${installPath}"
-EXEC "rm -f ${installPath}/conf/{server.pem,server.key}"
-EXEC "rm -rf /etc/nps && mkdir -p /etc/nps"
-EXEC "ln -fs ${installPath}/conf /etc/nps/conf"
-EXEC "ln -fs ${installPath}/web /etc/nps/web"
+EXEC "curl -SsL ${downloadUrl} -o ${installPath}/${binary} && chmod +x ${installPath}/${binary}"
 
 # creat start.sh
 cat > ${installPath}/start.sh << EOF
