@@ -23,9 +23,8 @@ INFO "Location: ${countryCode}"
 
 # environment
 serviceName="nps"
-version="0.26.27"
 installPath="/data/${serviceName}"
-downloadUrl="https://github.com/yisier/nps/releases/download/v${version}/linux_amd64_server.tar.gz"
+downloadUrl="https://github.com/Xiechengqi/nps/releases/download/latest/nps-amd64"
 [ "${countryCode}" = "China" ] && downloadUrl="${GITHUB_PROXY}/${downloadUrl}"
 binary="nps"
 
@@ -81,7 +80,7 @@ EXEC "systemctl daemon-reload && systemctl enable ${serviceName} && systemctl st
 EXEC "systemctl status ${serviceName} --no-pager" && systemctl status ${serviceName} --no-pager
 
 # info
-YELLOW "${serviceName} version: ${version}"
+YELLOW "${serviceName}"
 YELLOW "install: ${installPath}"
 YELLOW "log: tail -f ${installPath}/logs/latest.log"
 YELLOW "managemanet cmd: systemctl [stop|start|restart|reload] ${serviceName}"
