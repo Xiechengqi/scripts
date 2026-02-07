@@ -8,7 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${SCRIPT_DIR}/install"
 README_FILE="${SCRIPT_DIR}/README.md"
 GITHUB_BASE="https://github.com/Xiechengqi/scripts/edit/master"
-INSTALL_BASE="https://install.xiechengqi.top"
+INSTALL_BASE="https://install.xiecq.top"
 
 # 获取当前北京时间
 BUILD_TIME=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S %Z')
