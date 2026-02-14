@@ -78,6 +78,7 @@
 [Syncthing](https://github.com/Xiechengqi/scripts/edit/master/install/Syncthing/install.sh) | `curl -SsL https://install.xiecq.top/install/Syncthing/install.sh \| sudo bash` |
 [Tailscale](https://github.com/Xiechengqi/scripts/edit/master/install/Tailscale/install.sh) | `curl -SsL https://install.xiecq.top/install/Tailscale/install.sh \| sudo bash` |
 [tezos-node](https://github.com/Xiechengqi/scripts/edit/master/install/Tezos/tezos-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Tezos/tezos-node/install.sh \| sudo bash` |
+[Turn](https://github.com/Xiechengqi/scripts/edit/master/install/Turn/install.sh) | `curl -SsL https://install.xiecq.top/install/Turn/install.sh \| sudo bash` |
 [vechain-node](https://github.com/Xiechengqi/scripts/edit/master/install/VeChain/vechain-node/install.sh) | `curl -SsL https://install.xiecq.top/install/VeChain/vechain-node/install.sh \| sudo bash` |
 [Vector](https://github.com/Xiechengqi/scripts/edit/master/install/Vector/install.sh) | `curl -SsL https://install.xiecq.top/install/Vector/install.sh \| sudo bash` |
 [Victorialogs](https://github.com/Xiechengqi/scripts/edit/master/install/Victorialogs/install.sh) | `curl -SsL https://install.xiecq.top/install/Victorialogs/install.sh \| sudo bash` |
