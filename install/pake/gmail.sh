@@ -18,7 +18,7 @@ countryCode=$(check_if_in_china)
 INFO "Location: ${countryCode}"
 
 export serviceName="pake-gmail"
-export serviceUrl="https://gmail.com"
+export serviceUrl="https://mail.google.com"
 export serviceTaskbar="Gmail"
 export installPath="/data/${serviceName}"
 export downloadUrl="https://github.com/Xiechengqi/Pake/releases/download/latest/pake-native-linux-amd64-ubuntu22"
