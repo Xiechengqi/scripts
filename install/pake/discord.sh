@@ -18,7 +18,7 @@ countryCode=$(check_if_in_china)
 INFO "Location: ${countryCode}"
 
 export serviceName="pake-discord"
-export serviceUrl="https://discord.com/app"
+export serviceUrl="https://discord.com"
 export serviceTaskbar="Discord"
 export installPath="/data/${serviceName}"
 export downloadUrl="https://github.com/Xiechengqi/Pake/releases/download/latest/pake-native-linux-amd64-ubuntu22"
