@@ -42,6 +42,9 @@ cat > ${installPath}/start.sh << EOF
 #!/usr/bin/env bash
 source /etc/profile
 
+export XDG_RUNTIME_DIR="/run/user/0"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/0/bus"
+
 export installPath="${installPath}"
 
 timestamp=\$(date +%Y%m%d-%H%M%S)
