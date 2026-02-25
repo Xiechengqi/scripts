@@ -93,7 +93,7 @@ for check_location_api in ${check_location_api_arr[*]}
 do
 location=$(timeout 3 curl -SsL ${check_location_api} | grep location)
 [ ".${location}" = "." ] && continue
-echo "${location}" | grep '中国' &> /dev/null && echo "China" || echo "Other"
+echo "${location}" | grep -E -v '香港|澳门|台湾' | grep '中国' &> /dev/null && echo "China" || echo "Other"
 break
 done
 
