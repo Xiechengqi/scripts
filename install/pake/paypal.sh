@@ -17,7 +17,7 @@ countryCode=$(check_if_in_china)
 INFO "Location: ${countryCode}"
 
 export serviceName="pake-paypal"
-export serviceUrl="https://www.paypal.com/"
+export serviceUrl="https://www.paypal.com"
 export serviceTaskbar="Paypal"
 export installPath="/data/${serviceName}"
 export downloadUrl="https://github.com/Xiechengqi/Pake/releases/download/latest/pake-native-linux-amd64-ubuntu22"
