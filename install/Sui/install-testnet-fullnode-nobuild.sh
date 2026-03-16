@@ -9,7 +9,7 @@
 #
 
 source /etc/profile
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 
@@ -18,7 +18,7 @@ main() {
 # environment
 serviceName="suid"
 installPath="/scratch/${serviceName}"
-downloadUrl="https://install.xiechengqi.top/sui-node"
+downloadUrl="https://install.xiecq.top/sui-node"
 githubUrl="https://github.com/MystenLabs/sui.git"
 binaryName="sui-node"
 

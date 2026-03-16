@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source /etc/profile
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {

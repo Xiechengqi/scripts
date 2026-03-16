@@ -3,11 +3,11 @@
 # xiechengqi
 # 2026/01/07
 # install miao proxy
-# curl -SsL https://install.xiechengqi.top/install/Miao/install.sh | sudo bash
+# curl -SsL https://install.xiecq.top/install/Miao/install.sh | sudo bash
 #
 
 source /etc/profile
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {

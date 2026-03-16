@@ -8,11 +8,11 @@
 #  https://ehang-io.github.io/nps/
 #  https://ai.feishu.cn/wiki/FmVVwDcEGiTZxekYJl5ccuFanlg
 # conf: https://ehang-io.github.io/nps/#/server_config
-# usage: curl -SsL https://install.xiechengqi.top/install/NPS/install.sh | sudo bash
+# usage: curl -SsL https://install.xiecq.top/install/NPS/install.sh | sudo bash
 #
 
 source /etc/profile
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {

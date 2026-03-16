@@ -99,5 +99,5 @@ done
 
 }
 
-# export GITHUB_PROXY="https://gh-proxy.org"
-export GITHUB_PROXY="https://cloudflare-proxy.xiechengqi.top"
+export GITHUB_PROXY="https://gh-proxy.org"
+# export GITHUB_PROXY="https://cloudflare-proxy.xiechengqi.top"

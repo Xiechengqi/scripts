@@ -9,7 +9,7 @@
 #
 
 source /etc/profile
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
@@ -30,7 +30,7 @@ then
 EXEC "which jq"
 downloadUrl=$(curl -SsL https://api.github.com/repos/lilypad-tech/lilypad/releases/latest | jq -r .assets[].browser_download_url | grep -E 'linux-amd64$' | head -1)
 else
-downloadUrl="https://install.xiechengqi.top/lilypad"
+downloadUrl="https://install.xiecq.top/lilypad"
 fi
 binaryName="lilypad"
 

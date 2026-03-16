@@ -7,7 +7,7 @@
 #
 
 source /etc/profile
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 function install() {
@@ -41,7 +41,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 
 # aleo address
 account_name=${1-"aleopool_ca"}
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 # download url
 echo "$osInfo" | grep -E 'ubuntu18' &> /dev/null && downloadUrl="${BASEURL}/aleo-pool-prover_ubuntu_1804_gpu" || downloadUrl="${BASEURL}/aleo-pool-prover_ubuntu_2004_gpu"
 # binary name

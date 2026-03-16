@@ -7,7 +7,7 @@
 #
 
 source /etc/profile
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 function install() {
@@ -42,7 +42,7 @@ osInfo=`get_os` && INFO "current os: $osInfo"
 f2pool_username=${1-"xiechengqi"}
 # f2pool proxy
 f2pool_proxy=${2-"aleo-asia.f2pool.com:4400"}
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 # binary name
 binaryName="aleo-prover-cuda"
 # download url

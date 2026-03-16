@@ -7,7 +7,7 @@
 #
 
 source /etc/profile
-BASEURL="https://install.xiechengqi.top"
+BASEURL="https://install.xiecq.top"
 source <(curl -SsL $BASEURL/tool/common.sh)
 
 main() {
@@ -22,7 +22,7 @@ installPath="/data/${serviceName}"
 PROVER_PRIVATE_KEY="$1"
 [ ".${PROVER_PRIVATE_KEY}" = "." ] && ERROR "curl -SsL https://raw.githubusercontent.com/Xiechengqi/scripts/master/install/Aleo/aleo-client.sh | sudo bash -s [PROVER_PRIVATE_KEY]"
 # download url
-binaryDownloadUrl="https://install.xiechengqi.top/aleo/bin/snarkos"
+binaryDownloadUrl="https://install.xiecq.top/aleo/bin/snarkos"
 
 # check
 [[ ! "$@" =~ "force" ]] && systemctl is-active ${serviceName} &> /dev/null && YELLOW "${serviceName} is running ..." && return 0
