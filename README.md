@@ -37,6 +37,7 @@
 [K3S](https://github.com/Xiechengqi/scripts/edit/master/install/K3S/install.sh) | `curl -SsL https://install.xiecq.top/install/K3S/install.sh \| sudo bash` |
 [K8S](https://github.com/Xiechengqi/scripts/edit/master/install/K8S/install.sh) | `curl -SsL https://install.xiecq.top/install/K8S/install.sh \| sudo bash` |
 [Kibana](https://github.com/Xiechengqi/scripts/edit/master/install/Kibana/install.sh) | `curl -SsL https://install.xiecq.top/install/Kibana/install.sh \| sudo bash` |
+[Kula](https://github.com/Xiechengqi/scripts/edit/master/install/Kula/install.sh) | `curl -SsL https://install.xiecq.top/install/Kula/install.sh \| sudo bash` |
 [lilypad](https://github.com/Xiechengqi/scripts/edit/master/install/lilypad/install.sh) | `curl -SsL https://install.xiecq.top/install/lilypad/install.sh \| sudo bash` |
 [litecoin-node](https://github.com/Xiechengqi/scripts/edit/master/install/Litecoin/litecoin-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Litecoin/litecoin-node/install.sh \| sudo bash` |
 [Loki](https://github.com/Xiechengqi/scripts/edit/master/install/Grafana/Loki/install.sh) | `curl -SsL https://install.xiecq.top/install/Grafana/Loki/install.sh \| sudo bash` |
