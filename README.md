@@ -68,6 +68,7 @@
 [qtum-index](https://github.com/Xiechengqi/scripts/edit/master/install/Qtum/qtum-index/install.sh) | `curl -SsL https://install.xiecq.top/install/Qtum/qtum-index/install.sh \| sudo bash` |
 [qtum-node](https://github.com/Xiechengqi/scripts/edit/master/install/Qtum/qtum-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Qtum/qtum-node/install.sh \| sudo bash` |
 [Rage4](https://github.com/Xiechengqi/scripts/edit/master/install/Rage4/install.sh) | `curl -SsL https://install.xiecq.top/install/Rage4/install.sh \| sudo bash` |
+[Reconya](https://github.com/Xiechengqi/scripts/edit/master/install/Reconya/install.sh) | `curl -SsL https://install.xiecq.top/install/Reconya/install.sh \| sudo bash` |
 [Redis](https://github.com/Xiechengqi/scripts/edit/master/install/Redis/install.sh) | `curl -SsL https://install.xiecq.top/install/Redis/install.sh \| sudo bash` |
 [ripple-node](https://github.com/Xiechengqi/scripts/edit/master/install/Ripple/ripple-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Ripple/ripple-node/install.sh \| sudo bash` |
 [Rust](https://github.com/Xiechengqi/scripts/edit/master/install/Rust/install.sh) | `curl -SsL https://install.xiecq.top/install/Rust/install.sh \| sudo bash` |
