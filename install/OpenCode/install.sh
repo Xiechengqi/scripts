@@ -50,7 +50,7 @@ EXEC "ln -fs ${OPENCODE_CONFIG_DIR} ${installPath}/conf"
 EXEC "curl -SsL ${downloadUrl} | tar zx -C ${installPath}/bin/ && chmod +x ${installPath}/bin/${binary}"
 
 # register bin
-EXEC "ln -fs ${installPath}/bin/${binary} /usr/local/bin/${binary}"
+EXEC "rm -f -v /usr/local/bin/${binary} && ln -fs ${installPath}/bin/${binary} /usr/local/bin/${binary}"
 EXEC "${binary} --version" && ${binary} --version
 
 # creat start.sh

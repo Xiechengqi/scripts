@@ -29,9 +29,12 @@ INFO "version: ${version}"
 installPath="/data/${serviceName}"
 downloadUrl="https://github.com/openai/codex/releases/download/${version}/codex-x86_64-unknown-linux-musl.tar.gz"
 [ "${countryCode}" = "China" ] && downloadUrl="${GITHUB_PROXY}/${downloadUrl}"
+downloadModeUrl="https://github.com/openai/codex/releases/download/${version}/codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz"
+[ "${countryCode}" = "China" ] && downloadModeUrl="${GITHUB_PROXY}/${downloadModeUrl}"
 
 # check
 which ${binary} &> /dev/null && YELLOW "${binary} has been installed, please remove $(which ${binary}) first ..." && return 0
+which codex-code-mode-host &> /dev/null && YELLOW "codex-code-mode-host has been installed, please remove $(which codex-code-mode-host) first ..." && return 0
 
 # check install path
 EXEC "rm -rf ${installPath}"
@@ -55,9 +58,11 @@ EOF
 
 # download tarball
 EXEC "curl -SsL ${downloadUrl} | tar zx -C ${installPath}/bin/ && mv -v ${installPath}/bin/codex-x86_64-unknown-linux-musl ${installPath}/bin/${binary} && chmod +x ${installPath}/bin/${binary}"
+EXEC "curl -SsL ${downloadModeUrl} | tar zx -C ${installPath}/bin/ && mv -v ${installPath}/bin/codex-code-mode-host-x86_64-unknown-linux-musl ${installPath}/bin/codex-code-mode-host && chmod +x ${installPath}/bin/codex-code-mode-host"
 
 # register bin
-EXEC "ln -fs ${installPath}/bin/${binary} /usr/local/bin/${binary}"
+EXEC "rm -f -v /usr/local/bin/${binary} && ln -fs ${installPath}/bin/${binary} /usr/local/bin/${binary}"
+EXEC "rm -f -v /usr/local/bin/codex-code-mode-host && ln -fs ${installPath}/bin/codex-code-mode-host /usr/local/bin/codex-code-mode-host"
 EXEC "${binary} --version" && ${binary} --version
 
 # upgrade script

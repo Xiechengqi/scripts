@@ -26,7 +26,7 @@ versionUrl="https://api.github.com/repos/anomalyco/opencode/releases/latest"
 version=$(curl -SsL ${versionUrl} | jq -r .tag_name)
 [ ".${version}" = "." ] && ERROR "Could Not Get Latest Version ..."
 INFO "Latest Version: ${version}"
-INFO "Current Version: ${binary} --version"
+INFO "Current Version: $(${binary} --version)"
 EXEC "sleep 5"
 
 installPath="/data/${serviceName}"
@@ -37,14 +37,16 @@ downloadUrl="https://github.com/anomalyco/opencode/releases/download/${version}/
 systemctl is-active ${serviceName} &> /dev/null && EXEC "systemctl stop ${serviceName}"
 
 # check
-ps -ef | grep -v grep | grep ${binary} && ERROR "${serviceName} Is Running, Can Not Upgrade ..."
+ps -ef | grep -v grep | grep -v upgrade.sh | grep ${binary} && ERROR "${serviceName} Is Running, Can Not Upgrade ..."
 
 # backup
-EXEC "mv -v ${installPath}/bin/${binary} ${installPath}/bin/${binary}.bak"
+INFO "mv -v ${installPath}/bin/${binary} ${installPath}/bin/${binary}.bak" && mv -v ${installPath}/bin/${binary} ${installPath}/bin/${binary}.bak
 
 # download tarball
 EXEC "curl -SsL ${downloadUrl} | tar zx -C ${installPath}/bin/ && chmod +x ${installPath}/bin/${binary}"
 
+# register bin
+EXEC "rm -f -v /usr/local/bin/${binary} && ln -fs ${installPath}/bin/${binary} /usr/local/bin/${binary}"
 EXEC "${binary} --version" && ${binary} --version
 
 # start
