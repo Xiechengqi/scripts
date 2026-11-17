@@ -65,6 +65,9 @@ EXEC "rm -f -v /usr/local/bin/${binary} && ln -fs ${installPath}/bin/${binary} /
 EXEC "rm -f -v /usr/local/bin/codex-code-mode-host && ln -fs ${installPath}/bin/codex-code-mode-host /usr/local/bin/codex-code-mode-host"
 EXEC "${binary} --version" && ${binary} --version
 
+# disable daemin. (Since Codex CLI 0.157.0, the program has enabled the function of automatically starting the background daemon process (daemon_auto_start) by default.)
+INFO "codex features disable daemon_auto_start" && codex features disable daemon_auto_start
+
 # upgrade script
 EXEC "curl -SsL ${BASEURL}/install/Codex/upgrade.sh -o ${installPath}/upgrade.sh && chmod +x ${installPath}/upgrade.sh"
 
