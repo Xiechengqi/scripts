@@ -11,6 +11,7 @@
 [cfw](https://github.com/Xiechengqi/scripts/edit/master/install/cfw/install.sh) | `curl -SsL https://install.xiecq.top/install/cfw/install.sh \| sudo bash` |
 [chainx-node](https://github.com/Xiechengqi/scripts/edit/master/install/ChainX/chainx-node/install.sh) | `curl -SsL https://install.xiecq.top/install/ChainX/chainx-node/install.sh \| sudo bash` |
 [ChartMuseum](https://github.com/Xiechengqi/scripts/edit/master/install/Helm/ChartMuseum/install.sh) | `curl -SsL https://install.xiecq.top/install/Helm/ChartMuseum/install.sh \| sudo bash` |
+[Codex](https://github.com/Xiechengqi/scripts/edit/master/install/Codex/install.sh) | `curl -SsL https://install.xiecq.top/install/Codex/install.sh \| sudo bash` |
 [conflux-node](https://github.com/Xiechengqi/scripts/edit/master/install/Conflux/conflux-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Conflux/conflux-node/install.sh \| sudo bash` |
 [Consul](https://github.com/Xiechengqi/scripts/edit/master/install/Consul/install.sh) | `curl -SsL https://install.xiecq.top/install/Consul/install.sh \| sudo bash` |
 [cosmos-node](https://github.com/Xiechengqi/scripts/edit/master/install/Cosmos/cosmos-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Cosmos/cosmos-node/install.sh \| sudo bash` |
@@ -56,6 +57,7 @@
 [Ntp](https://github.com/Xiechengqi/scripts/edit/master/install/Ntp/install.sh) | `curl -SsL https://install.xiecq.top/install/Ntp/install.sh \| sudo bash` |
 [Nvidia-Container-Toolkit](https://github.com/Xiechengqi/scripts/edit/master/install/Nvidia/Nvidia-Container-Toolkit/install.sh) | `curl -SsL https://install.xiecq.top/install/Nvidia/Nvidia-Container-Toolkit/install.sh \| sudo bash` |
 [Ooklaserver](https://github.com/Xiechengqi/scripts/edit/master/install/Ooklaserver/install.sh) | `curl -SsL https://install.xiecq.top/install/Ooklaserver/install.sh \| sudo bash` |
+[OpenCode](https://github.com/Xiechengqi/scripts/edit/master/install/OpenCode/install.sh) | `curl -SsL https://install.xiecq.top/install/OpenCode/install.sh \| sudo bash` |
 [Openconncet](https://github.com/Xiechengqi/scripts/edit/master/install/Openconncet/install.sh) | `curl -SsL https://install.xiecq.top/install/Openconncet/install.sh \| sudo bash` |
 [platon-index](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-index/install.sh) | `curl -SsL https://install.xiecq.top/install/Platon/platon-index/install.sh \| sudo bash` |
 [platon-node](https://github.com/Xiechengqi/scripts/edit/master/install/Platon/platon-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Platon/platon-node/install.sh \| sudo bash` |
