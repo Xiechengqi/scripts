@@ -11,6 +11,7 @@
 [cfw](https://github.com/Xiechengqi/scripts/edit/master/install/cfw/install.sh) | `curl -SsL https://install.xiecq.top/install/cfw/install.sh \| sudo bash` |
 [chainx-node](https://github.com/Xiechengqi/scripts/edit/master/install/ChainX/chainx-node/install.sh) | `curl -SsL https://install.xiecq.top/install/ChainX/chainx-node/install.sh \| sudo bash` |
 [ChartMuseum](https://github.com/Xiechengqi/scripts/edit/master/install/Helm/ChartMuseum/install.sh) | `curl -SsL https://install.xiecq.top/install/Helm/ChartMuseum/install.sh \| sudo bash` |
+[Claude](https://github.com/Xiechengqi/scripts/edit/master/install/Claude/install.sh) | `curl -SsL https://install.xiecq.top/install/Claude/install.sh \| sudo bash` |
 [Codex](https://github.com/Xiechengqi/scripts/edit/master/install/Codex/install.sh) | `curl -SsL https://install.xiecq.top/install/Codex/install.sh \| sudo bash` |
 [conflux-node](https://github.com/Xiechengqi/scripts/edit/master/install/Conflux/conflux-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Conflux/conflux-node/install.sh \| sudo bash` |
 [Consul](https://github.com/Xiechengqi/scripts/edit/master/install/Consul/install.sh) | `curl -SsL https://install.xiecq.top/install/Consul/install.sh \| sudo bash` |
