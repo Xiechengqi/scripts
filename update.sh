@@ -27,6 +27,16 @@ EOF
 find "$INSTALL_DIR" -name "install.sh" -type f | while read -r install_file; do
     # 获取相对于 install 目录的路径
     rel_path="${install_file#$INSTALL_DIR/}"
+
+    # 项目目录，或其到 install/ 之间的上级目录中有 NOINDEX 文件时，不写入 README 和页面
+    skip_dir="$(dirname "$install_file")"
+    while [[ "$skip_dir" == "$INSTALL_DIR"/* ]]; do
+        if [[ -f "$skip_dir/NOINDEX" ]]; then
+            echo "跳过（含 NOINDEX）: ${rel_path}"
+            continue 2
+        fi
+        skip_dir="$(dirname "$skip_dir")"
+    done
     
     # 获取目录路径（去掉 install.sh）
     dir_path="${rel_path%/install.sh}"

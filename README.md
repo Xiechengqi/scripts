@@ -21,10 +21,9 @@
 [Docker](https://github.com/Xiechengqi/scripts/edit/master/install/Docker/install.sh) | `curl -SsL https://install.xiecq.top/install/Docker/install.sh \| sudo bash` |
 [EaseProbe](https://github.com/Xiechengqi/scripts/edit/master/install/EaseProbe/install.sh) | `curl -SsL https://install.xiecq.top/install/EaseProbe/install.sh \| sudo bash` |
 [ElasticSearch](https://github.com/Xiechengqi/scripts/edit/master/install/ElasticSearch/install.sh) | `curl -SsL https://install.xiecq.top/install/ElasticSearch/install.sh \| sudo bash` |
-[eos-node](https://github.com/Xiechengqi/scripts/edit/master/install/EOS/eos-node/install.sh) | `curl -SsL https://install.xiecq.top/install/EOS/eos-node/install.sh \| sudo bash` |
+[ETH](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/install.sh) | `curl -SsL https://install.xiecq.top/install/ETH/install.sh \| sudo bash` |
 [eth-index](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/eth-index/install.sh) | `curl -SsL https://install.xiecq.top/install/ETH/eth-index/install.sh \| sudo bash` |
 [eth-node](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/eth-node/install.sh) | `curl -SsL https://install.xiecq.top/install/ETH/eth-node/install.sh \| sudo bash` |
-[ETH](https://github.com/Xiechengqi/scripts/edit/master/install/ETH/install.sh) | `curl -SsL https://install.xiecq.top/install/ETH/install.sh \| sudo bash` |
 [Filebeat](https://github.com/Xiechengqi/scripts/edit/master/install/Filebeat/install.sh) | `curl -SsL https://install.xiecq.top/install/Filebeat/install.sh \| sudo bash` |
 [filecash-node](https://github.com/Xiechengqi/scripts/edit/master/install/Filecash/filecash-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Filecash/filecash-node/install.sh \| sudo bash` |
 [filecoin-node](https://github.com/Xiechengqi/scripts/edit/master/install/Filecoin/filecoin-node/install.sh) | `curl -SsL https://install.xiecq.top/install/Filecoin/filecoin-node/install.sh \| sudo bash` |
