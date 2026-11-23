@@ -17,6 +17,7 @@
 [Goproxy](https://github.com/Xiechengqi/scripts/edit/master/install/Goproxy/install.sh) | `curl -SsL https://install.xiecq.top/install/Goproxy/install.sh \| sudo bash` |
 [Gost](https://github.com/Xiechengqi/scripts/edit/master/install/Gost/install.sh) | `curl -SsL https://install.xiecq.top/install/Gost/install.sh \| sudo bash` |
 [Gradle](https://github.com/Xiechengqi/scripts/edit/master/install/Gradle/install.sh) | `curl -SsL https://install.xiecq.top/install/Gradle/install.sh \| sudo bash` |
+[Grok](https://github.com/Xiechengqi/scripts/edit/master/install/Grok/install.sh) | `curl -SsL https://install.xiecq.top/install/Grok/install.sh \| sudo bash` |
 [Helm](https://github.com/Xiechengqi/scripts/edit/master/install/Helm/install.sh) | `curl -SsL https://install.xiecq.top/install/Helm/install.sh \| sudo bash` |
 [Java](https://github.com/Xiechengqi/scripts/edit/master/install/Java/install.sh) | `curl -SsL https://install.xiecq.top/install/Java/install.sh \| sudo bash` |
 [K3S](https://github.com/Xiechengqi/scripts/edit/master/install/K3S/install.sh) | `curl -SsL https://install.xiecq.top/install/K3S/install.sh \| sudo bash` |
