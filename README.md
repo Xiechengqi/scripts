@@ -1,6 +1,7 @@
 |                           Install                            |                           Command                            |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 [Alloy](https://github.com/Xiechengqi/scripts/edit/master/install/Grafana/Alloy/install.sh) | `curl -SsL https://install.xiecq.top/install/Grafana/Alloy/install.sh \| sudo bash` |
+[Antigravity](https://github.com/Xiechengqi/scripts/edit/master/install/Antigravity/install.sh) | `curl -SsL https://install.xiecq.top/install/Antigravity/install.sh \| sudo bash` |
 [cfw](https://github.com/Xiechengqi/scripts/edit/master/install/cfw/install.sh) | `curl -SsL https://install.xiecq.top/install/cfw/install.sh \| sudo bash` |
 [ChartMuseum](https://github.com/Xiechengqi/scripts/edit/master/install/Helm/ChartMuseum/install.sh) | `curl -SsL https://install.xiecq.top/install/Helm/ChartMuseum/install.sh \| sudo bash` |
 [Claude](https://github.com/Xiechengqi/scripts/edit/master/install/Claude/install.sh) | `curl -SsL https://install.xiecq.top/install/Claude/install.sh \| sudo bash` |
