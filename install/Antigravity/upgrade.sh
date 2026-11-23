@@ -40,7 +40,7 @@ ps -ef | grep -v grep | grep -v upgrade.sh | grep ${binary} && ERROR "${serviceN
 INFO "mv -v ${installPath}/bin/${binary} ${installPath}/bin/${binary}.bak" && mv -v ${installPath}/bin/${binary} ${installPath}/bin/${binary}.bak
 
 # download tarball
-EXEC "curl -SsL ${downloadUrl} | tar zx -C ${installPath}/bin/ && chmod +x ${installPath}/bin/${binary}"
+EXEC "curl -SsL ${downloadUrl} | tar zx -C ${installPath}/bin/ && mv -v ${installPath}/bin/antigravity ${installPath}/bin/${binary} && chmod +x ${installPath}/bin/${binary}"
 
 # register bin
 EXEC "rm -f -v /usr/local/bin/${binary} && ln -fs ${installPath}/bin/${binary} /usr/local/bin/${binary}"
