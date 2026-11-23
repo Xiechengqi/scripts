@@ -60,7 +60,7 @@ EXEC "rm -f -v /usr/local/bin/${binary} && ln -fs ${installPath}/bin/${binary} /
 EXEC "${binary} --version" && ${binary} --version
 
 # upgrade script
-# EXEC "curl -SsL ${BASEURL}/install/Grok/upgrade.sh -o ${installPath}/upgrade.sh && chmod +x ${installPath}/upgrade.sh"
+EXEC "curl -SsL ${BASEURL}/install/Grok/upgrade.sh -o ${installPath}/upgrade.sh && chmod +x ${installPath}/upgrade.sh"
 
 # info
 YELLOW "${serviceName} version: ${version}"
