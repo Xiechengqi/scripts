@@ -40,9 +40,9 @@ EXEC "rm -rf ${installPath}"
 EXEC "mkdir -p ${installPath}/bin"
 
 # link data dir
-export CODEX_HOME="$HOME/.claude"
-EXEC "mkdir -p ${CODEX_HOME}"
-EXEC "ln -fs ${CODEX_HOME} ${installPath}/data"
+export CLAUDE_HOME="$HOME/.claude"
+EXEC "mkdir -p ${CLAUDE_HOME}"
+EXEC "ln -fs ${CLAUDE_HOME} ${installPath}/data"
 
 # env
 cat >> ${installPath}/env << EOF
